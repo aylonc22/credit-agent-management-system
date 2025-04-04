@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const transactionSchema = new mongoose.Schema({
-  transactionId: { type: String, required: true, unique: true },
   agent: { type: mongoose.Schema.Types.ObjectId, ref: 'Agent', required: true },
   client: { type: mongoose.Schema.Types.ObjectId, ref: 'Client', required: true },
   amount: { type: Number, required: true },

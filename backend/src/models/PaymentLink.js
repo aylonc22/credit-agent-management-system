@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
-const paymentLinkSchema = new mongoose.Schema({
-  linkId: { type: String, required: true, unique: true },
+const paymentLinkSchema = new mongoose.Schema({ 
   client: { type: mongoose.Schema.Types.ObjectId, ref: 'Client', required: true },
   amount: { type: Number, required: true },
   description: { type: String },
