@@ -21,14 +21,14 @@ function App() {
         {/* Routes */}
         <div className="main-content">
         <Routes>
-          <Route exact path="/" component={Dashboard} />
-          <Route path="/agents" component={AgentManagement} />
-          <Route path="/clients" component={ClientManagement} />
-          <Route path="/transactions" component={TransactionManagement} />
-          <Route path="/payment-links" component={PaymentLinkGenerator} />
-          <Route path="/reports" component={Reports} />
-          <Route path="/settings" component={SystemSettings} />
-        </Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/agents" element={<AgentManagement />} />
+            <Route path="/clients" element={<ClientManagement />} />
+            <Route path="/transactions" element={<TransactionManagement />} />
+            <Route path="/payment-links" element={<PaymentLinkGenerator />} />
+            <Route path="/reports" element={<Reports />} />
+            <Route path="/settings" element={<SystemSettings />} />
+          </Routes>
         </div>
       </div>
     </Router>
