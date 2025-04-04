@@ -1,9 +1,10 @@
 // src/pages/AgentManagement.js
 import React from 'react';
 import './index.css';
+import useAuth from '../../hooks/useAuth';
 
 const AgentManagement = () => {
-  console.log("HERE?");
+  useAuth();
   return (
     <div>
       <h1>Agent Management</h1>

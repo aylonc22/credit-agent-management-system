@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes,Link } from 'react-router-dom';
 
 // Import pages
 import Dashboard from './pages/Dashboard/index';
+import Login from './pages/Login/index';
 import AgentManagement from './pages/AgentManagement/index';
 import ClientManagement from './pages/ClientManagement/index';
 import TransactionManagement from './pages/TransactionManagement/index';
@@ -22,6 +23,7 @@ function App() {
         <div className="main-content">
         <Routes>
             <Route path="/" element={<Dashboard />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/agents" element={<AgentManagement />} />
             <Route path="/clients" element={<ClientManagement />} />
             <Route path="/transactions" element={<TransactionManagement />} />

@@ -1,7 +1,9 @@
 // src/pages/SystemSettings.js
 import React from 'react';
 import './index.css';
+import useAuth from '../../hooks/useAuth';
 const SystemSettings = () => {
+  useAuth();
   return (
     <div>
       <h1>System Settings</h1>

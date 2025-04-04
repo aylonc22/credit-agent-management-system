@@ -1,12 +1,15 @@
 // src/pages/PaymentLinkGenerator.js
 import React, { useState } from 'react';
 import './index.css';
+import useAuth from '../../hooks/useAuth';
 
 const PaymentLinkGenerator = () => {
   const [amount, setAmount] = useState('');
   const [notes, setNotes] = useState('');
   const [client, setClient] = useState('');
   const [paymentLink, setPaymentLink] = useState('');
+
+  useAuth();
 
   const handleGenerateLink = () => {
     // Sample link generation logic

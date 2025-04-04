@@ -1,7 +1,9 @@
 // src/pages/Reports.js
 import React from 'react';
+import useAuth from '../../hooks/useAuth';
 
 const Reports = () => {
+  useAuth();
   return (
     <div>
       <h1>Reports</h1>
