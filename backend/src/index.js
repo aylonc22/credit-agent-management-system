@@ -7,11 +7,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.post("/api/notifications/email", (req, res) => {
-    const { to, subject, message } = req.body;
-    console.log(`Email to: ${to}, subject: ${subject}, message: ${message}`);
-    res.status(200).json({ message: "Email sent (simulated)" });
-});
+// Routes
+app.use('/auth', require('./routes/auth'));
+app.use('/api', require('./routes/api'));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
