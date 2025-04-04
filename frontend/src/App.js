@@ -19,6 +19,7 @@ function App() {
         <Navbar/>
 
         {/* Routes */}
+        <div className="main-content">
         <Routes>
           <Route exact path="/" component={Dashboard} />
           <Route path="/agents" component={AgentManagement} />
@@ -28,6 +29,7 @@ function App() {
           <Route path="/reports" component={Reports} />
           <Route path="/settings" component={SystemSettings} />
         </Routes>
+        </div>
       </div>
     </Router>
   );
