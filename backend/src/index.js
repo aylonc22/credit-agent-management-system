@@ -12,7 +12,7 @@ app.post("/api/notifications/email", (req, res) => {
     console.log(`Email to: ${to}, subject: ${subject}, message: ${message}`);
     res.status(200).json({ message: "Email sent (simulated)" });
 });
-console.log(process.env.MONGO_URI)
+
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
