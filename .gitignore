@@ -1,0 +1,31 @@
+# Node.js
+node_modules/
+.env
+dist/
+build/
+*.log
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Vite (frontend build output)
+frontend/dist/
+
+# React dev files
+frontend/.env.local
+frontend/.env.production
+frontend/node_modules/
+
+# Backend
+backend/.env
+backend/node_modules/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
