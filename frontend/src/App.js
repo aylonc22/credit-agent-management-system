@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Route, Routes,Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes,Link, useLocation } from 'react-router-dom';
 
 // Import pages
 import Dashboard from './pages/Dashboard/index';
@@ -11,19 +11,25 @@ import PaymentLinkGenerator from './pages/PaymentLinkGenerator/index';
 import Reports from './pages/Reports/index';
 import SystemSettings from './pages/SystemSettings/index';
 import Navbar from './components/Navbar.js';
+import Register from './pages/Register/index.js';
+import ForgotPassword from './pages/ForgotPassword/index.js';
 
 function App() {
-  return (
-    <Router>
+  const location = useLocation();
+    // Check if the current route is Login / register / forgot-password
+    const isAuthPage = location.pathname === '/login' ||  location.pathname === '/register' ||location.pathname === '/forgot-password';
+  return (   
       <div className="App">
         {/* Navigation */}
-        <Navbar/>
+        {!isAuthPage && <Navbar />}
 
         {/* Routes */}
-        <div className="main-content">
+        <div className={`main-content ${isAuthPage ? 'no-sidebar' : ''}`}>
         <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/agents" element={<AgentManagement />} />
             <Route path="/clients" element={<ClientManagement />} />
             <Route path="/transactions" element={<TransactionManagement />} />
@@ -32,8 +38,7 @@ function App() {
             <Route path="/settings" element={<SystemSettings />} />
           </Routes>
         </div>
-      </div>
-    </Router>
+      </div>    
   );
 }
 

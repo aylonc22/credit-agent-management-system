@@ -1,9 +1,11 @@
-.App {
-  display: flex;
-}
-
-.main-content {
-  margin-left: 250px; /* Ensures content doesn't overlap with sidebar */
+/* Sidebar and content layout */
+.app-with-sidebar .main-content {
+  margin-left: 250px;
   padding: 20px;
   flex-grow: 1;
+}
+
+.no-sidebar .main-content {
+  margin: 0;
+  padding: 0;
 }

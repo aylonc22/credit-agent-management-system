@@ -1,35 +1,37 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import './index.css';
+import { Link } from "react-router-dom";
 
-const Login = () => {
+const Register = () => {
   const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  const navigate = useNavigate();
-
-  const handleSubmit = (e) => {
+  const handleRegister = (e) => {
     e.preventDefault();
-    // Simulate login logic
-    console.log("Login submitted", { email, password });
-
-    // Store token in local storage and redirect
-    localStorage.setItem('token', 'your-jwt-token');
-    navigate('/');
+    console.log("Register submitted", { username, email, password });
   };
 
   return (
     <div className="login-container">
       <div className="login-box">
-        <h2>Login to Your Account</h2>
+        <h2>Create Your Account</h2>
+        <form onSubmit={handleRegister}>
+          <div className="input-group">
+            <input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
 
-        <form onSubmit={handleSubmit}>
           <div className="input-group">
             <input
               type="email"
-              placeholder="Enter your email"
+              placeholder="Email Address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -39,7 +41,7 @@ const Login = () => {
           <div className="input-group">
             <input
               type={showPassword ? "text" : "password"}
-              placeholder="Enter your password"
+              placeholder="Create Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -52,19 +54,15 @@ const Login = () => {
             </span>
           </div>
 
-          <button type="submit" className="btn">Login</button>
+          <button type="submit" className="btn">Register</button>
         </form>
 
         <div className="links">
-          <a href="/forgot-password">Forgot Password?</a>
-        </div>
-
-        <div className="register-link">
-          <p>Don't have an account? <Link to="/register">Sign up</Link></p>
+          Already have an account? <Link to="/login">Login</Link>
         </div>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Register;
