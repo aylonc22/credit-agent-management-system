@@ -1,0 +1,33 @@
+/* src/components/Navbar.css */
+.sidenav {
+    height: 100%;
+    width: 250px; /* Width of the sidebar */
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    padding-top: 20px;
+  }
+  
+  .sidenav ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .sidenav ul li {
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .sidenav ul li a {
+    text-decoration: none;
+    color: white;
+    display: block;
+    padding: 10px;
+    font-size: 18px;
+  }
+  
+  .sidenav ul li a:hover {
+    background-color: #575757;
+  }
+  
