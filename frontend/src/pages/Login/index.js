@@ -2,22 +2,30 @@ import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import './index.css';
+import api from "../../api/axios";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Simulate login logic
-    console.log("Login submitted", { email, password });
-
-    // Store token in local storage and redirect
-    localStorage.setItem('token', 'your-jwt-token');
-    navigate('/');
+    console.log("Login submitted", { username, password });
+    try{
+      const res = await api.post('/auth/login',{username, password});
+      // Store token in local storage and redirect
+      localStorage.setItem('token', res.data.token);
+      navigate('/');
+    }
+    catch(e){
+        console.error('Login error:', e);
+        alert('Invalid credentials');
+    }
+    
   };
 
   return (
@@ -28,10 +36,10 @@ const Login = () => {
         <form onSubmit={handleSubmit}>
           <div className="input-group">
             <input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="username"
+              placeholder="Enter your user name"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
             />
           </div>
