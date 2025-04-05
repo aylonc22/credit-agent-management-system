@@ -16,30 +16,34 @@ import ForgotPassword from './pages/ForgotPassword/index.js';
 
 function App() {
   const location = useLocation();
-    // Check if the current route is Login / register / forgot-password
-    const isAuthPage = location.pathname === '/login' ||  location.pathname === '/register' ||location.pathname === '/forgot-password';
-  return (   
-      <div className="App">
-        {/* Navigation */}
-        {!isAuthPage && <Navbar />}
+  const isAuthPage =
+    location.pathname === '/login' ||
+    location.pathname === '/register' ||
+    location.pathname === '/forgot-password';
 
-        {/* Routes */}
-        <div className={`main-content ${isAuthPage ? 'no-sidebar' : ''}`}>
+  return (
+    <div className={isAuthPage ? 'no-sidebar' : 'app-with-sidebar'}>
+      {/* Navigation */}
+      {!isAuthPage && <Navbar />}
+
+      {/* Routes */}
+      <div className="main-content">
         <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/agents" element={<AgentManagement />} />
-            <Route path="/clients" element={<ClientManagement />} />
-            <Route path="/transactions" element={<TransactionManagement />} />
-            <Route path="/payment-links" element={<PaymentLinkGenerator />} />
-            <Route path="/reports" element={<Reports />} />
-            <Route path="/settings" element={<SystemSettings />} />
-          </Routes>
-        </div>
-      </div>    
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/agents" element={<AgentManagement />} />
+          <Route path="/clients" element={<ClientManagement />} />
+          <Route path="/transactions" element={<TransactionManagement />} />
+          <Route path="/payment-links" element={<PaymentLinkGenerator />} />
+          <Route path="/reports" element={<Reports />} />
+          <Route path="/settings" element={<SystemSettings />} />
+        </Routes>
+      </div>
+    </div>
   );
 }
+
 
 export default App;

@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './index.css'; // Import the CSS for styling
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen); // Toggle sidebar visibility
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token'); // Clear JWT
+    navigate('/login'); // Redirect to login page
   };
 
   return (
@@ -39,6 +45,9 @@ const Navbar = () => {
           </li>
           <li>
             <Link to="/settings">System Settings</Link>
+          </li>
+          <li className="logout">
+            <button onClick={handleLogout}>Disconnect🔌</button>
           </li>
         </ul>
       </div>

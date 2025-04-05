@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const clientSchema = new mongoose.Schema({ 
   name: { type: String, required: true },
   username: { type: String, required: true },
+  email: { type: String, required: true },
   phone: { type: String, required: true },
   credit: { type: Number, default: 0 },
   status: { type: String, enum: ['active', 'blocked'], default: 'active' },

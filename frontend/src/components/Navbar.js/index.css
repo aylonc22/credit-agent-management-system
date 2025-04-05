@@ -99,4 +99,34 @@
       }
     }
   }
+
+  /* Logout Button Styling - matches other links */
+.sidenav ul li.logout {
+  padding: 15px 20px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.sidenav ul li.logout button {
+  background: none;
+  border: none;
+  color: #ecf0f1;
+  font-size: 18px;
+  font-weight: 500;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color 0.3s ease;
+}
+
+.sidenav ul li.logout:hover {
+  background-color: #34495e;
+}
+
+.sidenav ul li.logout button:hover {
+  color: #e74c3c; /* Slightly red tone to indicate logout */
+}
+
+  
   

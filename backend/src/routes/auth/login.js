@@ -8,8 +8,9 @@ router.post('/',async (req, res) => {
     const { username, password } = req.body;
 
     try {
-      const user = await User.findOne({ username });
-      if (!user || user.password !== await decryptAES(password)) {
+        const user = await User.findOne({ username });
+       
+      if (!user || password !== await decryptAES(user.password)) {
         return res.status(401).json({ message: 'Invalid credentials' });
       }
 
@@ -19,6 +20,7 @@ router.post('/',async (req, res) => {
            
       res.status(200).json({ message: 'Login successful', token });
     } catch (error) {
+        console.log(error);
       res.status(500).json({ message: 'Server error', error });
     }
 });

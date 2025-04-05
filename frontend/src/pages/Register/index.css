@@ -1,0 +1,23 @@
+.phone-group {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .phone-group input {
+    flex: 1;
+  }
+  
+  .phone-group .country-code {
+    max-width: 80px;
+    text-align: center;
+  }
+  
+  .error-text {
+    color: #ff4d4f;
+    font-size: 14px;    
+  }
+  
+  /* Adjust the phone input group to reduce the gap */
+  .phone-group.error {
+    margin-bottom: -10px; /* Adjust this value to bring the input and error closer */
+  }
