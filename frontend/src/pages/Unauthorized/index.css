@@ -1,0 +1,48 @@
+/* src/pages/Unauthorized/index.css */
+
+/* Unauthorized page style */
+.unauthorized-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 60px); /* Full height minus navbar */
+    background-color: #f4f6f9;  
+  }
+  
+  .unauthorized-box {
+    text-align: center;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  .unauthorized-box h2 {
+    font-size: 2rem;
+    color: #e74c3c;
+    margin-bottom: 20px;
+  }
+  
+  .unauthorized-box p {
+    font-size: 1.2rem;
+    color: #7f8c8d;
+    margin-bottom: 30px;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #3498db;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .btn:hover {
+    background-color: #2980b9;
+  }
+  

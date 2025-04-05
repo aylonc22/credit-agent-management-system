@@ -15,6 +15,7 @@ import Register from './pages/Register/index.js';
 import ForgotPassword from './pages/ForgotPassword/index.js';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Import CSS for toastify
+import Unauthorized from './pages/Unauthorized/index.js';
 
 function App() {
   const location = useLocation();
@@ -41,6 +42,7 @@ function App() {
           <Route path="/payment-links" element={<PaymentLinkGenerator />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/settings" element={<SystemSettings />} />
+          <Route path="/unauthorized" element={<Unauthorized />} />
         </Routes>
          
          {/* Toast notifications */}
