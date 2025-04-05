@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Route, Routes,Link, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 
 // Import pages
 import Dashboard from './pages/Dashboard/index';
@@ -13,6 +13,8 @@ import SystemSettings from './pages/SystemSettings/index';
 import Navbar from './components/Navbar.js';
 import Register from './pages/Register/index.js';
 import ForgotPassword from './pages/ForgotPassword/index.js';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Import CSS for toastify
 
 function App() {
   const location = useLocation();
@@ -40,6 +42,20 @@ function App() {
           <Route path="/reports" element={<Reports />} />
           <Route path="/settings" element={<SystemSettings />} />
         </Routes>
+         
+         {/* Toast notifications */}
+         <ToastContainer
+          position="top-right"
+          autoClose={5000} // Notification auto close time
+          hideProgressBar={false} // Show progress bar
+          newestOnTop={false} // Whether the newest notification is on top
+          closeOnClick // Allow user to close notifications by clicking
+          rtl={false} // Whether to support RTL (Right to Left)
+          pauseOnFocusLoss // Pause notifications if user focuses away
+          draggable
+          pauseOnHover
+        />
+
       </div>
     </div>
   );

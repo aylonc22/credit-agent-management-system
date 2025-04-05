@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { isValidPhoneNumber } from 'libphonenumber-js';
 import './index.css';
 import api from "../../api/axios";
+import { toast } from 'react-toastify';
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -32,13 +33,14 @@ const Register = () => {
 
       // Optional: Automatically log the user in (you can skip if you want a redirect instead)
       console.log('User registered and logged in');
-
+      toast.success('Registration successful! You can now log in.');
       // Redirect to dashboard or login page
       navigate('/'); // or navigate('/login') if you want to redirect to login
     })
     .catch((error) => {
       // Handle API errors
-      console.error('Registration failed', error);      
+      console.error('Registration failed', error);     
+      toast.error('Registration failed. Please try again.'); 
     });
   };
 

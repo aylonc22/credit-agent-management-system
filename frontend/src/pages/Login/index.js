@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import './index.css';
 import api from "../../api/axios";
+import { toast } from 'react-toastify';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -19,11 +20,12 @@ const Login = () => {
       const res = await api.post('/auth/login',{username, password});
       // Store token in local storage and redirect
       localStorage.setItem('token', res.data.token);
+      toast.success('Login successful!');
       navigate('/');
     }
     catch(e){
         console.error('Login error:', e);
-        alert('Invalid credentials');
+        toast.error('Login failed. Please try again.');
     }
     
   };
