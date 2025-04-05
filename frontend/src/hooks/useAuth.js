@@ -1,9 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode'; // Make sure to import jwtDecode
 
-const useAuth = () => {
+const useAuth = (requiredRole) => {
   const navigate = useNavigate();
+  const [userData, setUserData] = useState(null); // State to store the decoded JWT
 
   useEffect(() => {
     const token = localStorage.getItem('token'); // You can use sessionStorage if needed
@@ -17,6 +18,8 @@ const useAuth = () => {
     try {
       // Decode the JWT token
       const decodedToken = jwtDecode(token);
+           
+      setUserData(decodedToken); // Store decoded JWT content
 
       // Check if the token has expired (assuming 'exp' is in the JWT payload)
       const currentTime = Date.now() / 1000; // JWT 'exp' is in seconds, not milliseconds
@@ -26,18 +29,21 @@ const useAuth = () => {
         navigate('/login');
       }
 
-      // Optional: You can also check other claims in the JWT, such as user role
-      // if (decodedToken.role !== 'admin') {
-      //   // Unauthorized role, redirect to a different page or show an error
-      //   navigate('/unauthorized');
-      // }
+      // Check if the user's role matches the required role
+      if (requiredRole && decodedToken.role !== requiredRole && decodedToken.role !== 'admin') {
+        // Unauthorized role, redirect to unauthorized page
+        navigate('/unauthorized');
+      }
 
     } catch (error) {
       // If JWT is invalid or cannot be decoded, remove it and redirect to login
       localStorage.removeItem('token');
       navigate('/login');
     }
-  }, [navigate]);
+  }, [navigate, requiredRole]);
+
+  // Return the decoded user data (e.g., the content of the JWT)
+  return userData;
 };
 
 export default useAuth;

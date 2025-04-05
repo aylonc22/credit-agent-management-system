@@ -2,8 +2,15 @@
 import React from 'react';
 import useAuth from '../../hooks/useAuth';
 
-const Reports = () => {
-  useAuth();
+const Reports = () => {  
+  const userData = useAuth();
+
+  // Handle case when user is not authenticated (userData is null)
+  if (!userData) {
+    return <div>Loading...</div>; // Optionally show a loading state or redirect to login
+  }
+
+  const { id, role } = userData;
   return (
     <div>
       <h1>Reports</h1>

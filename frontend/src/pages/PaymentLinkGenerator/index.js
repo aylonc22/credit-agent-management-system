@@ -9,7 +9,14 @@ const PaymentLinkGenerator = () => {
   const [client, setClient] = useState('');
   const [paymentLink, setPaymentLink] = useState('');
 
-  useAuth();
+  const userData = useAuth(); 
+
+  // Handle case when user is not authenticated (userData is null)
+  if (!userData) {
+    return <div>Loading...</div>; // Optionally show a loading state or redirect to login
+  }
+
+  const { id, role } = userData;
 
   const handleGenerateLink = () => {
     // Sample link generation logic
