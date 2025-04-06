@@ -1,7 +1,9 @@
 const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'defaultSecret';
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '5m';
+const JWT_EXPIRES_IN_CLIENT = process.env.JWT_EXPIRES_IN_CLIENT || '15m';
+const JWT_EXPIRES_IN_AGENT = process.env.JWT_EXPIRES_IN_AGENT || '45m';
+const JWT_EXPIRES_IN_ADMIN = process.env.JWT_EXPIRES_IN_ADMIN || '2h';
 
 /**
  * Sign a new JWT token
@@ -9,6 +11,21 @@ const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '5m';
  * @returns {string} - JWT token
  */
 const generateToken = (payload) => {
+  let JWT_EXPIRES_IN;
+  switch (payload.role) {
+    case 'client':
+      JWT_EXPIRES_IN = JWT_EXPIRES_IN_CLIENT;
+      break;
+    case 'admin':
+      JWT_EXPIRES_IN = JWT_EXPIRES_IN_ADMIN;
+      break;
+    case 'agent':
+      JWT_EXPIRES_IN = JWT_EXPIRES_IN_AGENT;
+      break;
+    default:
+      JWT_EXPIRES_IN = JWT_EXPIRES_IN_CLIENT;
+      break;
+  }
   return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 };
 
