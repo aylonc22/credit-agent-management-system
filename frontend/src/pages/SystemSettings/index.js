@@ -15,8 +15,7 @@ const SystemSettings = () => {
 
   return (
     <div className="system-settings-container">
-      <h1>הגדרות מערכת</h1>
-      <p>נהל את הגדרות המערכת וההרשאות של המשתמשים.</p>
+      <h1>הגדרות מערכת</h1>      
 
       <div className="settings-section">
         <h2>הגדרת הרשאות</h2>

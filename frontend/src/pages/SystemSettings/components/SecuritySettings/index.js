@@ -32,13 +32,18 @@ const SecuritySettings = () => {
       const response = await api.put('/auth/change-password', {
         currentPassword,
         newPassword,
+        id
       });
       toast.success('הסיסמה שונתה בהצלחה'); // Show success toast
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
     } catch (error) {
-      toast.error('שגיאה בשינוי הסיסמה'); // Show error toast
+        if (error.response && error.response.data.message) {
+            toast.error(error.response.data.message); // Show the error message from the server
+          } else {
+            toast.error('שגיאה בשינוי הסיסמה');
+          }
     }
   };
 
