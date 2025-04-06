@@ -26,6 +26,8 @@ router.put('/', async (req, res) => {
 
         // Update the user's password with the new encrypted password
         user.password = encryptedPassword;
+        // Update the user's password change at to the current date
+        user.passwordChangedAt = Date.now();
         await user.save();
 
         // Return a success response
