@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const path = require('path');
 const mongoose = require('mongoose');
 const User = require("./models/User");
 const { encryptAES, decryptAES } = require("./utils/hashPassword");
@@ -14,6 +15,8 @@ app.use(express.json());
 app.use('/auth', require('./routes/auth'));
 app.use('/api', require('./routes/api'));
 app.use('/settings', require('./routes/settings'));
+// Serve static files from the 'uploads' folder
+app.use('/settings/uploads', express.static(path.join(__dirname,'/routes/settings/uploads')));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {

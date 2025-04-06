@@ -6,9 +6,27 @@ const Settings = require('../../models/Settings'); // Assuming you have a Settin
 const authMiddleware = require('../middleware/authMiddleware');
 const router = express.Router();
 
-// Configure multer for file uploads
-const upload = multer({ dest: './uploads/' });
+// Configure multer for file uploads, save in the 'settings/uploads' folder
+const upload = multer({
+  dest: path.join(__dirname, './uploads'),  // Save uploads to 'settings/uploads'
+  limits: {
+    fileSize: 5 * 1024 * 1024, // Limit to 5MB per file (you can adjust this as needed)
+  },
+  fileFilter: (req, file, cb) => {
+    // Allow only image files for logo and background image
+    const fileTypes = /jpeg|jpg|png|gif/;
+    const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = fileTypes.test(file.mimetype);
 
+    if (mimetype && extname) {
+      return cb(null, true);
+    } else {
+      cb(new Error('Only image files are allowed!'));
+    }
+  },
+});
+
+// PUT route to upload settings (logo, background image)
 router.put(
   '/',
   authMiddleware,
@@ -22,17 +40,20 @@ router.put(
     const backgroundImage = req.files?.backgroundImage;
 
     try {
-      const settings = await Settings.findOne();     
+      const settings = await Settings.findOne();
       if (!settings) {
         return res.status(404).json({ message: 'Settings not found' });
       }
 
+      // Save logo if uploaded
       if (logo?.[0]) {
-        settings.logo = logo[0].path;
+        settings.logo = '/settings/uploads/' + logo[0].filename; // Save relative path
+        console.log( settings.logo)
       }
 
+      // Save background image if uploaded
       if (backgroundImage?.[0]) {
-        settings.backgroundImage = backgroundImage[0].path;
+        settings.backgroundImage = '/settings/uploads/' + backgroundImage[0].filename; // Save relative path
       }
 
       if (welcomeMessage !== undefined) {
@@ -46,7 +67,7 @@ router.put(
       if (passwordExpiryDays !== undefined && !isNaN(passwordExpiryDays)) {
         settings.passwordExpiryDays = Number(passwordExpiryDays);
       }
-           
+
       await settings.save();
 
       return res.status(200).json({ message: 'הגדרות כלליות נשמרו בהצלחה' });
@@ -57,8 +78,7 @@ router.put(
   }
 );
 
-
-
+// GET route to retrieve settings (including images)
 router.get('/', authMiddleware, async (req, res) => {
   try {
     // Fetch the settings document (assuming there is a single settings document)
