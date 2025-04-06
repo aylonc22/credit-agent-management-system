@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 import './index.css';
 import api from "../../api/axios";
 import { toast } from 'react-toastify';
@@ -10,15 +10,48 @@ const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [inviteToken, setInviteToken] = useState(null);
 
   const navigate = useNavigate();
-  const { agent } = useParams();
-  
+  const { agent } = useParams(); // For agent-based registration
+  const location = useLocation(); // To check for inviteToken query
+
+  // Check for inviteToken in URL query string
+  useEffect(() => {  
+    const queryParams = new URLSearchParams(location.search);
+    const token = queryParams.get('token');  
+    if (token) {
+      api.get(`/auth/generate-link/${token}`).then(res=>{
+        api.put(`/auth/generate-link/${token}`).then(()=> setInviteToken(token));
+      }).catch(error=>{
+        const errorMessage = error.response && error.response.data && error.response.data.message
+      ? error.response.data.message
+      : 'ההרשמה נכשלה. אנא נסה שוב.'; // Default message if no specific error is returned
+    
+      toast.error(errorMessage); // Show the error message in the toast
+      })
+     
+    }
+  }, [location]);
+
   // Handle registration form submission
   const handleRegister = (e) => {
     e.preventDefault();
 
-    api.post('/auth/register', { email, name, username, password, agent })
+    const registrationData = { email, name, username, password };
+
+    // If inviteToken is present, send it with the registration request
+    if (inviteToken) {
+      registrationData.inviteToken = inviteToken;
+    }
+
+    // Prepare the API request URL, including the agentId as a URL parameter
+    let url = '/auth/register';
+    if (agent) {
+      url = `/auth/register/${agent}`;  // Use the agent ID in the URL as a param
+    }
+
+    api.post(url, registrationData)
       .then((response) => {
         // Store token
         localStorage.setItem('token', response.data.token);
@@ -27,7 +60,12 @@ const Register = () => {
       })
       .catch((error) => {
         console.error('Registration failed', error);
-        toast.error('ההרשמה נכשלה. אנא נסה שוב.');
+       // Check if the error response contains a message from the server
+      const errorMessage = error.response && error.response.data && error.response.data.message
+      ? error.response.data.message
+      : 'ההרשמה נכשלה. אנא נסה שוב.'; // Default message if no specific error is returned
+    
+      toast.error(errorMessage); // Show the error message in the toast
       });
   };
 
@@ -86,9 +124,9 @@ const Register = () => {
           <button type="submit" className="btn">הירשם</button>
         </form>
 
-        <div className="links">
+        {!inviteToken && <div className="links">
           כבר יש לך חשבון? <Link to="/login">התחבר</Link>
-        </div>
+        </div>}
       </div>
     </div>
   );

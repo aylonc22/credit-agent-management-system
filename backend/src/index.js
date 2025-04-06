@@ -38,8 +38,8 @@ async function initApp() {
       const newAdmin = new User({
         username: 'admin',
         password: encryptAES('admin'),
-        role: 'admin',
-        permissions: ['all'],
+        email: process.env.DEFAULT_EMAIL,
+        role: 'admin',       
       });
 
       await newAdmin.save();

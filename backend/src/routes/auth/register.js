@@ -2,52 +2,117 @@ const express = require('express');
 const { encryptAES } = require('../../utils/hashPassword');
 const User = require('../../models/User');
 const Client = require('../../models/Client');
+const OneTimeLink = require('../../models/OneTimeLink');
+const Agent = require('../../models/Agent');
 const { generateToken } = require('../../utils/jwt');
 const router = express.Router();
 
-router.post('/', async (req, res) => {
-  const { email, name, username, password, agent } = req.body;
- 
+router.post('/:agentId', async (req, res) => {  
+  const { email, name, username, password } = req.body;
+  const { agentId } = req.params;
+
   try {
-    // Check if username already exists
+    // 1. Check username uniqueness
     const existingUser = await User.findOne({ username });
     if (existingUser) {
-      return res.status(400).json({ message: 'Username is already taken' });
+      return res.status(400).json({ message: 'שם משתמש כבר תפוס' });
     }
-
-    // Hash the password
+    
+    // 2. Agent reference
+    let agentRef = agentId || null;
+    
+    // 3. Hash password
     const hashedPassword = encryptAES(password);
 
-    // Create the user document
+    // 4. Create user
     const newUser = new User({
       username,
       password: hashedPassword,
-      role: 'client',  // Initially, the user will be a client
-      permissions: [],  // No special permissions at registration
+      email:email,
+      role,     
     });
 
-    // Save the user to the database
     await newUser.save();
+   
+      const newClient = new Client({
+        username,
+        name,        
+        agent: agentRef || null,
+      });
+      await newClient.save();    
+    
 
-    // Create the client document associated with the user
-    const newClient = new Client({
-      name,
-      username,
-      email,     
-      agent: agent, // Set the agent reference if needed (or leave as null)
-    });
-
-    // Save the client document to the database
-    await newClient.save();
-    // Generate JWT token using your utility
-    const token = generateToken({id: newUser._id, role: newUser.role});
-
-    // Send the token to the client (you can choose to send user info or only the token)
-    res.status(201).json({ message: 'User registered successfully', token });
+    // 6. Return JWT
+    const token = generateToken({ id: newUser._id, role: newUser.role });
+    res.status(201).json({ message: 'המשתמש נרשם בהצלחה', token });
 
   } catch (error) {
-    console.error('Registration error:', error);
-    res.status(500).json({ message: 'Something went wrong during registration', error: error.message });
+    console.error('Registeration error:', error);
+    res.status(500).json({ message: 'משהו השתבש במהלך ההרשמה', error: error.message });
+  }
+});
+
+router.post('/', async (req, res) => {  
+  const { email, name, username, password, inviteToken } = req.body;
+
+  try {
+    // 1. Check username uniqueness
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ message: 'שם משתמש כבר תפוס' });
+    }
+
+    let role = 'client';
+    let inviteId;
+
+    // 2. Handle Invite Token (for admin or agent creation)
+    if (inviteToken) {
+      const invite = await OneTimeLink.findOne({ token: inviteToken, used: false });
+
+      if (!invite || invite.expiresAt < new Date()) {
+        return res.status(400).json({ message: 'קישור הזמנה לא חוקי או פג תוקף' });
+      }
+
+      role = invite.role;
+      inviteId = invite._id;
+    }
+
+    // 3. Hash password
+    const hashedPassword = encryptAES(password);
+
+    // 4. Create user
+    const newUser = new User({
+      username,
+      password: hashedPassword,
+      email: email,
+      role,     
+    });
+
+    await newUser.save();
+
+    // 5. Create related document (Agent or Client)
+    if (role === 'agent') {
+      const newAgent = new Agent({
+        userId: newUser._id,
+        name,       
+      });
+      await newAgent.save();
+    } else if (role === 'client') {
+      const newClient = new Client({
+        username,
+        name,       
+        agent: null,
+      });
+      await newClient.save();
+    }
+
+    // 6. Return JWT
+    const token = generateToken({ id: newUser._id, role: newUser.role });
+    res.status(201).json({ message: 'המשתמש נרשם בהצלחה', token });
+
+  } catch (error) {
+    console.error('Registeration error:', error);
+    res.status(500).json({ message: 'משהו השתבש במהלך ההרשמה', error: error.message });
   }
 });
 
