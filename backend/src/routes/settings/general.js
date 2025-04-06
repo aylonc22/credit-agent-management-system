@@ -9,34 +9,55 @@ const router = express.Router();
 // Configure multer for file uploads
 const upload = multer({ dest: './uploads/' });
 
-router.put('/', authMiddleware, upload.fields([{ name: 'logo' }, { name: 'backgroundImage' }]), async (req, res) => {
-  const { welcomeMessage, termsOfUse } = req.body;
-  const { logo, backgroundImage } = req.files;
+router.put(
+  '/',
+  authMiddleware,
+  upload.fields([
+    { name: 'logo', maxCount: 1 },
+    { name: 'backgroundImage', maxCount: 1 },
+  ]),
+  async (req, res) => {
+    const { welcomeMessage, termsOfUse, passwordExpiryDays } = req.body;
+    const logo = req.files?.logo;
+    const backgroundImage = req.files?.backgroundImage;
 
-  try {
-    const settings = await Settings.findOne(); // Assuming you have a single settings document
+    try {
+      const settings = await Settings.findOne();     
+      if (!settings) {
+        return res.status(404).json({ message: 'Settings not found' });
+      }
 
-    if (logo) {
-      // Save the logo file path     
-      settings.logo = logo[0].path;
+      if (logo?.[0]) {
+        settings.logo = logo[0].path;
+      }
+
+      if (backgroundImage?.[0]) {
+        settings.backgroundImage = backgroundImage[0].path;
+      }
+
+      if (welcomeMessage !== undefined) {
+        settings.welcomeMessage = welcomeMessage;
+      }
+
+      if (termsOfUse !== undefined) {
+        settings.termsOfUse = termsOfUse;
+      }
+
+      if (passwordExpiryDays !== undefined && !isNaN(passwordExpiryDays)) {
+        settings.passwordExpiryDays = Number(passwordExpiryDays);
+      }
+           
+      await settings.save();
+
+      return res.status(200).json({ message: 'הגדרות כלליות נשמרו בהצלחה' });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'שגיאה בשמירת ההגדרות' });
     }
-
-    if (backgroundImage) {
-      // Save the background image file path
-      settings.backgroundImage = backgroundImage[0].path;
-    }
-
-    settings.welcomeMessage = welcomeMessage || settings.welcomeMessage;
-    settings.termsOfUse = termsOfUse || settings.termsOfUse;
-
-    await settings.save();
-
-    return res.status(200).json({ message: 'הגדרות כלליות נשמרו בהצלחה' });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: 'שגיאה בשמירת ההגדרות' });
   }
-});
+);
+
+
 
 router.get('/', authMiddleware, async (req, res) => {
   try {
@@ -52,7 +73,8 @@ router.get('/', authMiddleware, async (req, res) => {
       logo: settings.logo,
       backgroundImage: settings.backgroundImage,
       welcomeMessage: settings.welcomeMessage,
-      termsOfUse: settings.termsOfUse
+      termsOfUse: settings.termsOfUse,
+      passwordExpiryDays: settings.passwordExpiryDays,
     });
   } catch (error) {
     console.error(error);

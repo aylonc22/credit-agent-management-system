@@ -3,6 +3,7 @@ import './index.css'; // Ensure styles are defined in this file
 import useAuth from '../../hooks/useAuth';
 import SecuritySettings from './components/SecuritySettings/'; // Import the SecuritySettings component
 import GeneralSettings from './components/GeneralSettings';
+import PermissionsSettings from './components/PermissionsSettings';
 
 const SystemSettings = () => {
   const userData = useAuth(); 
@@ -20,7 +21,7 @@ const SystemSettings = () => {
 
       {role === 'admin' && <div className="settings-section">
         <h2>הגדרת הרשאות</h2>
-        <p>נהל את ההרשאות של משתמשים במערכת.</p>
+        <PermissionsSettings/>
       </div>}
 
       <div className="settings-section">
