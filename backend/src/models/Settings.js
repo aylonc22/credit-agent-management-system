@@ -6,6 +6,7 @@ const settingsSchema = new mongoose.Schema({
   backgroundImage: { type: String, required: false },
   welcomeMessage: { type: String, default: '' },
   termsOfUse: { type: String, default: '' },
+  passwordExpiryDays: { type: Number, default: 90 }
 });
 
 module.exports = mongoose.model('Settings', settingsSchema);
