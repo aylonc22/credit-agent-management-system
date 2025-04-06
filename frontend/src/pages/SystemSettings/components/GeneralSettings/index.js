@@ -1,5 +1,4 @@
-// src/components/GeneralSettings/index.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import api from '../../../../api/axios';
 import './index.css';
@@ -9,6 +8,27 @@ const GeneralSettings = () => {
   const [backgroundImage, setBackgroundImage] = useState(null);
   const [welcomeMessage, setWelcomeMessage] = useState('');
   const [termsOfUse, setTermsOfUse] = useState('');
+  const [existingLogo, setExistingLogo] = useState(null);  // State to hold the current logo
+  const [existingBackgroundImage, setExistingBackgroundImage] = useState(null);  // State to hold the current background image
+
+  // Fetch existing settings on page load
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const response = await api.get('/settings/general'); // Adjust API endpoint as needed
+        const { logo, backgroundImage, welcomeMessage, termsOfUse } = response.data;
+        
+        setExistingLogo(logo);  // Set existing logo URL
+        setExistingBackgroundImage(backgroundImage);  // Set existing background image URL
+        setWelcomeMessage(welcomeMessage || '');  // Set welcome message
+        setTermsOfUse(termsOfUse || '');  // Set terms of use
+      } catch (error) {
+        toast.error('שגיאה בהבאת הגדרות');
+      }
+    };
+
+    fetchSettings();
+  }, []);
 
   const handleSaveSettings = async (e) => {
     e.preventDefault();
@@ -45,6 +65,12 @@ const GeneralSettings = () => {
             accept="image/*"
             placeholder="בחר לוגו"
           />
+          {existingLogo && (
+            <div className="existing-image">
+              <p>לוגו נוכחי:</p>
+              <img src={existingLogo} alt="Current Logo" style={{ width: '100px', height: 'auto' }} />
+            </div>
+          )}
         </div>
         <div className="file-input-container">
           <label className="file-input-label">בחר תמונת רקע (תמונה JPG או PNG):</label>
@@ -55,6 +81,12 @@ const GeneralSettings = () => {
             accept="image/*"
             placeholder="בחר תמונת רקע"
           />
+          {existingBackgroundImage && (
+            <div className="existing-image">
+              <p>תמונת רקע נוכחית:</p>
+              <img src={existingBackgroundImage} alt="Current Background" style={{ width: '100px', height: 'auto' }} />
+            </div>
+          )}
         </div>
       </div>
 

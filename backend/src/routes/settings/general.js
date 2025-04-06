@@ -7,7 +7,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 const router = express.Router();
 
 // Configure multer for file uploads
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ dest: './uploads/' });
 
 router.put('/', authMiddleware, upload.fields([{ name: 'logo' }, { name: 'backgroundImage' }]), async (req, res) => {
   const { welcomeMessage, termsOfUse } = req.body;
@@ -17,7 +17,7 @@ router.put('/', authMiddleware, upload.fields([{ name: 'logo' }, { name: 'backgr
     const settings = await Settings.findOne(); // Assuming you have a single settings document
 
     if (logo) {
-      // Save the logo file path
+      // Save the logo file path     
       settings.logo = logo[0].path;
     }
 
@@ -35,6 +35,28 @@ router.put('/', authMiddleware, upload.fields([{ name: 'logo' }, { name: 'backgr
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'שגיאה בשמירת ההגדרות' });
+  }
+});
+
+router.get('/', authMiddleware, async (req, res) => {
+  try {
+    // Fetch the settings document (assuming there is a single settings document)
+    const settings = await Settings.findOne();
+
+    if (!settings) {
+      return res.status(404).json({ message: 'הגדרות לא נמצאו' }); // Settings not found
+    }
+
+    // Return the settings in the response
+    return res.status(200).json({
+      logo: settings.logo,
+      backgroundImage: settings.backgroundImage,
+      welcomeMessage: settings.welcomeMessage,
+      termsOfUse: settings.termsOfUse
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'שגיאה בהבאת ההגדרות' }); // Error fetching settings
   }
 });
 
