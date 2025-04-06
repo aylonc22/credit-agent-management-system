@@ -32,14 +32,17 @@ const PermissionsSettings = () => {
 
   const handleGenerateAdminLink = async () => {
     try {
-      const response = await api.post('/auth/generate-link/admin');
-      console.log(response.data);
+      const response = await api.post('/auth/generate-link/admin');     
       setGeneratedLink(response.data.link);
-      toast.success('קישור ליצירת מנהל נוצר בהצלחה');
+      
+      // Copy the generated link to clipboard
+      await navigator.clipboard.writeText(response.data.link);
+      toast.success('הקישור הועתק ללוח');
     } catch (error) {
       toast.error('שגיאה ביצירת הקישור');
     }
   };
+  
 
   return (
     <div className="settings-section">
