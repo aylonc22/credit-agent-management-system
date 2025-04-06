@@ -29,6 +29,7 @@ const Register = () => {
       : 'ההרשמה נכשלה. אנא נסה שוב.'; // Default message if no specific error is returned
     
       toast.error(errorMessage); // Show the error message in the toast
+      navigate('/register');
       })
      
     }
