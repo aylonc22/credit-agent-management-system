@@ -16,6 +16,7 @@ import ForgotPassword from './pages/ForgotPassword/index.js';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Import CSS for toastify
 import Unauthorized from './pages/Unauthorized/index.js';
+import ChangePassword from './pages/ChangePassword/index.js';
 
 function App() {
   const location = useLocation();
@@ -23,6 +24,8 @@ function App() {
     location.pathname === '/login' ||
     location.pathname === '/register' ||
     location.pathname === '/forgot-password' ||
+    location.pathname === '/change-password' ||
+    location.pathname.startsWith('/change-password/') ||
     location.pathname.startsWith('/register/');
 
   return (
@@ -37,6 +40,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register/:agent?" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="change-password/:userId" element={<ChangePassword />} />
           <Route path="/agents" element={<AgentManagement />} />
           <Route path="/clients" element={<ClientManagement />} />
           <Route path="/transactions" element={<TransactionManagement />} />

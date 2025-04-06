@@ -22,10 +22,17 @@ const Login = () => {
       navigate('/');
     } catch (e) {
       console.error('Login error:', e);
-      toast.error('ההתחברות נכשלה. נסה שוב.');
+      if (e.response && e.response.status === 403) {
+        // If password expired, redirect to the "change password" page
+        toast.error('הסיסמה שלך פגה. אנא שנה את הסיסמה שלך.');
+       
+        navigate(`/change-password/${e.response.data.id}`);
+      } else {
+        // For other errors
+        toast.error('ההתחברות נכשלה. נסה שוב.');
+      }
     }
   };
-
   return (
     <div className="login-container" dir="rtl">
       <div className="login-box">
