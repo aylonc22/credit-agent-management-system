@@ -12,34 +12,30 @@ const Login = () => {
 
   const navigate = useNavigate();
 
+  // Handle login form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Simulate login logic
-    console.log("Login submitted", { username, password });
-    try{
-      const res = await api.post('/auth/login',{username, password});
-      // Store token in local storage and redirect
-      localStorage.setItem('token', res.data.token);
-      toast.success('Login successful!');
+    try {
+      const res = await api.post('/auth/login', { username, password });
+      localStorage.setItem('token', res.data.token); // Store JWT token
+      toast.success('התחברות הצליחה!');
       navigate('/');
+    } catch (e) {
+      console.error('Login error:', e);
+      toast.error('ההתחברות נכשלה. נסה שוב.');
     }
-    catch(e){
-        console.error('Login error:', e);
-        toast.error('Login failed. Please try again.');
-    }
-    
   };
 
   return (
-    <div className="login-container">
+    <div className="login-container" dir="rtl">
       <div className="login-box">
-        <h2>Login to Your Account</h2>
+        <h2>התחברות לחשבון</h2>
 
         <form onSubmit={handleSubmit}>
           <div className="input-group">
             <input
-              type="username"
-              placeholder="Enter your user name"
+              type="text"
+              placeholder="שם משתמש"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
@@ -49,7 +45,7 @@ const Login = () => {
           <div className="input-group">
             <input
               type={showPassword ? "text" : "password"}
-              placeholder="Enter your password"
+              placeholder="סיסמה"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -58,19 +54,19 @@ const Login = () => {
               className="password-toggle"
               onClick={() => setShowPassword(!showPassword)}
             >
-              {showPassword ? "Hide" : "Show"}
+              {showPassword ? "הסתר" : "הצג"}
             </span>
           </div>
 
-          <button type="submit" className="btn">Login</button>
+          <button type="submit" className="btn">התחבר</button>
         </form>
 
         <div className="links">
-          <a href="/forgot-password">Forgot Password?</a>
+          <a href="/forgot-password">שכחת סיסמה?</a>
         </div>
 
         <div className="register-link">
-          <p>Don't have an account? <Link to="/register">Sign up</Link></p>
+          <p>אין לך חשבון? <Link to="/register">הירשם</Link></p>
         </div>
       </div>
     </div>

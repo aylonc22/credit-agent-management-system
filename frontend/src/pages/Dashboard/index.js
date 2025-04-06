@@ -5,7 +5,7 @@ import useAuth from '../../hooks/useAuth';
 import api from '../../api/axios';
 
 const Dashboard = () => {
-  const userData = useAuth('agent'); 
+  const userData = useAuth('agent');
 
   const [stats, setStats] = useState({
     totalCreditsToday: 0,
@@ -30,30 +30,30 @@ const Dashboard = () => {
 
   // Handle case when user is not authenticated (userData is null)
   if (!userData) {
-    return <div>Loading...</div>; // Optionally show a loading state or redirect to login
+    return <div>טוען...</div>; // Loading...
   }
 
   const { id, role } = userData;
 
   return (
     <div className="dashboard">
-      <h1>Credit and Agent Management System</h1>
-      
+      <h1>מערכת ניהול קרדיטים וסוכנים</h1> {/* Credit and Agent Management System */}
+
       <div className="stats">
         <div className="stat-item">
-          <h3>Total Credits Purchased Today</h3>
+          <h3>סה"כ קרדיטים שנרכשו היום</h3> {/* Total Credits Purchased Today */}
           <p>{stats.totalCreditsToday} ₪</p>
         </div>
         <div className="stat-item">
-          <h3>Total Credits Purchased This Month</h3>
+          <h3>סה"כ קרדיטים שנרכשו החודש</h3> {/* Total Credits Purchased This Month */}
           <p>{stats.totalCreditsThisMonth} ₪</p>
         </div>
         <div className="stat-item">
-          <h3>Active Transactions</h3>
+          <h3>מספר עסקאות פעילות</h3> {/* Active Transactions */}
           <p>{stats.activeTransactions}</p>
         </div>
         <div className="stat-item">
-          <h3>Active Agents</h3>
+          <h3>מספר סוכנים פעילים</h3> {/* Active Agents */}
           <p>{stats.activeAgents}</p>
         </div>
       </div>

@@ -1,63 +1,67 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './index.css'; // Import the CSS for styling
+import './index.css'; // Sidebar styling
 import useAuth from '../../hooks/useAuth';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
+  // Toggle mobile sidebar visibility
   const toggleSidebar = () => {
-    setIsOpen(!isOpen); // Toggle sidebar visibility
+    setIsOpen(!isOpen);
   };
 
+  // Handle logout
   const handleLogout = () => {
-    localStorage.removeItem('token'); // Clear JWT
-    navigate('/login'); // Redirect to login page
+    localStorage.removeItem('token');
+    navigate('/login');
   };
 
-  const userData = useAuth(); 
+  const userData = useAuth();
 
-  // Handle case when user is not authenticated (userData is null)
+  // If user data is not yet loaded, show loading (or redirect logic)
   if (!userData) {
-    return <div>Loading...</div>; // Optionally show a loading state or redirect to login
+    return <div>טוען...</div>;
   }
 
   const { role } = userData;
 
   return (
     <>
-      {/* Mobile Sidebar Toggle */}
+      {/* Mobile sidebar toggle button */}
       <button className="sidebar-toggle" onClick={toggleSidebar}>
         ☰
       </button>
 
-      {/* Sidebar */}
+      {/* Sidebar navigation */}
       <div className={`sidenav ${isOpen ? 'active' : ''}`}>
         <ul>
           <li>
-            <Link to="/">Dashboard</Link>
+            <Link to="/">לוח בקרה</Link>
           </li>
-          {role!='client' && <li>
-            <Link to="/agents">Agent Management</Link>
-          </li>}
+          {role !== 'client' && (
+            <li>
+              <Link to="/agents">ניהול סוכנים</Link>
+            </li>
+          )}
           <li>
-            <Link to="/clients">Client Management</Link>
-          </li>
-          <li>
-            <Link to="/transactions">Transaction Management</Link>
-          </li>
-          <li>
-            <Link to="/payment-links">Payment Link Generator</Link>
+            <Link to="/clients">ניהול לקוחות</Link>
           </li>
           <li>
-            <Link to="/reports">Reports</Link>
+            <Link to="/transactions">ניהול עסקאות</Link>
           </li>
           <li>
-            <Link to="/settings">System Settings</Link>
+            <Link to="/payment-links">יצירת קישורי תשלום</Link>
+          </li>
+          <li>
+            <Link to="/reports">דוחות</Link>
+          </li>
+          <li>
+            <Link to="/settings">הגדרות מערכת</Link>
           </li>
           <li className="logout">
-            <button onClick={handleLogout}>Disconnect🔌</button>
+            <button onClick={handleLogout}>התנתק 🔌</button>
           </li>
         </ul>
       </div>

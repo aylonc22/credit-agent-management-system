@@ -22,7 +22,8 @@ function App() {
   const isAuthPage =
     location.pathname === '/login' ||
     location.pathname === '/register' ||
-    location.pathname === '/forgot-password';
+    location.pathname === '/forgot-password' ||
+    location.pathname.startsWith('/register/');
 
   return (
     <div className={isAuthPage ? 'no-sidebar' : 'app-with-sidebar'}>
@@ -34,7 +35,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/register/:agent?" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/agents" element={<AgentManagement />} />
           <Route path="/clients" element={<ClientManagement />} />
@@ -47,12 +48,12 @@ function App() {
          
          {/* Toast notifications */}
          <ToastContainer
-          position="top-right"
+          position="top-left"
           autoClose={5000} // Notification auto close time
           hideProgressBar={false} // Show progress bar
           newestOnTop={false} // Whether the newest notification is on top
           closeOnClick // Allow user to close notifications by clicking
-          rtl={false} // Whether to support RTL (Right to Left)
+          rtl={true} // Whether to support RTL (Right to Left)
           pauseOnFocusLoss // Pause notifications if user focuses away
           draggable
           pauseOnHover

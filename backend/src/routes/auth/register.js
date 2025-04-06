@@ -6,8 +6,8 @@ const { generateToken } = require('../../utils/jwt');
 const router = express.Router();
 
 router.post('/', async (req, res) => {
-  const { email, name, username, phone, password } = req.body;
-  console.log('here');
+  const { email, name, username, password, agent } = req.body;
+ 
   try {
     // Check if username already exists
     const existingUser = await User.findOne({ username });
@@ -33,9 +33,8 @@ router.post('/', async (req, res) => {
     const newClient = new Client({
       name,
       username,
-      email,
-      phone,
-      agent: null, // Set the agent reference if needed (or leave as null)
+      email,     
+      agent: agent, // Set the agent reference if needed (or leave as null)
     });
 
     // Save the client document to the database

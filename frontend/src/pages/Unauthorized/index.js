@@ -8,9 +8,9 @@ const Unauthorized = () => {
   return (
     <div className="unauthorized-container">
       <div className="unauthorized-box">
-        <h2>Unauthorized Access</h2>
-        <p>You do not have permission to view this page.</p>
-        <Link to="/settings" className="btn">Go to Settings</Link>
+        <h2>גישה לא מורשית</h2> {/* Unauthorized Access */}
+        <p>אין לך הרשאה לצפות בדף זה.</p> {/* You do not have permission to view this page. */}
+        <Link to="/settings" className="btn">מעבר להגדרות</Link> {/* Go to Settings */}
       </div>
     </div>
   );

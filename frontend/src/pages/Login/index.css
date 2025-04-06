@@ -51,7 +51,7 @@
 .password-toggle {
   position: absolute;
   top: 50%;
-  right: 14px;
+  left: 14px;
   transform: translateY(-50%);
   cursor: pointer;
   color: #5dade2; /* Light Blue */

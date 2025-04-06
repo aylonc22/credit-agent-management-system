@@ -5,6 +5,7 @@ body, html {
   height: 100%;
   font-family: Arial, sans-serif;
   background-color: #f4f6f9;
+  direction: rtl; /* Enable right-to-left layout */
 }
 
 /* Main wrapper with flex to handle sidebar and content area */
@@ -17,32 +18,33 @@ body, html {
 .app-with-sidebar {
   display: flex;
   height: 100vh; /* Full height of the screen */
+  flex-direction: row-reverse; /* Sidebar on the right */
 }
 
-/* Sidebar (Navbar) on the left */
+/* Sidebar (Navbar) on the right */
 .sidebar {
-  width: 250px; /* Sidebar width */
+  width: 250px;
   background-color: #2c3e50;
   color: white;
-  padding-top: 60px; /* Adjust for navbar height */
+  padding-top: 60px;
   position: fixed;
   top: 0;
-  left: 0;
+  right: 0; /* Changed from left: 0 to right: 0 */
   height: 100%;
   z-index: 1000;
 }
 
 /* Main content area when sidebar is present */
 .app-with-sidebar .main-content {
-  margin-left: 250px; /* Sidebar width */
+  margin-right: 250px; /* Adjusted from margin-left */
   padding: 20px;
   flex-grow: 1;
-  height: 90vh; 
+  height: 90vh;
 }
 
 /* Layout when no sidebar (login, register, forgot-password) */
 .no-sidebar .main-content {
   margin: 0;
   padding: 0;
-  height: 100vh; /* Full height minus navbar */ 
+  height: 100vh;
 }
