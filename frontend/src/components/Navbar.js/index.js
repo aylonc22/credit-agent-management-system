@@ -38,27 +38,29 @@ const Navbar = () => {
       <div className={`sidenav ${isOpen ? 'active' : ''}`}>
         <ul>
           <li>
-            <Link to="/">לוח בקרה</Link>
+            <Link to="/">לוח בקרה 📊</Link>
           </li>
-          {role !== 'client' && (
+          {role === 'admin' && (
             <li>
-              <Link to="/agents">ניהול סוכנים</Link>
+              <Link to="/agents">ניהול סוכנים 🧑‍💼</Link>
             </li>
           )}
+          {role !== 'client' && 
+          (<li>
+            <Link to="/clients">ניהול לקוחות 👥</Link>
+          </li>
+          )}
           <li>
-            <Link to="/clients">ניהול לקוחות</Link>
+            <Link to="/transactions">ניהול עסקאות 💸</Link>
           </li>
           <li>
-            <Link to="/transactions">ניהול עסקאות</Link>
+            <Link to="/payment-links">יצירת קישורי תשלום 🔗</Link>
           </li>
           <li>
-            <Link to="/payment-links">יצירת קישורי תשלום</Link>
+            <Link to="/reports">דוחות 📈</Link>
           </li>
           <li>
-            <Link to="/reports">דוחות</Link>
-          </li>
-          <li>
-            <Link to="/settings">הגדרות מערכת</Link>
+            <Link to="/settings">הגדרות מערכת ⚙️</Link>
           </li>
           <li className="logout">
             <button onClick={handleLogout}>התנתק 🔌</button>
