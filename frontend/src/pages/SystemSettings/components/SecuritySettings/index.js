@@ -97,7 +97,9 @@ const SecuritySettings = () => {
           <button type="submit" className="btn">שנה סיסמה</button>
         </form>
       </div>
-
+      {/** 
+       * TODO make it work (email service)
+       */}
       {/* Enable 2FA Section */}
       <div className="section">
         <h2>הפעלת אימות דו-שלבי (2FA)</h2>
