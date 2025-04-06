@@ -1,0 +1,58 @@
+.settings-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+  
+  .section {
+    margin-bottom: 30px;
+  }
+  
+  .input-group {
+    margin-bottom: 15px;
+  }
+  
+  .settings-password {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  button.btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button.btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .success-message {
+    background-color: #d4edda;
+    padding: 15px;
+    margin-bottom: 20px;
+    color: #155724;
+    border-radius: 5px;
+  }
+  
+  .error-message {
+    background-color: #f8d7da;
+    padding: 15px;
+    margin-bottom: 20px;
+    color: #721c24;
+    border-radius: 5px;
+  }
+  
