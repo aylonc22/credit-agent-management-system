@@ -2,6 +2,7 @@ import React from 'react';
 import './index.css'; // Ensure styles are defined in this file
 import useAuth from '../../hooks/useAuth';
 import SecuritySettings from './components/SecuritySettings/'; // Import the SecuritySettings component
+import GeneralSettings from './components/GeneralSettings';
 
 const SystemSettings = () => {
   const userData = useAuth(); 
@@ -17,25 +18,20 @@ const SystemSettings = () => {
     <div className="system-settings-container">
       <h1>הגדרות מערכת</h1>      
 
-      <div className="settings-section">
+      {role === 'admin' && <div className="settings-section">
         <h2>הגדרת הרשאות</h2>
         <p>נהל את ההרשאות של משתמשים במערכת.</p>
-      </div>
+      </div>}
 
       <div className="settings-section">
         <h2>הגדרות אבטחה</h2>                      
         <SecuritySettings />
       </div>
 
-      <div className="settings-section">
+      {role === 'admin' && <div className="settings-section">
         <h2>הגדרות כלליות</h2>
-        <p>הגדר את פרטי המערכת הכלליים.</p>
-        <ul>
-          <li>לוגו ותמונת רקע</li>
-          <li>הודעות ברוכים הבאים לשחקנים</li>
-          <li>מדיניות שימוש</li>
-        </ul>
-      </div>
+        <GeneralSettings/>
+      </div>}
     </div>
   );
 };
