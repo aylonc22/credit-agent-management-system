@@ -1,10 +1,8 @@
-// src/pages/AgentManagement.js
 import React, { useState, useEffect } from 'react';
-import './index.css'; // Make sure to rename or use this for styling
+import './index.css';
 import useAuth from '../../hooks/useAuth';
 import api from '../../api/axios'; 
-import {toast} from 'react-toastify';
-
+import { toast } from 'react-toastify';
 
 const AgentManagement = () => {
   const userData = useAuth('admin');
@@ -13,12 +11,9 @@ const AgentManagement = () => {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
 
-  // Form state
   const [newAgent, setNewAgent] = useState({
     name: '',
-    phone: '',
     email: '',
-    credit: '',
     username: '',
     password: ''
   });
@@ -31,8 +26,8 @@ const AgentManagement = () => {
 
   const fetchAgents = async () => {
     try {
-      const res = await api.get('/api/agents');
-      setAgents(res.data);
+      const res = await api.get('/api/agent');
+      setAgents(res.data.agents);
     } catch (err) {
       console.error('שגיאה בקבלת הסוכנים:', err);
       toast.error('שגיאה בטעינת הסוכנים');
@@ -45,21 +40,19 @@ const AgentManagement = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-  
-    if (!newAgent.name || !newAgent.phone || !newAgent.username || !newAgent.password) {
+
+    if (!newAgent.name || !newAgent.username || !newAgent.password || !newAgent.email) {
       toast.warn('נא למלא את כל השדות החיוניים');
       return;
     }
-  
+
     try {
-      await api.post('/agents', newAgent);
-      toast.success('הסוכן נוסף בהצלחה 🎉');
-      fetchAgents(); // Refresh list
+      await api.post('/api/agent', newAgent);
+      toast.success('סוכן נוסף בהצלחה 🎉');
+      fetchAgents();
       setNewAgent({
         name: '',
-        phone: '',
         email: '',
-        credit: '',
         username: '',
         password: ''
       });
@@ -72,6 +65,40 @@ const AgentManagement = () => {
   if (!userData) {
     return <div>טוען...</div>;
   }
+
+  // Filtered agents
+  const filteredAgents = agents.filter((agent, index) =>
+    (agent.name.includes(search) || index + 1 === +search) &&
+    (!statusFilter || agent.status === statusFilter)
+  );
+
+  const handleBlockAgent = async (agentId) => {
+    if (window.confirm('האם אתה בטוח שברצונך לחסום את הסוכן?')) {
+      try {
+        // Make API call to update the agent's status
+        await api.put(`/api/agent/${agentId}/block`);
+        toast.success('הסוכן חסום בהצלחה 🚫');
+        fetchAgents(); // Refresh agent list
+      } catch (err) {
+        console.error('שגיאה בחסימת הסוכן:', err);
+        toast.error('אירעה שגיאה בעת חסימת הסוכן');
+      }
+    }
+  };
+
+  const handleUnblockAgent = async (agentId) => {
+    if (window.confirm('האם אתה בטוח שברצונך לשחרר את הסוכן?')) {
+      try {
+        // Make API call to update the agent's status to "active"
+        await api.put(`/api/agent/${agentId}/unblock`);
+        toast.success('הסוכן שוחרר בהצלחה ✔️');
+        fetchAgents(); // Refresh agent list
+      } catch (err) {
+        console.error('שגיאה בשחרור הסוכן:', err);
+        toast.error('אירעה שגיאה בעת שחרור הסוכן');
+      }
+    }
+  };
 
   return (
     <div className="dashboard">
@@ -93,48 +120,50 @@ const AgentManagement = () => {
       </div>
 
       {/* 📋 Agent Table */}
-      <table className="agent-table">
-        <thead>
-          <tr>
-            <th>מספר סוכן</th>
-            <th>שם סוכן</th>
-            <th>מספר לקוח</th>
-            <th>קרדיט זמין</th>
-            <th>סטטוס</th>
-            <th>פעולות</th>
-          </tr>
-        </thead>
-        <tbody>
-          {agents
-            .filter(agent =>
-              (agent.name.includes(search) || agent.agentId.includes(search)) &&
-              (!statusFilter || agent.status === statusFilter)
-            )
-            .map(agent => (
-              <tr key={agent._id}>
-                <td>{agent.agentId}</td>
-                <td>{agent.name}</td>
-                <td>{agent.clientId}</td>
-                <td>{agent.credit}</td>
-                <td>{agent.status === 'active' ? 'פעיל' : 'לא פעיל'}</td>
-                <td>
-                  <button>✏️ ערוך</button>
-                  <button>➕ קרדיט</button>
-                  <button>🚫 חסום</button>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      <div className="agent-table-container">
+        <table className="agent-table-head">
+          <thead>
+            <tr>
+              <th>מספר סוכן</th>
+              <th>שם סוכן</th>
+              <th>מייל סוכן</th>
+              <th>סטטוס</th>
+              <th>פעולות</th>
+            </tr>
+          </thead>
+        </table>
+
+        <div className="agent-table-body-wrapper">
+          <table className="agent-table-body">
+            <tbody>
+              {filteredAgents.map((agent, index) => (
+                <tr key={agent._id}>
+                  <td>{index + 1}</td>
+                  <td>{agent.name}</td>
+                  <td>{agent.userId?.email || '-'}</td>
+                  <td>{agent.status === 'active' ? 'פעיל' : 'לא פעיל'}</td>
+                  <td>
+                    <button>✏️ ערוך</button>
+                    <button>➕ קרדיט</button>
+                    {agent.status === 'inactive' ? (
+                    <button onClick={() => handleUnblockAgent(agent._id)}>✔️ שחרר</button>
+                  ) : (
+                    <button onClick={() => handleBlockAgent(agent._id)}>🚫 חסום</button>
+                  )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
 
       {/* ➕ Add Agent Form */}
       <div className="add-agent-form">
         <h2>הוסף סוכן חדש</h2>
         <form onSubmit={handleFormSubmit}>
           <input name="name" type="text" placeholder="שם סוכן" value={newAgent.name} onChange={handleInputChange} />
-          <input name="phone" type="tel" placeholder="מספר טלפון" value={newAgent.phone} onChange={handleInputChange} />
           <input name="email" type="email" placeholder="כתובת אימייל" value={newAgent.email} onChange={handleInputChange} />
-          <input name="credit" type="number" placeholder="כמות קרדיט ראשונית" value={newAgent.credit} onChange={handleInputChange} />
           <input name="username" type="text" placeholder="שם משתמש" value={newAgent.username} onChange={handleInputChange} />
           <input name="password" type="password" placeholder="סיסמה" value={newAgent.password} onChange={handleInputChange} />
           <button type="submit">שמור</button>

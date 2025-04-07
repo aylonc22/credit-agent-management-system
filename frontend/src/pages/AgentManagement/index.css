@@ -11,25 +11,49 @@
     border: 1px solid #ccc;
   }
   
-  .agent-table {
-    width: 100%;
-    border-collapse: collapse;
+  /* Wrapper for the entire table section */
+  .agent-table-container {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden;
     margin-bottom: 30px;
   }
   
-  .agent-table th,
-  .agent-table td {
+  /* Head-only table (non-scrollable) */
+  .agent-table-head {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+  
+  .agent-table-head th {
+    background-color: #1e2a35;
+    color: #ecf0f1;
+    padding: 12px;
+    text-align: right;
+  }
+  
+  /* Scrollable body */
+  .agent-table-body-wrapper {
+    max-height: 300px; /* adjust scroll height */
+    overflow-y: auto;
+    direction: rtl;
+  }
+  
+  /* Full table structure for the body */
+  .agent-table-body {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+  
+  .agent-table-body td {
     text-align: right;
     padding: 12px;
     border-bottom: 1px solid #ddd;
   }
   
-  .agent-table th {
-    background-color: #1e2a35;
-    color: #ecf0f1;
-  }
-  
-  .agent-table td button {
+  .agent-table-body td button {
     margin-left: 5px;
     padding: 6px 10px;
     font-size: 14px;
@@ -38,10 +62,49 @@
     cursor: pointer;
   }
   
-  .agent-table td button:hover {
+  .agent-table-body td button:hover {
     opacity: 0.8;
   }
   
+  /* Optional: set consistent column widths for alignment */
+  .agent-table-head th:nth-child(1),
+  .agent-table-body td:nth-child(1) {
+    width: 10%;
+  }
+  
+  .agent-table-head th:nth-child(2),
+  .agent-table-body td:nth-child(2) {
+    width: 25%;
+  }
+  
+  .agent-table-head th:nth-child(3),
+  .agent-table-body td:nth-child(3) {
+    width: 25%;
+  }
+  
+  .agent-table-head th:nth-child(4),
+  .agent-table-body td:nth-child(4) {
+    width: 15%;
+  }
+  
+  .agent-table-head th:nth-child(5),
+  .agent-table-body td:nth-child(5) {
+    width: 25%;
+  }
+  
+  /* Scrollbar styling */
+  .agent-table-body-wrapper::-webkit-scrollbar {
+    width: 8px;
+  }
+  .agent-table-body-wrapper::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+  }
+  .agent-table-body-wrapper::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+  
+  /* Add Agent Form */
   .add-agent-form {
     background: #f9f9f9;
     padding: 20px;
