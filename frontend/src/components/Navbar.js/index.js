@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import api from '../../api/axios';
 import './index.css'; // Sidebar styling
 import useAuth from '../../hooks/useAuth';
+import { toast } from 'react-toastify';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,6 +18,18 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/login');
+  };
+
+  const handleGenerateAgentLink = async () => {
+    try {
+      const response = await api.post('/auth/generate-link/agent');           
+      
+      // Copy the generated link to clipboard
+      await navigator.clipboard.writeText(response.data.link);
+      toast.success('הקישור הועתק ללוח');
+    } catch (error) {
+      toast.error('שגיאה ביצירת הקישור');
+    }
   };
 
   const userData = useAuth();
@@ -44,7 +58,16 @@ const Navbar = () => {
             <li>
               <Link to="/agents">ניהול סוכנים 🧑‍💼</Link>
             </li>
+            
           )}
+
+         {role === 'admin' && (
+          <li>
+            <Link onClick={handleGenerateAgentLink} className="quick-link-button">
+              הוסף סוכן חדש ➕
+            </Link>
+          </li>
+        )}
           {role !== 'client' && 
           (<li>
             <Link to="/clients">ניהול לקוחות 👥</Link>

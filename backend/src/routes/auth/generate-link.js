@@ -47,7 +47,7 @@ router.post('/agent', authMiddleware, async (req, res) => {
         if(!token){
             res.status(400).json({ message: 'קישור חסר' });
         }
-        const invite = await OneTimeLink.findOne({ token: token, used: false });
+        const invite = await OneTimeLink.findOne({ token: token, clicked: false, });
 
         if(!invite){
             res.status(404).json({ message: 'הקישור לא תקף אנא צור אחד חדש' });
@@ -57,15 +57,16 @@ router.post('/agent', authMiddleware, async (req, res) => {
         }
   });
 
-  router.put('/:token', async (req,res) => {
+  router.put('/:token', async (req,res) => {   
     const { token } = req.params;
     if(!token){
         res.status(400).json({ message: 'קישור חסר' });
     }
-    const invite = await OneTimeLink.findOne({ token: token, used: false });
+    const invite = await OneTimeLink.findOne({ token: token, clicked: false });
     
     if (invite) {
-        await OneTimeLink.findByIdAndUpdate(invite._id, { used: true });
+        await OneTimeLink.findByIdAndUpdate(invite._id, { clicked: true });
+        res.status(200).json({message:'הקישור עודכן בהצלחה'});
       }
     else{
         res.status(404).json({message:'הקישור לא תקף אנא צור אחד חדש'});

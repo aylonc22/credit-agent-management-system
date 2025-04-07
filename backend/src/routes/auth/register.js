@@ -4,6 +4,7 @@ const User = require('../../models/User');
 const Client = require('../../models/Client');
 const OneTimeLink = require('../../models/OneTimeLink');
 const Agent = require('../../models/Agent');
+const Settings = require('../../models/Settings');
 const { generateToken } = require('../../utils/jwt');
 const router = express.Router();
 
@@ -42,9 +43,11 @@ router.post('/:agentId', async (req, res) => {
       await newClient.save();    
     
 
-    // 6. Return JWT
+    // 6 Get Welcome Message
+    const settings = await Settings.findOne();
+    // 7. Return JWT
     const token = generateToken({ id: newUser._id, role: newUser.role });
-    res.status(201).json({ message: 'המשתמש נרשם בהצלחה', token });
+    res.status(201).json({ message: settings.welcomeMessage ? settings.welcomeMessage : 'המשתמש נרשם בהצלחה', token });
 
   } catch (error) {
     console.error('Registeration error:', error);
@@ -67,7 +70,7 @@ router.post('/', async (req, res) => {
 
     // 2. Handle Invite Token (for admin or agent creation)
     if (inviteToken) {
-      const invite = await OneTimeLink.findOne({ token: inviteToken, used: false });
+      const invite = await OneTimeLink.findOne({ token: inviteToken, used: false, clicked: true });
 
       if (!invite || invite.expiresAt < new Date()) {
         return res.status(400).json({ message: 'קישור הזמנה לא חוקי או פג תוקף' });
@@ -106,9 +109,11 @@ router.post('/', async (req, res) => {
       await newClient.save();
     }
 
-    // 6. Return JWT
+    // 6 Get Welcome Message
+    const settings = await Settings.findOne();
+    // 7. Return JWT
     const token = generateToken({ id: newUser._id, role: newUser.role });
-    res.status(201).json({ message: 'המשתמש נרשם בהצלחה', token });
+    res.status(201).json({ message: settings.welcomeMessage ? settings.welcomeMessage : 'המשתמש נרשם בהצלחה', token });
 
   } catch (error) {
     console.error('Registeration error:', error);
