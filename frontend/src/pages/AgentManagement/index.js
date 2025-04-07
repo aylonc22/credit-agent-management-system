@@ -77,7 +77,7 @@ const AgentManagement = () => {
       try {
         // Make API call to update the agent's status
         await api.put(`/api/agent/${agentId}/block`);
-        toast.success('הסוכן חסום בהצלחה 🚫');
+        toast.success('הסוכן נחסם בהצלחה 🚫');
         fetchAgents(); // Refresh agent list
       } catch (err) {
         console.error('שגיאה בחסימת הסוכן:', err);
@@ -143,8 +143,7 @@ const AgentManagement = () => {
                   <td>{agent.userId?.email || '-'}</td>
                   <td>{agent.status === 'active' ? 'פעיל' : 'לא פעיל'}</td>
                   <td>
-                    <button>✏️ ערוך</button>
-                    <button>➕ קרדיט</button>
+                    <button>✏️ ערוך</button>                   
                     {agent.status === 'inactive' ? (
                     <button onClick={() => handleUnblockAgent(agent._id)}>✔️ שחרר</button>
                   ) : (
