@@ -16,8 +16,7 @@ const GeneralSettings = () => {
     const fetchSettings = async () => {
       try {
         const response = await api.get('/settings/general'); // Adjust API endpoint as needed
-        const { logo, backgroundImage, welcomeMessage, termsOfUse } = response.data;
-        console.log(logo);
+        const { logo, backgroundImage, welcomeMessage, termsOfUse } = response.data;       
         setExistingLogo(logo);  // Set existing logo URL
         setExistingBackgroundImage(backgroundImage);  // Set existing background image URL
         setWelcomeMessage(welcomeMessage || '');  // Set welcome message

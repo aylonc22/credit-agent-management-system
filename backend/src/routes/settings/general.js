@@ -2,31 +2,66 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const Settings = require('../../models/Settings'); // Assuming you have a Settings model
+const fs = require('fs');
+const Settings = require('../../models/Settings');
 const authMiddleware = require('../middleware/authMiddleware');
+
 const router = express.Router();
 
-// Configure multer for file uploads, save in the 'settings/uploads' folder
+// Set the upload directory
+const uploadDir = path.join(__dirname, './uploads');
+
+// Ensure uploads folder exists
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+// Configure multer storage with overwrite logic
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadDir);
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase();
+    let filename = '';
+
+    if (file.fieldname === 'logo') {
+      filename = 'logo' + ext;
+    } else if (file.fieldname === 'backgroundImage') {
+      filename = 'background' + ext;
+    }
+
+    const fullPath = path.join(uploadDir, filename);
+
+    // Delete old file if it exists
+    if (fs.existsSync(fullPath)) {
+      fs.unlinkSync(fullPath);
+    }
+
+    cb(null, filename);
+  }
+});
+
+// Configure multer
 const upload = multer({
-  dest: path.join(__dirname, './uploads'),  // Save uploads to 'settings/uploads'
+  storage,
   limits: {
-    fileSize: 5 * 1024 * 1024, // Limit to 5MB per file (you can adjust this as needed)
+    fileSize: 5 * 1024 * 1024, // 5MB max
   },
   fileFilter: (req, file, cb) => {
-    // Allow only image files for logo and background image
     const fileTypes = /jpeg|jpg|png|gif/;
     const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
     const mimetype = fileTypes.test(file.mimetype);
 
     if (mimetype && extname) {
-      return cb(null, true);
+      cb(null, true);
     } else {
       cb(new Error('Only image files are allowed!'));
     }
-  },
+  }
 });
 
-// PUT route to upload settings (logo, background image)
+// PUT route to upload/update settings
 router.put(
   '/',
   authMiddleware,
@@ -45,15 +80,12 @@ router.put(
         return res.status(404).json({ message: 'Settings not found' });
       }
 
-      // Save logo if uploaded
       if (logo?.[0]) {
-        settings.logo = '/settings/uploads/' + logo[0].filename; // Save relative path
-        console.log( settings.logo)
+        settings.logo = process.env.SERVER_URL + '/uploads/' + logo[0].filename;
       }
 
-      // Save background image if uploaded
       if (backgroundImage?.[0]) {
-        settings.backgroundImage = '/settings/uploads/' + backgroundImage[0].filename; // Save relative path
+        settings.backgroundImage = process.env.SERVER_URL + '/uploads/' + backgroundImage[0].filename;
       }
 
       if (welcomeMessage !== undefined) {
@@ -78,17 +110,15 @@ router.put(
   }
 );
 
-// GET route to retrieve settings (including images)
+// GET route to retrieve settings
 router.get('/', authMiddleware, async (req, res) => {
   try {
-    // Fetch the settings document (assuming there is a single settings document)
     const settings = await Settings.findOne();
 
     if (!settings) {
-      return res.status(404).json({ message: 'הגדרות לא נמצאו' }); // Settings not found
+      return res.status(404).json({ message: 'הגדרות לא נמצאו' });
     }
 
-    // Return the settings in the response
     return res.status(200).json({
       logo: settings.logo,
       backgroundImage: settings.backgroundImage,
@@ -98,7 +128,7 @@ router.get('/', authMiddleware, async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'שגיאה בהבאת ההגדרות' }); // Error fetching settings
+    return res.status(500).json({ message: 'שגיאה בהבאת ההגדרות' });
   }
 });
 

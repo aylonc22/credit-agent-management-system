@@ -16,7 +16,8 @@ app.use('/auth', require('./routes/auth'));
 app.use('/api', require('./routes/api'));
 app.use('/settings', require('./routes/settings'));
 // Serve static files from the 'uploads' folder
-app.use('/settings/uploads', express.static(path.join(__dirname,'/routes/settings/uploads')));
+console.log(__dirname);
+app.use('/uploads', express.static(path.join(__dirname,'/routes/settings/uploads')));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
