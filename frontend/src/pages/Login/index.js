@@ -18,7 +18,7 @@ const Login = () => {
     try {
       const res = await api.post('/auth/login', { username, password });
       localStorage.setItem('token', res.data.token); // Store JWT token
-      toast.success('התחברות הצליחה!');
+      toast.success(res.data.message);
       navigate('/');
     } catch (e) {
       console.error('Login error:', e);
