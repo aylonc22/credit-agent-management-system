@@ -100,6 +100,9 @@ const Navbar = () => {
           <li className="logout">
             <button onClick={handleLogout}>התנתק 🔌</button>
           </li>
+          <li className="terms-link">
+          <Link to="/terms">תנאי שימוש</Link>
+          </li>
         </ul>
       </div>
     </>

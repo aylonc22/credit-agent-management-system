@@ -17,6 +17,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Import CSS for toastify
 import Unauthorized from './pages/Unauthorized/index.js';
 import ChangePassword from './pages/ChangePassword/index.js';
+import TermsOfUse from './pages/TermsOfUse/index.js';
 
 function App() {
   const location = useLocation();
@@ -48,6 +49,7 @@ function App() {
           <Route path="/reports" element={<Reports />} />
           <Route path="/settings" element={<SystemSettings />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
+          <Route path="/terms" element={<TermsOfUse/>} />
         </Routes>
          
          {/* Toast notifications */}

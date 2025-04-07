@@ -1,6 +1,6 @@
 /* General Sidebar Styling */
 .sidenav {
-  height: 100vh;
+  height: 90vh;
   width: 250px;
   background-color: #1e2a35;
   color: #ecf0f1;
@@ -125,6 +125,24 @@
 .sidenav ul li.logout button:hover {
   color: #e74c3c;
 }
+
+.sidenav ul li.terms-link {
+  position: absolute;
+  bottom: 40px;
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.sidenav ul li.terms-link a {
+  color: #ecf0f1;
+  text-decoration: underline;
+  transition: opacity 0.3s ease;
+}
+
+.sidenav ul li.terms-link a:hover {
+  opacity: 1;
+}
+
 
 
 
