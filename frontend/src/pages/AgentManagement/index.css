@@ -1,0 +1,81 @@
+.agent-search {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .agent-search input,
+  .agent-search select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .agent-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+  }
+  
+  .agent-table th,
+  .agent-table td {
+    text-align: right;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .agent-table th {
+    background-color: #1e2a35;
+    color: #ecf0f1;
+  }
+  
+  .agent-table td button {
+    margin-left: 5px;
+    padding: 6px 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .agent-table td button:hover {
+    opacity: 0.8;
+  }
+  
+  .add-agent-form {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .add-agent-form h2 {
+    margin-bottom: 15px;
+  }
+  
+  .add-agent-form form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  
+  .add-agent-form input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .add-agent-form button {
+    grid-column: span 2;
+    padding: 10px;
+    background-color: #1e2a35;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .add-agent-form button:hover {
+    background-color: #34495e;
+  }
+  
