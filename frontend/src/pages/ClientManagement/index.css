@@ -1,0 +1,122 @@
+/* 🔍 Search & Filter Panel */
+.agent-search {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .agent-search input,
+  .agent-search select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  /* 📋 Table Wrapper */
+  .agent-table-container {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 30px;
+  }
+  
+  /* 📌 Table Head */
+  .agent-table-head {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+  
+  .agent-table-head th {
+    background-color: #1e2a35;
+    color: #ecf0f1;
+    padding: 12px;
+    text-align: right;
+  }
+  
+  /* 📜 Scrollable Table Body */
+  .agent-table-body-wrapper {
+    max-height: 300px;
+    overflow-y: auto;
+    direction: rtl;
+  }
+  
+  .agent-table-body {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+  
+  .agent-table-body td {
+    text-align: right;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .agent-table-body td button {
+    margin-left: 5px;
+    padding: 6px 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .agent-table-body td button:hover {
+    opacity: 0.8;
+  }
+  
+  /* 🧮 Column Widths */
+  .agent-table-head th:nth-child(1),
+  .agent-table-body td:nth-child(1) {
+    width: 6%;
+  }
+  
+  .agent-table-head th:nth-child(2),
+  .agent-table-body td:nth-child(2) {
+    width: 14%;
+  }
+  
+  .agent-table-head th:nth-child(3),
+  .agent-table-body td:nth-child(3) {
+    width: 16%;
+  }
+  
+  .agent-table-head th:nth-child(4),
+  .agent-table-body td:nth-child(4) {
+    width: 14%;
+  }
+  
+  .agent-table-head th:nth-child(5),
+  .agent-table-body td:nth-child(5) {
+    width: 10%;
+  }
+  
+  .agent-table-head th:nth-child(6),
+  .agent-table-body td:nth-child(6) {
+    width: 12%;
+  }
+  
+  .agent-table-head th:nth-child(7),
+  .agent-table-body td:nth-child(7) {
+    width: 10%;
+  }
+  
+  .agent-table-head th:nth-child(8),
+  .agent-table-body td:nth-child(8) {
+    width: 18%;
+  }
+  
+  /* 🎚 Scrollbar Styling */
+  .agent-table-body-wrapper::-webkit-scrollbar {
+    width: 8px;
+  }
+  .agent-table-body-wrapper::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+  }
+  .agent-table-body-wrapper::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+  
