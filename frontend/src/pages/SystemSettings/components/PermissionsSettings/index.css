@@ -94,4 +94,14 @@
     background-color: #f8f8f8;
     cursor: pointer;
   }
+
+  .admin-link-section .links{
+    display: flex;
+  }
+
+  .admin-link-section .links div:first-child{
+    margin-left: 50px;    
+  }
+
+
   

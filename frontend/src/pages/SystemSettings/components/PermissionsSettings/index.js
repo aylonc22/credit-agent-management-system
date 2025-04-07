@@ -30,14 +30,13 @@ const PermissionsSettings = () => {
     }
   };
 
-  const handleGenerateAdminLink = async () => {
-    try {
-      const response = await api.post('/auth/generate-link/admin');     
-      setGeneratedLink(response.data.link);
-      
-      // Copy the generated link to clipboard
-      await navigator.clipboard.writeText(response.data.link);
-      toast.success('הקישור הועתק ללוח');
+  const handleGenerateLink = async (role) => {
+    try {         
+        const  response = await api.post(`/auth/generate-link/${role}`);           
+        setGeneratedLink(response.data.link);      
+        // Copy the generated link to clipboard
+        await navigator.clipboard.writeText(response.data.link);
+        toast.success('הקישור הועתק ללוח');
     } catch (error) {
       toast.error('שגיאה ביצירת הקישור');
     }
@@ -73,10 +72,21 @@ const PermissionsSettings = () => {
 
       {/* Generate Admin Link */}
       <div className="admin-link-section">
-        <h4>יצירת משתמש מנהל חדש</h4>
-        <button className="settings-section__btn" onClick={handleGenerateAdminLink}>
-          צור קישור למנהל חדש
-        </button>
+        <div className='links'>
+          <div>
+            <h4>יצירת משתמש מנהל חדש</h4>
+            <button className="settings-section__btn" onClick={()=>handleGenerateLink('admin')}>
+              צור קישור למנהל חדש
+            </button>
+          </div>
+
+          <div>
+            <h4>יצירת משתמש סוכן חדש</h4>
+              <button className="settings-section__btn" onClick={()=>handleGenerateLink('agent')}>
+                צור קישור לסוכן חדש
+              </button>
+          </div>
+        </div>
 
         {generatedLink && (
           <div className="generated-link">

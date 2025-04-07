@@ -41,17 +41,11 @@ const Navbar = () => {
     }
   };
 
-  const handleGenerateLink = async () => {
-    let response;
-    try{
-      if(role === 'admmin'){
-         response = await api.post('/auth/generate-link/agent');        
-      }
-      else{
-         response = await api.post('/auth/generate-link/client'); 
-      }
-      await navigator.clipboard.writeText(response.data.link);
-      toast.success('הקישור הועתק ללוח');
+  const handleGenerateLink = async () => {   
+    try{     
+        const response = await api.post(`/auth/generate-link/${role === 'admin'?'agent':'client'}`);              
+        await navigator.clipboard.writeText(response.data.link);
+        toast.success('הקישור הועתק ללוח');
     }
     catch(e){
       toast.error('שגיאה ביצירת הקישור');
