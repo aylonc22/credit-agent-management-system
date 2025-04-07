@@ -37,7 +37,7 @@ router.post('/', async (req, res) => {
     
     
 
-    console.log("Trying to generate jwt token");
+    console.log(`Trying to generate jwt token for user ${user._id}`);
     const token = generateToken({ id: user._id, role: user.role });
     console.log("Jwt token generated successfully");
 

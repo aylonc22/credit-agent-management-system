@@ -19,6 +19,15 @@ const Navbar = () => {
     localStorage.removeItem('token');
     navigate('/login');
   };
+  
+  const userData = useAuth();
+
+  // If user data is not yet loaded, show loading (or redirect logic)
+  if (!userData) {
+    return <div>טוען...</div>;
+  }
+
+  const { role } = userData;
 
   const handleGenerateAgentLink = async () => {
     try {
@@ -32,14 +41,23 @@ const Navbar = () => {
     }
   };
 
-  const userData = useAuth();
-
-  // If user data is not yet loaded, show loading (or redirect logic)
-  if (!userData) {
-    return <div>טוען...</div>;
-  }
-
-  const { role } = userData;
+  const handleGenerateLink = async () => {
+    let response;
+    try{
+      if(role === 'admmin'){
+         response = await api.post('/auth/generate-link/agent');        
+      }
+      else{
+         response = await api.post('/auth/generate-link/client'); 
+      }
+      await navigator.clipboard.writeText(response.data.link);
+      toast.success('הקישור הועתק ללוח');
+    }
+    catch(e){
+      toast.error('שגיאה ביצירת הקישור');
+    }
+  }  
+  const linkLabel = `הוסף ${role === 'admin'? "סוכן":"לקוח"} חדש ➕`;
 
   return (
     <>
@@ -61,10 +79,10 @@ const Navbar = () => {
             
           )}
 
-         {role === 'admin' && (
+         {role !== 'client' && (
           <li>
-            <Link onClick={handleGenerateAgentLink} className="quick-link-button">
-              הוסף סוכן חדש ➕
+            <Link onClick={handleGenerateLink} className="quick-link-button">
+              {linkLabel }
             </Link>
           </li>
         )}

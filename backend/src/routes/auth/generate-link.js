@@ -42,6 +42,18 @@ router.post('/agent', authMiddleware, async (req, res) => {
     }
   });
 
+  router.post('/client', authMiddleware, async (req, res) => {
+    try {
+      const registrationUrl = `${process.env.FRONTEND_URL}/register/${req.user.id}`;
+      res.json({ link: registrationUrl });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'שגיאה ביצירת קישור לקוח לסוכן' });
+    }
+  });
+
+
+
   router.get('/:token', async (req,res) => {
         const { token } = req.params;
         if(!token){
