@@ -4,7 +4,7 @@ node_modules/
 dist/
 build/
 *.log
-backend\src\routes\settings\uploads
+backend\src\routes\settings\uploads/
 
 # Logs
 npm-debug.log*
