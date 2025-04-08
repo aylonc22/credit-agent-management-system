@@ -7,7 +7,7 @@ const router = express.Router();
 router.post('/admin', authMiddleware, async (req, res) => {
   try {
     if(req.user.role !== 'admin'){
-        res.status(401).json({ message: 'אין הרשאה ליצור קישור' });
+       return res.status(401).json({ message: 'אין הרשאה ליצור קישור' });
     }
     const token = uuidv4();
     const expiresAt = new Date(Date.now() + 1000 * 60 * 60); // 1 hour expiry
@@ -23,19 +23,40 @@ router.post('/admin', authMiddleware, async (req, res) => {
   }
 });
 
+router.post('/master', authMiddleware, async (req, res) => {
+  try {
+      if(req.user.role !== 'admin'){
+         return res.status(401).json({ message: 'אין הרשאה ליצור קישור' });
+      }      
+        const token = uuidv4();
+        const expiresAt = new Date(Date.now() + 1000 * 60 * 15); // 15 minutes expiry
+    
+        const link = new OneTimeLink({ token, role: 'master-agent', expiresAt });
+        await link.save();
+    
+        const registrationUrl = `${process.env.FRONTEND_URL}/register?token=${token}`;
+        res.json({ link: registrationUrl });     
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'שגיאה ביצירת קישור סוכן' });
+  }
+});
+
 router.post('/agent', authMiddleware, async (req, res) => {
     try {
-        if(req.user.role !== 'admin'){
-            res.status(401).json({ message: 'אין הרשאה ליצור קישור' });
+      const isMaster = req.user.role === 'master-agent';
+        if(req.user.role !== 'admin' && !isMaster){
+             return res.status(401).json({ message: 'אין הרשאה ליצור קישור' });
         }
-      const token = uuidv4();
-      const expiresAt = new Date(Date.now() + 1000 * 60 * 15); // 15 minutes expiry
-  
-      const link = new OneTimeLink({ token, role: 'agent', expiresAt });
-      await link.save();
-  
-      const registrationUrl = `${process.env.FRONTEND_URL}/register?token=${token}`;
-      res.json({ link: registrationUrl });
+          const token = uuidv4();
+          const expiresAt = new Date(Date.now() + 1000 * 60 * 15); // 15 minutes expiry
+      
+          const link = new OneTimeLink({ token, role: 'agent', expiresAt });
+          await link.save();
+      
+          const registrationUrl = `${process.env.FRONTEND_URL}/register${isMaster?`/${req.user.agentId}`:''}?token=${token}`;
+          res.json({ link: registrationUrl });        
+     
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: 'שגיאה ביצירת קישור סוכן' });
@@ -44,7 +65,7 @@ router.post('/agent', authMiddleware, async (req, res) => {
 
   router.post('/client', authMiddleware, async (req, res) => {
     try {
-      const registrationUrl = `${process.env.FRONTEND_URL}/register/${req.user.id}`;
+      const registrationUrl = `${process.env.FRONTEND_URL}/register/${req.user.agentId}`;
       res.json({ link: registrationUrl });
     } catch (err) {
       console.error(err);

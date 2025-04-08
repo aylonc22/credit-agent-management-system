@@ -20,7 +20,7 @@ const useAuth = (requiredRole) => {
       const decodedToken = jwtDecode(token);
            
       setUserData(decodedToken); // Store decoded JWT content
-
+      
       // Check if the token has expired (assuming 'exp' is in the JWT payload)
       const currentTime = Date.now() / 1000; // JWT 'exp' is in seconds, not milliseconds
       if (decodedToken.exp < currentTime) {
@@ -30,7 +30,7 @@ const useAuth = (requiredRole) => {
       }
 
       // Check if the user's role matches the required role
-      if (requiredRole && decodedToken.role !== requiredRole && decodedToken.role !== 'admin') {
+      if ((requiredRole && decodedToken.role !== requiredRole && decodedToken.role !== 'admin') && !(requiredRole === 'agent' && decodedToken.role === 'master-agent') ) {
         // Unauthorized role, redirect to unauthorized page
         navigate('/unauthorized');
       }

@@ -10,35 +10,56 @@ router.get('/', autheMiddleware ,async (req, res) => {
     try{
          const isAdmin = req.user.role === 'admin';
          const isAgent = req.user.role === 'agent';
+         const isMaster = req.user.role ==='master-agent';
          const _agentId = req.user.agentId;
-         
+         let agentIds = [];
+        
          if(isAdmin)
          {
             const clients = await Client.find().populate('userId', 'email');;
             
             if(clients)
             {
-                res.status(200).json({message:"לקוחות הוצאו בהצלחה", clients});
+                return res.status(200).json({message:"לקוחות הוצאו בהצלחה", clients});
             }else{
-                res.status(404).json({message:"לקוחות לא נמצאו במאגר המידע"});
+                return res.status(404).json({message:"לקוחות לא נמצאו במאגר המידע"});
             }
+         }else if(isMaster){
+            if (req.query.agents) {
+                try {
+                  agentIds.push(...JSON.parse(req.query.agents));                  
+                } catch (e) {
+                  return res.status(400).json({ error: 'Invalid agents array' });
+                }
+              }            
+            const clients = await Client.find({
+                agentId: { $in: agentIds }
+              }).populate('userId', 'email');;
+                         
+            if(clients)
+            {                
+                return res.status(200).json({message:"לקוחות הוצאו בהצלחה", clients});
+            }else{
+                return res.status(404).json({message:"לקוחות לא נמצאו במאגר המידע"});
+            }
+
          }else if(isAgent){
-            const clients = await Client.find({agent:_agentId}).populate('userId', 'email');;
-            
+            const clients = await Client.find({agentId:_agentId}).populate('userId', 'email');;
+            console.log(_agentId);
             if(clients)
             {
-                res.status(200).json({message:"לקוחות הוצאו בהצלחה", clients});
+                return res.status(200).json({message:"לקוחות הוצאו בהצלחה", clients});
             }else{
-                res.status(404).json({message:"לקוחות לא נמצאו במאגר המידע"});
+                return res.status(404).json({message:"לקוחות לא נמצאו במאגר המידע"});
             }
 
          }else{
-            res.status(401).json({message:"אין הרשאה להוציא לקוחות ממאגר המידע"});
+            return res.status(401).json({message:"אין הרשאה להוציא לקוחות ממאגר המידע"});
          }
     }
     catch(e){
         console.log(e);
-        res.status(500).json({message:"חלה שגיאה בהוצאת לקוחות"})
+        return res.status(500).json({message:"חלה שגיאה בהוצאת לקוחות"})
     }
 });
 
@@ -47,12 +68,11 @@ router.post('/', autheMiddleware ,async (req, res) => {
          const isAdmin = req.user.role === 'admin';
          const _agentId = req.user.agentId;
          const { email, name, username, password, agentId, credit} = req.body;        
-         //Give access to create only if user is admin or its related agent
-         console.log(agentId);
+         //Give access to create only if user is admin or its related agent               
          if(isAdmin || agentId === _agentId)
          {
             if (!name || !username || !password || !email) {
-                res.status(400).json({message:"חסרים שדות חיוניים"})
+                return res.status(400).json({message:"חסרים שדות חיוניים"})
             }else{
                 const hashedPassword = encryptAES(password);
 
@@ -73,16 +93,16 @@ router.post('/', autheMiddleware ,async (req, res) => {
                   });
                   await newClient.save();
 
-                  res.status(201).json({message:"לקוח חדש נוצר"})
+                  return res.status(201).json({message:"לקוח חדש נוצר"})
             }
           
          }else{
-            res.status(401).json({message:"אין הרשאה ליצור לקוח חדש"});
+            return res.status(401).json({message:"אין הרשאה ליצור לקוח חדש"});
          }
     }
     catch(e){
         console.log(e);
-        res.status(500).json({message:"חלה שגיאה ביצירת לקוח חדש"})
+        return res.status(500).json({message:"חלה שגיאה ביצירת לקוח חדש"})
     }
 });
 
@@ -102,13 +122,13 @@ router.put('/:id/block', autheMiddleware ,async (req, res) => {
         client.status = 'inactive'; // or "inactive", depending on your system
         await client.save();
     
-        res.status(200).send({ message: 'לקוח לקוח בהצלחה' });
+        return res.status(200).send({ message: 'לקוח לקוח בהצלחה' });
     }else{
-        res.status(401).json({message:"אין הרשאה לחסום לקוח"});
+        return res.status(401).json({message:"אין הרשאה לחסום לקוח"});
      }
     } catch (error) {
         console.log(error)
-      res.status(500).send({ message: 'שגיאה בחסימת הלקוח' });
+        return res.status(500).send({ message: 'שגיאה בחסימת הלקוח' });
     }
   });
 
@@ -128,14 +148,14 @@ router.put('/:id/block', autheMiddleware ,async (req, res) => {
             client.status = 'active'; // or 'unblocked', based on your system
             await client.save();
         
-            res.status(200).send({ message: 'הלקוח שוחרר בהצלחה' });
+            return res.status(200).send({ message: 'הלקוח שוחרר בהצלחה' });
         }else{
-            res.status(401).json({message:"אין הרשאה לשחרר לקוח"});
+            return res.status(401).json({message:"אין הרשאה לשחרר לקוח"});
         }
 
     } catch (error) {
         console.log(error);
-      res.status(500).send({ message: 'שגיאה בשחרור הלקוח' });
+        return res.status(500).send({ message: 'שגיאה בשחרור הלקוח' });
     }
   });
 

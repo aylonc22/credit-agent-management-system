@@ -19,9 +19,9 @@ const SystemSettings = () => {
     <div className="system-settings-container">
       <h1>הגדרות מערכת</h1>      
 
-      {role === 'admin' && <div className="settings-section">
+      {(role === 'admin' || role === 'master-agent') && <div className="settings-section">
         <h2>הגדרת הרשאות</h2>
-        <PermissionsSettings/>
+        <PermissionsSettings role={role}/>
       </div>}
 
       <div className="settings-section">

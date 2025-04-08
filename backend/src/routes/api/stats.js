@@ -27,7 +27,6 @@ router.get('/', authMiddleware , async (req, res) => {
     
           if (clientStats.length > 0) stats.totalCreditsToday = clientStats[0].totalCreditsToday;
           else stats.totalCreditsToday = 0;
-          
           const clientMonthlyStats = await Transaction.aggregate([
             { $match: { userId: id, createdAt: { $gte: new Date(new Date().setDate(1)) } } }, // Match this month's transactions
             { $group: { _id: null, totalCreditsThisMonth: { $sum: "$amount" } } }
@@ -35,7 +34,7 @@ router.get('/', authMiddleware , async (req, res) => {
     
           if (clientMonthlyStats.length > 0) stats.totalCreditsThisMonth = clientMonthlyStats[0].totalCreditsThisMonth;
           else stats.totalCreditsThisMonth = 0;
-
+          
           stats.activeTransactions = await Transaction.countDocuments({ userId: id, status: 'active' });
     
         } else if (role === 'agent') {
@@ -68,7 +67,40 @@ router.get('/', authMiddleware , async (req, res) => {
 
           stats.activeTransactions = await Transaction.countDocuments({ userId: { $in: agentClientsIds }, status: 'active' });
     
+          stats.activeClients = agentClients.filter(c=>c.status === 'active').length;
+    
+        }else if (role === 'master-agent') {
+          // Master-Agent-specific stats
+          const agentStats = await Agent.findOne({ userId: id });
+    
+          if (!agentStats) {
+            return res.status(404).json({ message: 'Agent not found' });
+          }
+    
+          const agentClients = await Client.find({ agentId: agentStats._id });
+    
+          const agentClientsIds = agentClients.map(client => client._id);
+    
+          const agentTransactions = await Transaction.aggregate([
+            { $match: { userId: { $in: agentClientsIds }, createdAt: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) } } },
+            { $group: { _id: null, totalCreditsToday: { $sum: "$amount" } } }
+          ]);
+    
+          if (agentTransactions.length > 0) stats.totalCreditsToday = agentTransactions[0].totalCreditsToday;
+          else  stats.totalCreditsToday = 0;
+    
+          const agentTransactionsMonth = await Transaction.aggregate([
+            { $match: { userId: { $in: agentClientsIds }, createdAt: { $gte: new Date(new Date().setDate(1)) } } },
+            { $group: { _id: null, totalCreditsThisMonth: { $sum: "$amount" } } }
+          ]);
+    
+          if (agentTransactionsMonth.length > 0) stats.totalCreditsThisMonth = agentTransactionsMonth[0].totalCreditsThisMonth;
+          else stats.totalCreditsThisMonth = 0;
+
+          stats.activeTransactions = await Transaction.countDocuments({ userId: { $in: agentClientsIds }, status: 'active' });
+    
           stats.activeAgents = await Agent.countDocuments({ _id: { $in: agentStats.teamMembers } });
+          stats.activeClients = await Client.countDocuments({ status: 'active' });
     
         } else if (role === 'admin') {
           // Admin-specific stats

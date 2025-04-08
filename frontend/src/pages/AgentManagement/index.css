@@ -1,144 +1,165 @@
 .agent-search {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .agent-search input,
-  .agent-search select {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  /* Wrapper for the entire table section */
-  .agent-table-container {
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    overflow: hidden;
-    margin-bottom: 30px;
-  }
-  
-  /* Head-only table (non-scrollable) */
-  .agent-table-head {
-    width: 100%;
-    table-layout: fixed;
-    border-collapse: collapse;
-  }
-  
-  .agent-table-head th {
-    background-color: #1e2a35;
-    color: #ecf0f1;
-    padding: 12px;
-    text-align: right;
-  }
-  
-  /* Scrollable body */
-  .agent-table-body-wrapper {
-    max-height: 300px; /* adjust scroll height */
-    overflow-y: auto;
-    direction: rtl;
-  }
-  
-  /* Full table structure for the body */
-  .agent-table-body {
-    width: 100%;
-    table-layout: fixed;
-    border-collapse: collapse;
-  }
-  
-  .agent-table-body td {
-    text-align: right;
-    padding: 12px;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .agent-table-body td button {
-    margin-left: 5px;
-    padding: 6px 10px;
-    font-size: 14px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .agent-table-body td button:hover {
-    opacity: 0.8;
-  }
-  
-  /* Optional: set consistent column widths for alignment */
-  .agent-table-head th:nth-child(1),
-  .agent-table-body td:nth-child(1) {
-    width: 10%;
-  }
-  
-  .agent-table-head th:nth-child(2),
-  .agent-table-body td:nth-child(2) {
-    width: 25%;
-  }
-  
-  .agent-table-head th:nth-child(3),
-  .agent-table-body td:nth-child(3) {
-    width: 25%;
-  }
-  
-  .agent-table-head th:nth-child(4),
-  .agent-table-body td:nth-child(4) {
-    width: 15%;
-  }
-  
-  .agent-table-head th:nth-child(5),
-  .agent-table-body td:nth-child(5) {
-    width: 25%;
-  }
-  
-  /* Scrollbar styling */
-  .agent-table-body-wrapper::-webkit-scrollbar {
-    width: 8px;
-  }
-  .agent-table-body-wrapper::-webkit-scrollbar-thumb {
-    background-color: #888;
-    border-radius: 4px;
-  }
-  .agent-table-body-wrapper::-webkit-scrollbar-thumb:hover {
-    background-color: #555;
-  }
-  
-  /* Add Agent Form */
-  .add-agent-form {
-    background: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-  }
-  
-  .add-agent-form h2 {
-    margin-bottom: 15px;
-  }
-  
-  .add-agent-form form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-  
-  .add-agent-form input {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  .add-agent-form button {
-    grid-column: span 2;
-    padding: 10px;
-    background-color: #1e2a35;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .add-agent-form button:hover {
-    background-color: #34495e;
-  }
-  
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.agent-search input,
+.agent-search select {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Table Container */
+.agent-table-container {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 30px;
+  background-color: #f9f9f9;
+}
+
+/* Table Header */
+.agent-table-head {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.agent-table-head th {
+  background-color: #1e2a35;
+  color: #ecf0f1;
+  padding: 10px 12px;
+  text-align: right;
+}
+
+/* Scrollable Table Body */
+.agent-table-body-wrapper {
+  max-height: 300px;
+  overflow-y: auto;
+  direction: rtl;
+}
+
+.agent-table-body {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.agent-table-body td {
+  text-align: right;
+  padding: 10px 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.agent-table-body td button {
+  margin-left: 8px;
+  padding: 5px 10px;
+  font-size: 13px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: transparent;  /* Remove background color */
+  color: #333;  /* Neutral text color */
+  transition: all 0.3s ease; /* Smooth transition for hover effect */
+  display: inline-block;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* Button Hover effect */
+.agent-table-body td button:hover {
+  background-color: #f1f1f1; /* Subtle background color on hover */
+  color: #000; /* Darker text color on hover */
+  border-color: #ccc; /* Slightly darker border on hover */
+}
+
+/* Column Widths */
+.agent-table-head th:nth-child(1),
+.agent-table-body td:nth-child(1) {
+  width: 10%;
+}
+
+.agent-table-head th:nth-child(2),
+.agent-table-body td:nth-child(2) {
+  width: 25%;
+}
+
+.agent-table-head th:nth-child(3),
+.agent-table-body td:nth-child(3) {
+  width: 25%;
+}
+
+.agent-table-head th:nth-child(4),
+.agent-table-body td:nth-child(4) {
+  width: 15%;
+}
+
+.agent-table-head th:nth-child(5),
+.agent-table-body td:nth-child(5) {
+  width: 25%;
+}
+
+/* Scrollbar Styling */
+.agent-table-body-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.agent-table-body-wrapper::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.agent-table-body-wrapper::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+/* Empty Message */
+.empty-table-message {
+  text-align: center;
+  color: #777;
+  padding: 20px;
+  font-size: 16px;
+}
+
+/* Add Agent Form */
+.add-agent-form {
+  background: #f7f7f7;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.add-agent-form h2 {
+  margin-bottom: 15px;
+}
+
+.add-agent-form form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(200px, 1fr));
+  gap: 10px;
+  align-items: center;
+}
+
+.add-agent-form input,
+.add-agent-form select {
+  padding: 8px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.add-agent-form button {
+  grid-column: span 2;
+  padding: 10px;
+  background-color: #1e2a35;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.add-agent-form button:hover {
+  background-color: #34495e;
+}

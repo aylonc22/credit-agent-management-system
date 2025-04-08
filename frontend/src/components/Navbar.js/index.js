@@ -52,7 +52,7 @@ const Navbar = () => {
     }
   }  
   const linkLabel = `הוסף ${role === 'admin'? "סוכן":"לקוח"} חדש ➕`;
-
+  
   return (
     <>
       {/* Mobile sidebar toggle button */}
@@ -66,7 +66,7 @@ const Navbar = () => {
           <li>
             <Link to="/">לוח בקרה 📊</Link>
           </li>
-          {role === 'admin' && (
+          {(role === 'admin' || role === 'master-agent') && (
             <li>
               <Link to="/agents">ניהול סוכנים 🧑‍💼</Link>
             </li>

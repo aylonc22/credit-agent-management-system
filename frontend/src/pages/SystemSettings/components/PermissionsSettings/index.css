@@ -99,7 +99,7 @@
     display: flex;
   }
 
-  .admin-link-section .links div:first-child{
+  .admin-link-section .links div{
     margin-left: 50px;    
   }
 
