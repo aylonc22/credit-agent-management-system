@@ -34,7 +34,8 @@ router.get('/', autheMiddleware ,async (req, res) => {
               }            
             const clients = await Client.find({
                 agentId: { $in: agentIds }
-              }).populate('userId', 'email');;
+              }).populate('userId', 'email');
+              console.log(agentIds);
                          
             if(clients)
             {                
@@ -44,8 +45,7 @@ router.get('/', autheMiddleware ,async (req, res) => {
             }
 
          }else if(isAgent){
-            const clients = await Client.find({agentId:_agentId}).populate('userId', 'email');;
-            console.log(_agentId);
+            const clients = await Client.find({agentId:_agentId}).populate('userId', 'email');;           
             if(clients)
             {
                 return res.status(200).json({message:"לקוחות הוצאו בהצלחה", clients});

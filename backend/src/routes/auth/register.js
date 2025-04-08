@@ -99,7 +99,8 @@ router.post('/', async (req, res) => {
         return res.status(400).json({ message: 'קישור הזמנה לא חוקי או פג תוקף' });
       }
 
-      role = invite.role;    
+      role = invite.role;   
+      invite.used = true; 
       await invite.save();
     }
 
@@ -117,7 +118,7 @@ router.post('/', async (req, res) => {
     await newUser.save();
 
     // 5. Create related document (Agent or Client)
-    if (role === 'agent') {
+    if (role.includes('agent')) {
       const newAgent = new Agent({
         userId: newUser._id,
         name,       
@@ -132,7 +133,7 @@ router.post('/', async (req, res) => {
       });
       await newClient.save();
     }
-
+    
     // 6 Get Welcome Message
     const settings = await Settings.findOne();
     // 7. Return JWT
