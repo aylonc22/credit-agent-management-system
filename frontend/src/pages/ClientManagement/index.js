@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import './index.css';
 
 const ClientManagement = () => {
-  const userData = useAuth(['admin', 'agent']);
+  const userData = useAuth('agent');
   const [clients, setClients] = useState([]);
   const [agents, setAgents] = useState([]);
   const [search, setSearch] = useState('');
@@ -21,30 +21,41 @@ const ClientManagement = () => {
     agentId: ''
   });
 
+ 
   useEffect(() => {
     if (userData) {
       fetchClients();
-      fetchAgents();
+      if (userData.role === 'admin') {
+        fetchAgents();
+      } else {
+        // For non-admin, set agentId automatically
+        setNewClient((prev) => ({ ...prev, agentId: userData.agentId }));
+      }
     }
   }, [userData]);
 
+  if (!userData) {
+    return <div>טוען...</div>; // Optionally show a loading state or redirect to login
+  }  
   const fetchClients = async () => {
-    // try {
-    //   const res = await api.get('/api/client');
-    //   setClients(res.data.clients);
-    // } catch (err) {
-    //   console.error('שגיאה בטעינת לקוחות:', err);
-    //   toast.error('שגיאה בטעינת לקוחות');
-    // }
+    try {
+      const res = await api.get('/api/client');
+      setClients(res.data.clients);      
+    } catch (err) {
+      console.error('שגיאה בטעינת לקוחות:', err);
+      toast.error('שגיאה בטעינת לקוחות');
+    }
   };
 
   const fetchAgents = async () => {
-    // try {
-    //   const res = await api.get('/api/agent');
-    //   setAgents(res.data.agents);
-    // } catch (err) {
-    //   console.error('שגיאה בקבלת סוכנים:', err);
-    // }
+    try {     
+      const res = await api.get('/api/agent');
+      setAgents(res.data.agents);
+      console.log('agents',res.data.agents)
+
+    } catch (err) {
+      console.error('שגיאה בקבלת סוכנים:', err);
+    }
   };
 
   const handleBlockClient = async (clientId) => {
@@ -80,7 +91,13 @@ const ClientManagement = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    if (!newClient.name || !newClient.username || !newClient.password || !newClient.email || !newClient.agentId) {
+    const requiredFields = ['name', 'username', 'password', 'email'];
+    if (userData.role === 'admin') {
+      requiredFields.push('agentId');
+    }
+
+    const hasEmpty = requiredFields.some((field) => !newClient[field]);
+    if (hasEmpty) {
       toast.warn('נא למלא את כל השדות');
       return;
     }
@@ -95,7 +112,7 @@ const ClientManagement = () => {
         username: '',
         password: '',
         credits: 0,
-        agentId: ''
+        agentId: userData.role === 'admin' ? '' : userData.agentId
       });
     } catch (err) {
       console.error('שגיאה ביצירת לקוח:', err);
@@ -105,11 +122,11 @@ const ClientManagement = () => {
 
   const filteredClients = clients.filter((client) => {
     const agent = agents.find((a) => a._id === client.agentId);
-    const fullSearch = `${client.name} ${client.email} ${agent?.name || ''}`;
+    const fullSearch = `${client.name} ${agent?.name || ''}`;
     const matchesSearch = fullSearch.includes(search.trim());
 
     const matchesStatus = !statusFilter || client.status === statusFilter;
-    const matchesAgent = !agentFilter || client.agentId === agentFilter;
+    const matchesAgent = userData.role !== 'admin' || !agentFilter || client.agentId === agentFilter;
 
     return matchesSearch && matchesStatus && matchesAgent;
   });
@@ -122,7 +139,7 @@ const ClientManagement = () => {
       <div className="agent-search">
         <input
           type="text"
-          placeholder="חיפוש לפי שם, מייל או סוכן..."
+          placeholder="חיפוש לפי שם או סוכן..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -133,14 +150,16 @@ const ClientManagement = () => {
           <option value="inactive">לא פעיל</option>
         </select>
 
-        <select value={agentFilter} onChange={(e) => setAgentFilter(e.target.value)}>
-          <option value="">כל הסוכנים</option>
-          {agents.map((agent) => (
-            <option key={agent._id} value={agent._id}>
-              {agent.name}
-            </option>
-          ))}
-        </select>
+        {userData.role === 'admin' && (
+          <select value={agentFilter} onChange={(e) => setAgentFilter(e.target.value)}>
+            <option value="">כל הסוכנים</option>
+            {agents.map((agent) => (
+              <option key={agent._id} value={agent._id}>
+                {agent.name}
+              </option>
+            ))}
+          </select>
+        )}
       </div>
 
       {/* Client Table */}
@@ -151,7 +170,7 @@ const ClientManagement = () => {
               <th>מספר</th>
               <th>שם לקוח</th>
               <th>מייל</th>
-              <th>סוכן</th>
+              {userData.role === 'admin' && <th>סוכן</th>}
               <th>קרדיטים</th>
               <th>נוצר בתאריך</th>
               <th>סטטוס</th>
@@ -164,13 +183,13 @@ const ClientManagement = () => {
           <table className="agent-table-body">
             <tbody>
               {filteredClients.map((client, index) => {
-                const agent = agents.find((a) => a._id === client.agentId);
+                const agent = agents.find((a) => a._id === client.agentId);               
                 return (
                   <tr key={client._id}>
                     <td>{index + 1}</td>
                     <td>{client.name}</td>
                     <td>{client.userId?.email || '-'}</td>
-                    <td>{agent?.name || '-'}</td>
+                    {userData.role === 'admin' && <td>{agent?.name || '-'}</td>}
                     <td>{client.credits ?? 0}</td>
                     <td>{new Date(client.createdAt).toLocaleDateString('he-IL')}</td>
                     <td>{client.status === 'active' ? 'פעיל' : 'לא פעיל'}</td>
@@ -189,26 +208,34 @@ const ClientManagement = () => {
         </div>
       </div>
 
-      {/* ➕ Add Client Form */}
-      <div className="add-agent-form">
+      {/* ➕ Add Client Form
+          Available only for admins and master agents
+      */}
+     {userData.role !== 'agent' && (
+       <div className="add-agent-form">
         <h2>הוסף לקוח חדש</h2>
         <form onSubmit={handleFormSubmit}>
           <input name="name" type="text" placeholder="שם הלקוח" value={newClient.name} onChange={handleInputChange} />
           <input name="email" type="email" placeholder="כתובת אימייל" value={newClient.email} onChange={handleInputChange} />
           <input name="username" type="text" placeholder="שם משתמש" value={newClient.username} onChange={handleInputChange} />
           <input name="password" type="password" placeholder="סיסמה" value={newClient.password} onChange={handleInputChange} />
-          <input name="credits" type="number" placeholder="כמות קרדיטים" value={newClient.credits} onChange={handleInputChange} />
-          <select name="agentId" value={newClient.agentId} onChange={handleInputChange}>
-            <option value="">בחר סוכן</option>
-            {agents.map((agent) => (
-              <option key={agent._id} value={agent._id}>
-                {agent.name}
-              </option>
-            ))}
-          </select>
+          <input name="credits"  min={0} type="number" placeholder="כמות קרדיטים" value={newClient.credits} onChange={handleInputChange} />
+          
+          {userData.role === 'admin' && (
+            <select name="agentId" value={newClient.agentId} onChange={handleInputChange}>
+              <option value="">בחר סוכן</option>
+              {agents.map((agent) => (
+                <option key={agent._id} value={agent._id}>
+                  {agent.name}
+                </option>
+              ))}
+            </select>
+          )}
+
           <button type="submit">שמור</button>
         </form>
       </div>
+    )}
     </div>
   );
 };

@@ -22,14 +22,19 @@ const Login = () => {
       navigate('/');
     } catch (e) {
       console.error('Login error:', e);
-      if (e.response && e.response.status === 403) {
+      if (e.response && e.response.status === 403 && e.response.id) {
         // If password expired, redirect to the "change password" page
         toast.error('הסיסמה שלך פגה. אנא שנה את הסיסמה שלך.');
        
         navigate(`/change-password/${e.response.data.id}`);
       } else {
         // For other errors
-        toast.error('ההתחברות נכשלה. נסה שוב.');
+        console.log(e);
+        if(e.response.data.message){
+          toast.error(e.response.data.message);
+        }else{
+          toast.error('ההתחברות נכשלה. נסה שוב.');
+        }
       }
     }
   };

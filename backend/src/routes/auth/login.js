@@ -3,6 +3,8 @@ const User = require('../../models/User');
 const Settings = require('../../models/Settings'); // Assuming you have a settings model
 const { decryptAES } = require('../../utils/hashPassword');
 const { generateToken } = require('../../utils/jwt');
+const Agent = require('../../models/Agent');
+const Client = require('../../models/Client');
 const router = express.Router();
 
 router.post('/', async (req, res) => {
@@ -35,13 +37,24 @@ router.post('/', async (req, res) => {
     }
 
     
-    
-
-    console.log(`Trying to generate jwt token for user ${user._id}`);
-    const token = generateToken({ id: user._id, role: user.role });
-    console.log("Jwt token generated successfully");
-
-    res.status(200).json({ message: settings.welcomeMessage, token });
+    let status;
+    if(user.role === 'agent' || user.role === 'master-agent'){
+      const res = await Agent.findOne({userId:user._id});
+      status = res.status;
+    }
+    if(user.role === 'client'){
+      const res = await Client.findOne({userId:user._id});      
+      status = res.status;
+    }
+    if(status === 'inactive'){
+      res.status(403).json({ message: "המשתמש שלך נחסם. אנא פנה למנהל המערכת." });
+    }else{
+      console.log(`Trying to generate jwt token for user ${user._id}`);
+      const token = await generateToken({ id: user._id, role: user.role });
+      console.log("Jwt token generated successfully");
+  
+      res.status(200).json({ message: settings.welcomeMessage, token }); 
+    }    
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: 'שגיאה בשרת', error });

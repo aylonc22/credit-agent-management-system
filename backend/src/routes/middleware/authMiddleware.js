@@ -1,6 +1,6 @@
 const { verifyToken, generateToken } = require('../../utils/jwt');
 
-const authMiddleware = (req, res, next) => {
+const authMiddleware = async (req, res, next) => {
   const authHeader = req.headers.authorization;
   const token = authHeader?.split(' ')[1];
 
@@ -11,7 +11,7 @@ const authMiddleware = (req, res, next) => {
     req.user = decoded;
 
     // ROTATE TOKEN: send a new one in header
-    const newToken = generateToken({ id: decoded.id, email: decoded.email , role: decoded.role });
+    const newToken = await generateToken({ id: decoded.id, email: decoded.email , role: decoded.role });
     res.setHeader('x-access-token', newToken);
 
     next();

@@ -65,7 +65,7 @@ router.post('/', autheMiddleware ,async (req, res) => {
     }
     catch(e){
         console.log(e);
-        res.status(500).json({message:"חלה ביצירת סוכן חדש"})
+        res.status(500).json({message:"חלה שגיאה ביצירת סוכן חדש"})
     }
 });
 
