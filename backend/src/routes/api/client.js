@@ -34,8 +34,7 @@ router.get('/', autheMiddleware ,async (req, res) => {
               }            
             const clients = await Client.find({
                 agentId: { $in: agentIds }
-              }).populate('userId', 'email');
-              console.log(agentIds);
+              }).populate('userId', 'email');             
                          
             if(clients)
             {                
@@ -112,8 +111,9 @@ router.put('/:id/block', autheMiddleware ,async (req, res) => {
         const _agentId = req.user.agentId;
         const { id } = req.params;
         const client = await Client.findById(id);
+        const agent = await Agent.findOne(client.agentId);       
          
-        if(isAdmin || client?.agentId == _agentId)
+        if(isAdmin || client?.agentId == _agentId || agent?.masterId == _agentId)
         {
         if (!client) {
             return res.status(404).send({ message: 'לקוח לא נמצא' });
@@ -137,8 +137,10 @@ router.put('/:id/block', autheMiddleware ,async (req, res) => {
         const isAdmin = req.user.role === 'admin';
         const _agentId = req.user.agentId;
         const { id } = req.params;
-        const client = await Client.findById(id);
-        if(isAdmin || client?.agentId == _agentId)
+        const client = await Client.findById(id);      
+        const agent = await Agent.findOne(client.agentId);  
+        
+        if(isAdmin || client?.agentId == _agentId || agent?.masterId == _agentId)
         {
             if (!client) {
                 return res.status(404).send({ message: 'לקוח לא נמצא' });

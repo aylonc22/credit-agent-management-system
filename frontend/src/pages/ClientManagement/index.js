@@ -58,7 +58,7 @@ const ClientManagement = () => {
   }
 
   const fetchClients = async (agents) => {
-    try {     
+    try {           
       const res = await api.get(`/api/client${userData.role==='master-agent'?`?agents=${encodeURIComponent(JSON.stringify(agents.map(a=>a._id)))}`:'' }`);
       setClients(res.data.clients);     
     } catch (err) {
@@ -82,7 +82,7 @@ const ClientManagement = () => {
       try {
         await api.put(`/api/client/${clientId}/block`);
         toast.success('הלקוח נחסם בהצלחה 🚫');
-        fetchClients();
+        fetchClients(agents);
       } catch (err) {
         console.error('שגיאה בחסימת לקוח:', err);
         toast.error('אירעה שגיאה בעת חסימת הלקוח');
@@ -95,7 +95,7 @@ const ClientManagement = () => {
       try {
         await api.put(`/api/client/${clientId}/unblock`);
         toast.success('הלקוח שוחרר בהצלחה ✔️');
-        fetchClients();
+        fetchClients(agents);
       } catch (err) {
         console.error('שגיאה בשחרור לקוח:', err);
         toast.error('אירעה שגיאה בעת שחרור הלקוח');
@@ -124,7 +124,7 @@ const ClientManagement = () => {
     try {
       await api.post('/api/client', newClient);
       toast.success('לקוח נוסף בהצלחה 🎉');
-      fetchClients();
+      fetchClients(agents);
       setNewClient({
         name: '',
         email: '',
