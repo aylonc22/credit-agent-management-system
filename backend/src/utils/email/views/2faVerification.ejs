@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2FA Verification Code</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #f3f4f6;
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        background: #1a202c;
+        color: white;
+        width: 100%;
+        max-width: 600px;
+        padding: 30px;
+        border-radius: 10px;
+        text-align: center;
+        margin: 20px auto;
+      }
+      .logo {
+        width: 140px;
+        margin-bottom: 20px;
+      }
+      .message {
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 15px;
+      }
+      .code {
+        font-size: 32px;
+        font-weight: bold;
+        color: #ffd700;
+        margin: 20px 0;
+        letter-spacing: 4px;
+      }
+      .info {
+        font-size: 14px;
+        color: #ccc;
+      }
+      .footer {
+        margin-top: 30px;
+        font-size: 12px;
+        color: #888;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <img src="<%= logoUrl %>" alt="Logo" class="logo" />
+      <div class="message">קוד אימות דו-שלבי שלך:</div>
+      <div class="code"><%= verificationCode %></div>
+      <p class="info">הזן את הקוד הזה כדי להשלים את הכניסה שלך.</p>
+      <div class="footer">&copy; 2025 החברה שלך. כל הזכויות שמורות.</div>
+    </div>
+  </body>
+</html>

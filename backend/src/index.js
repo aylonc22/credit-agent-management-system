@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const User = require("./models/User");
 const { encryptAES, decryptAES } = require("./utils/hashPassword");
 const Settings = require("./models/Settings");
+const { twoFaVerification } = require("./utils/email");
 require('dotenv').config();
 
 const app = express();
@@ -67,8 +68,8 @@ async function initApp() {
       console.log('✅ Default settings created.');
     } else {
       console.log('✅ Settings already exist.');
-    }
-
+    }   
+    
   } catch (e) {
     console.error('❌ Error during initApp:', e.message);
   }
