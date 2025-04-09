@@ -6,8 +6,11 @@ const { generateToken } = require('../../utils/jwt');
 const router = express.Router();
 
 router.post('/', authMiddleware, async (req, res) => {   
-    const  {id}  = req.user;  // Logged-in user ID            
-    try {                            
+    const  {id,role}  = req.user;  // Logged-in user ID            
+    try {        
+        if(role!=='client'){
+            return res.status(403).json({message:'אין לך הרשאה לבצע פעולה זו'});
+        }                    
         const user = await User.findById(id);
        
         if (!user) {
