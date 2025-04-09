@@ -20,7 +20,7 @@ const useAuth = (requiredRole) => {
       const decodedToken = jwtDecode(token);
            
       setUserData(decodedToken); // Store decoded JWT content
-      console.log(decodedToken)
+           
       // Check if the token has expired (assuming 'exp' is in the JWT payload)
       const currentTime = Date.now() / 1000; // JWT 'exp' is in seconds, not milliseconds
       if (decodedToken.exp < currentTime) {

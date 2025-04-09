@@ -16,4 +16,24 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+api.interceptors.response.use(
+  (response) => {
+    // Check if there's a new token in the response headers (assuming the token is returned in the response)
+    const newToken = response.headers.get('x-access-token'); // Or use any other header field that your backend uses for tokens
+    console.log( response.headers);
+    if (newToken) {
+      // Update localStorage with the new token
+      localStorage.setItem('token', newToken);
+      
+      // Update the Authorization header for future requests
+      response.config.headers['Authorization'] = `Bearer ${newToken}`;
+    }
+    return response;
+  },
+  (error) => {
+    // Handle errors if needed (e.g., for expired tokens)
+    return Promise.reject(error);
+  }
+);
+
 export default api;

@@ -9,7 +9,12 @@ const { twoFaVerification } = require("./utils/email");
 require('dotenv').config();
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL, // Adjust for your frontend URL
+  methods: 'GET,POST,PUT,DELETE',
+  exposedHeaders: ['x-access-token'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-access-token'], // Allow custom headers 
+}));
 app.use(express.json());
 
 // Routes
@@ -17,7 +22,6 @@ app.use('/auth', require('./routes/auth'));
 app.use('/api', require('./routes/api'));
 app.use('/settings', require('./routes/settings'));
 // Serve static files from the 'uploads' folder
-console.log(__dirname);
 app.use('/uploads', express.static(path.join(__dirname,'/routes/settings/uploads')));
 
 // Connect to MongoDB

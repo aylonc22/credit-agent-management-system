@@ -11,11 +11,12 @@ const authMiddleware = async (req, res, next) => {
     req.user = decoded;
 
     // ROTATE TOKEN: send a new one in header
-    const newToken = await generateToken({ id: decoded.id, email: decoded.email , role: decoded.role });
+    const newToken = await generateToken({ id: decoded.id, email: decoded.email , role: decoded.role, twofaEnabled: decoded.twofaEnabled });   
+    
     res.setHeader('x-access-token', newToken);
 
     next();
-  } catch (err) {
+  } catch (err) {  
     return res.status(401).json({ message: 'Invalid or expired token' });
   }
 };

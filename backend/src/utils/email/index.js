@@ -11,14 +11,14 @@ const APP_NAME = "Fish pay";
 // Initialize EmailService once "mg.Fishpay.com"
 const emailService = new EmailService(process.env.MAILGUN_KEY);
 
-async function twoFaVerification(email, logoUrl) {
+async function twoFaVerification(email) {
   try {     
     const fileName = path.join(__dirname, './views/2faVerification.ejs');
     const template = await fs.readFile(fileName, 'utf8');
 
     const html = ejs.render(template, {
         verificationCode:"1111",
-      logoUrl,     
+      logoUrl:null,     
     });
 
     const textVersion = htmlToText(html, { wordwrap: 130 });
