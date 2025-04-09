@@ -4,7 +4,7 @@ const User = require('../../models/User');
 const { twoFaVerification } = require('../../utils/email');
 const router = express.Router();
 
-
+// Utility: Generate 6-digit verification code
 function generateVerificationCode(length = 6) {
   const digits = '0123456789';
   let code = '';
@@ -14,34 +14,55 @@ function generateVerificationCode(length = 6) {
   return code;
 }
 
-router.post('/', authMiddleware , async (req, res) => {
-    const {id} = req.user;
-    try{       
-        const user = await User.findById(id);
-        if(!user){
-            return res.status(404).json({message:"משתמש לא נמצא"});
-        }
-        // Generate a new verification code
-        const newCode = generateVerificationCode();
 
-        // Set a new expiration time (e.g., 10 minutes from now)
-        const newExpiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+async function send2FACode(user) {
+  const code = generateVerificationCode();
+  const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
-        // Update the user's verification code and expiration date
-        user.twoFA = {            
-            code: newCode,
-            expiresAt: newExpiresAt,
-        };
+  user.twoFA = {
+    code,
+    expiresAt,
+  };
 
-        await user.save();
-        //await twoFaVerification(user.email);
-        console.log(newCode);
-        return res.status(200).json({message:"קוד אימות נשלח בהצלחה. אנא בדוק את כתובת האימייל שלך"});
+  await user.save();
+  // await twoFaVerification(user.email); // Uncomment when ready
+  console.log('2FA Code:', code);
+}
 
-    }catch(e){
-        console.log(e);
-        return res.status(500).json({message:'משהו השתבש'})
+// 🔓 Public route - based on username
+router.post('/', async (req, res) => {
+  const { username } = req.body;
+
+  try {
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).json({ message: 'משתמש לא נמצא' });
     }
+
+    await send2FACode(user);
+    return res.status(200).json({ message: 'קוד אימות נשלח בהצלחה. אנא בדוק את כתובת האימייל שלך' });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ message: 'משהו השתבש' });
+  }
+});
+
+// 🔐 Protected route - based on user from token
+router.post('/protected', authMiddleware, async (req, res) => {
+  const { id } = req.user;
+
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: 'משתמש לא נמצא' });
+    }
+
+    await send2FACode(user);
+    return res.status(200).json({ message: 'קוד אימות נשלח בהצלחה. אנא בדוק את כתובת האימייל שלך' });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ message: 'משהו השתבש' });
+  }
 });
 
 module.exports = router;

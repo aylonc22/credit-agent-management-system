@@ -21,9 +21,8 @@ const Login = () => {
     if (isTwofaRequired) {
       // If 2FA is required, submit the 2FA code
       try {
-        const res = await api.post('/auth/verify-2fa', { username, twofaCode });
-        localStorage.setItem('token', res.data.token); // Store JWT token
-        toast.success('ההתחברות בוצעה בהצלחה');
+        const res = await api.post('/auth/verify-2fa', { username , twofaCode });       
+        toast.success(res.data.welcome?res.data.welcome:'ההתחברות בוצעה בהצלחה');
         navigate('/');
       } catch (err) {
         console.error('2FA verification error:', err);
@@ -41,12 +40,12 @@ const Login = () => {
         toast.success(res.data.message);
         navigate('/');
       } catch (e) {
-        console.error('Login error:', e);
+        console.error('Login error:', e);       
         if (e.response && e.response.status === 403 && e.response.id) {
           // If password expired, redirect to the "change password" page
           toast.error('הסיסמה שלך פגה. אנא שנה את הסיסמה שלך.');
           navigate(`/change-password/${e.response.data.id}`);
-        } else if (e.response && e.response.status === 401 && e.response.twofaRequired) {
+        } else if (e.response && e.response.status === 401 && e.response.data.twofaRequired) {
           // If 2FA is required, show the 2FA input
           setIsTwofaRequired(true);
         } else {

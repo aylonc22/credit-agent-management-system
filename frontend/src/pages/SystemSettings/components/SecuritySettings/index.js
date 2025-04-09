@@ -59,7 +59,7 @@ const SecuritySettings = () => {
 
   const handleEnable2fa = async () => {
     try {
-      const response = await api.post('/auth/enable-2fa');
+      const response = await api.post('/auth/enable-2fa/protected');
       if (response.status === 200) {
         setIs2faEnabled(true);
         setIs2faSent(true);
@@ -73,7 +73,7 @@ const SecuritySettings = () => {
   const handleVerify2fa = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post('/auth/verify-2fa', { twofaCode });
+      const response = await api.post('/auth/verify-2fa/protected', { twofaCode });
       if (response.status === 200) {
         setIs2faVerified(true);       
         toast.success('אימות 2FA הושלם בהצלחה');
@@ -86,7 +86,7 @@ const SecuritySettings = () => {
 
   const handleDisable2fa = async () => {
     try {
-      const response = await api.post('/auth/disable-2fa', { userId: id });
+      const response = await api.post('/auth/disable-2fa');
       if (response.status === 200) {
         setIs2faEnabled(false);
         toast.success('2FA בוטל בהצלחה');
@@ -156,7 +156,7 @@ const SecuritySettings = () => {
               אמת קוד
             </button>
           </form>
-        ) : (
+        ) : !is2faEnabled && (
           <>
             <p>הפעל אימות דו-שלבי (2FA) באמצעות אימייל כדי לאבטח את חשבונך.</p>
             <button className="btn" onClick={handleEnable2fa}>

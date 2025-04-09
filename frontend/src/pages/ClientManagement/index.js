@@ -34,8 +34,7 @@ const ClientManagement = () => {
       if(userData.role !=='admin')
       {
         // For non-admin, set agentId automatically
-        setNewClient((prev) => ({ ...prev, agentId: userData.agentId }));
-        console.log(userData);
+        setNewClient((prev) => ({ ...prev, agentId: userData.agentId }));       
       }
       fetchClients(agents);
     }

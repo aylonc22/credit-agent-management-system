@@ -46,7 +46,7 @@ router.post('/:agentId', async (req, res) => {
       email:email,
       role,     
     });
-    console.log(agentId);
+    
     await newUser.save();
 
     if (role === 'agent') {
@@ -63,8 +63,7 @@ router.post('/:agentId', async (req, res) => {
           agentId: agentRef,
           userId: newUser._id,
         });
-      await newClient.save();  
-      console.log(newClient);
+      await newClient.save();       
       }
 
     // 6 Get Welcome Message

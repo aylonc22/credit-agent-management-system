@@ -1,10 +1,11 @@
 const express = require('express');
 const User = require('../../models/User');
-const Settings = require('../../models/Settings'); // Assuming you have a settings model
+const Settings = require('../../models/Settings');
 const { decryptAES } = require('../../utils/hashPassword');
 const { generateToken } = require('../../utils/jwt');
 const Agent = require('../../models/Agent');
 const Client = require('../../models/Client');
+const { twoFaVerification } = require('../../utils/email');
 const router = express.Router();
 
 
@@ -33,7 +34,7 @@ router.post('/', async (req, res) => {
     }
 
     // 2. Retrieve the password expiry days from settings
-    const settings = await Settings.findOne(); // Assuming you have only one settings document
+    const settings = await Settings.findOne();
     const passwordExpiryDays = settings.passwordExpiryDays;
 
     // 3. Check if the password is expired
@@ -58,7 +59,7 @@ router.post('/', async (req, res) => {
     }
     if(status === 'inactive'){
       return res.status(403).json({ message: "המשתמש שלך נחסם. אנא פנה למנהל המערכת." });
-    }else{
+    }else{     
       if(user.twoFA.enabled && user.twoFA.verified){
           // Generate a new verification code
           const newCode = generateVerificationCode();
@@ -68,11 +69,17 @@ router.post('/', async (req, res) => {
 
           // Update the user's verification code and expiration date
           user.twoFA = {
+            enabled:true,
+            verified:true,
             code: newCode,
             expiresAt: newExpiresAt,
           };
 
           await user.save();
+
+            //await twoFaVerification(user.email);
+            console.log(newCode);
+
           return res.status(401).json({
             message: "אימות דו-שלבי פעיל. אנא ספק את קוד האימות להמשך.",
             twofaRequired: true,

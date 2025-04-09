@@ -20,7 +20,7 @@ api.interceptors.response.use(
   (response) => {
     // Check if there's a new token in the response headers (assuming the token is returned in the response)
     const newToken = response.headers.get('x-access-token'); // Or use any other header field that your backend uses for tokens
-    console.log( response.headers);
+   
     if (newToken) {
       // Update localStorage with the new token
       localStorage.setItem('token', newToken);

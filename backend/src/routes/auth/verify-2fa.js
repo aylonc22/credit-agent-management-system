@@ -1,55 +1,85 @@
 const express = require('express');
 const authMiddleware = require('../middleware/authMiddleware');
 const User = require('../../models/User');
+const Settings = require('../../models/Settings');
 const { generateToken } = require('../../utils/jwt');
+
 const router = express.Router();
 
-router.post('/', authMiddleware, async (req, res) => {   
-    const { id } = req.user;  // Logged-in user ID
-    const { twofaCode } = req.body;  // 2FA code from the request body
+// 🔁 Shared logic for 2FA validation and response
+async function handle2FAVerification(user, twofaCode, res) {
+  if (!user) {
+    return res.status(404).json({ message: "משתמש לא נמצא" });
+  }
 
-    try {
-        // Check if parameters are missing
-        if (!id || !twofaCode) {
-            return res.status(400).json({ message: "חסרים פרמטרים" });  // Missing parameters
-        }
+  if (user.twoFA.code !== twofaCode) {
+    return res.status(400).json({ message: "קוד 2FA לא נכון" });
+  }
 
-        // Find the user in the database
-        const user = await User.findById(id);
-        if (!user) {
-            return res.status(404).json({ message: "משתמש לא נמצא" });  // User not found
-        }       
-        // Check if the provided 2FA code matches the stored code
-        if (user.twoFA.code !== twofaCode) {
-            return res.status(400).json({ message: "קוד 2FA לא נכון" });  // Incorrect 2FA code
-        }
+  const now = new Date();
+  const expirationTime = user.twoFA.expiresAt;
 
-        // Optionally, check if the 2FA code has expired (if you have an expiration timestamp)
-        const now = new Date();
-        const expirationTime = user.twofaCodeExpiration;  // Assuming you store expiration time
-        if (now > expirationTime) {
-            return res.status(410).json({ message: "הקוד פג תוקף" });  // Code has expired
-        }
+  if (now > expirationTime) {
+    return res.status(410).json({ message: "הקוד פג תוקף" });
+  }
 
-        // If the code is correct and not expired, mark the 2FA as verified
-        user.twoFA = { 
-            enabled:true,
-            verified:true,      
-            code: null,
-            expiresAt: null,
-        };
+  const settings = await Settings.findOne();
 
-        // Save the user document
-        await user.save();
-        const newToken = await generateToken({  id: user._id, role: user.role , twofaEnabled: user.twoFA.enabled });
-        console.log(newToken);
-        res.setHeader('x-access-token', newToken);
-        console.log(res.getHeaders())
-        return res.status(200).json({ message: "הקוד אושר בהצלחה!" });  // 2FA verification successful
-    } catch (e) {
-        console.error(e);
-        return res.status(500).json({ message: "משהו השתבש" });  // Something went wrong
-    }
+  user.twoFA = {
+    enabled: true,
+    verified: true,
+    code: null,
+    expiresAt: null,
+  };
+
+  await user.save();
+
+  const newToken = await generateToken({
+    id: user._id,
+    role: user.role,
+    twofaEnabled: user.twoFA.enabled,
+  });
+
+  res.setHeader('x-access-token', newToken);
+  return res.status(200).json({
+    message: "הקוד אושר בהצלחה!",
+    welcome: settings?.welcomeMessage || '',
+  });
+}
+
+// 🔐 Authenticated route
+router.post('/protected', authMiddleware, async (req, res) => {
+  const { id } = req.user;
+  const { twofaCode } = req.body;
+
+  if (!id || !twofaCode) {
+    return res.status(400).json({ message: "חסרים פרמטרים" });
+  }
+
+  try {
+    const user = await User.findById(id);
+    return await handle2FAVerification(user, twofaCode, res);
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ message: "משהו השתבש" });
+  }
+});
+
+// 🔓 Public route
+router.post('/', async (req, res) => {
+  const { username, twofaCode } = req.body;
+
+  if (!username || !twofaCode) {
+    return res.status(400).json({ message: "חסרים פרמטרים" });
+  }
+
+  try {
+    const user = await User.findOne({ username });
+    return await handle2FAVerification(user, twofaCode, res);
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ message: "משהו השתבש" });
+  }
 });
 
 module.exports = router;
