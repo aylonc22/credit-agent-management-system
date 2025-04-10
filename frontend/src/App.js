@@ -18,6 +18,7 @@ import 'react-toastify/dist/ReactToastify.css'; // Import CSS for toastify
 import Unauthorized from './pages/Unauthorized/index.js';
 import ChangePassword from './pages/ChangePassword/index.js';
 import TermsOfUse from './pages/TermsOfUse/index.js';
+import { useEffect } from 'react';
 
 function App() {
   const location = useLocation();
@@ -28,6 +29,14 @@ function App() {
     location.pathname === '/change-password' ||
     location.pathname.startsWith('/change-password/') ||
     location.pathname.startsWith('/register/');
+
+    useEffect(() => {
+      const favicon = document.querySelector("link[rel='icon']");
+      if (favicon) {     
+        console.log(`${process.env.REACT_APP_SERVER_URL}/uploads/logo.jpg`)   ;
+        favicon.href = `${process.env.REACT_APP_SERVER_URL}/uploads/logo.jpg`;
+      }
+    }, []);
 
   return (
     <div className={isAuthPage ? 'no-sidebar' : 'app-with-sidebar'}>

@@ -203,7 +203,12 @@ const ClientManagement = () => {
           <tbody>
               {filteredClients.length === 0 ? (
                 <tr>
-                  <td colSpan={8} style={{ textAlign: 'right', padding: '1rem' }}>
+                  <td colSpan={8} style={{
+                    textAlign: 'center',
+                    color: '#777',
+                    padding: '20px',
+                    fontSize: '16px',
+                  }}>
                     לא נמצאו לקוחות
                   </td>
                 </tr>
