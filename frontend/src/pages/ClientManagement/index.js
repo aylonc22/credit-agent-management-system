@@ -248,8 +248,7 @@ const ClientManagement = () => {
             <input name="name" type="text" placeholder="שם הלקוח" value={newClient.name} onChange={handleInputChange} />
             <input name="email" type="email" placeholder="כתובת אימייל" value={newClient.email} onChange={handleInputChange} />
             <input name="username" type="text" placeholder="שם משתמש" value={newClient.username} onChange={handleInputChange} />
-            <input name="password" type="password" placeholder="סיסמה" value={newClient.password} onChange={handleInputChange} />
-            <input name="credits" min={0} type="number" placeholder="כמות קרדיטים" value={newClient.credits} onChange={handleInputChange} />
+            <input name="password" type="password" placeholder="סיסמה" value={newClient.password} onChange={handleInputChange} />           
             {userData.role === 'admin' && (
               <select name="agentId" value={newClient.agentId} onChange={handleInputChange}>
                 <option value="">בחר סוכן</option>

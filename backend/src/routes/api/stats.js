@@ -70,37 +70,77 @@ router.get('/', authMiddleware , async (req, res) => {
           stats.activeClients = agentClients.filter(c=>c.status === 'active').length;
     
         }else if (role === 'master-agent') {
-          // Master-Agent-specific stats
-          const agentStats = await Agent.findOne({ userId: id });
-    
-          if (!agentStats) {
-            return res.status(404).json({ message: 'Agent not found' });
-          }
-    
-          const agentClients = await Client.find({ agentId: agentStats._id });
-    
-          const agentClientsIds = agentClients.map(client => client._id);
-    
-          const agentTransactions = await Transaction.aggregate([
-            { $match: { userId: { $in: agentClientsIds }, createdAt: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) } } },
-            { $group: { _id: null, totalCreditsToday: { $sum: "$amount" } } }
-          ]);
-    
-          if (agentTransactions.length > 0) stats.totalCreditsToday = agentTransactions[0].totalCreditsToday;
-          else  stats.totalCreditsToday = 0;
-    
-          const agentTransactionsMonth = await Transaction.aggregate([
-            { $match: { userId: { $in: agentClientsIds }, createdAt: { $gte: new Date(new Date().setDate(1)) } } },
-            { $group: { _id: null, totalCreditsThisMonth: { $sum: "$amount" } } }
-          ]);
-    
-          if (agentTransactionsMonth.length > 0) stats.totalCreditsThisMonth = agentTransactionsMonth[0].totalCreditsThisMonth;
-          else stats.totalCreditsThisMonth = 0;
+         // Master-Agent-specific stats
+        const masterAgentStats = await Agent.findOne({ userId: id });
 
-          stats.activeTransactions = await Transaction.countDocuments({ userId: { $in: agentClientsIds }, status: 'active' });
-    
-          stats.activeAgents = await Agent.countDocuments({ _id: { $in: agentStats.teamMembers } });
-          stats.activeClients = await Client.countDocuments({ status: 'active' });
+        if (!masterAgentStats) {
+          return res.status(404).json({ message: 'Master agent not found' });
+        }
+        let agents = [masterAgentStats];
+        // Find all agents associated with this master agent
+         agents.push(...await Agent.find({ masterId: masterAgentStats._id }));
+        
+        if (!agents.length) {
+          return res.status(404).json({ message: 'No agents found for this master agent' });
+        }
+
+        // Get all clients of these agents
+        const agentClients = await Client.find({ agentId: { $in: agents.map(agent => agent._id) } });
+
+        const agentClientsIds = agentClients.map(client => client._id);
+
+        // Transactions for today
+        const agentTransactions = await Transaction.aggregate([
+          {
+            $match: {
+              userId: { $in: agentClientsIds },
+              createdAt: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) }
+            }
+          },
+          {
+            $group: {
+              _id: null,
+              totalCreditsToday: { $sum: "$amount" }
+            }
+          }
+        ]);
+
+        if (agentTransactions.length > 0) stats.totalCreditsToday = agentTransactions[0].totalCreditsToday;
+        else stats.totalCreditsToday = 0;
+
+        // Transactions for the current month
+        const agentTransactionsMonth = await Transaction.aggregate([
+          {
+            $match: {
+              userId: { $in: agentClientsIds },
+              createdAt: { $gte: new Date(new Date().setDate(1)) }
+            }
+          },
+          {
+            $group: {
+              _id: null,
+              totalCreditsThisMonth: { $sum: "$amount" }
+            }
+          }
+        ]);
+
+        if (agentTransactionsMonth.length > 0) stats.totalCreditsThisMonth = agentTransactionsMonth[0].totalCreditsThisMonth;
+        else stats.totalCreditsThisMonth = 0;
+
+        // Active transactions
+        stats.activeTransactions = await Transaction.countDocuments({
+          userId: { $in: agentClientsIds },
+          status: 'active'
+        });
+
+        // Active agents
+        stats.activeAgents = agents.length - 1; //all its agents exluded himself
+
+        // Active clients
+        stats.activeClients = await Client.countDocuments({
+          agentId: { $in: agents.map(agent => agent._id) },
+          status: 'active'
+        });
     
         } else if (role === 'admin') {
           // Admin-specific stats

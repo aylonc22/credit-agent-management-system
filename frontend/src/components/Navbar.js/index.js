@@ -73,7 +73,7 @@ const Navbar = () => {
             </li>
           )}
           {role !== 'client' && <li><Link to="/clients">ניהול לקוחות 👥</Link></li>}
-          <li><Link to="/transactions">ניהול עסקאות 💸</Link></li>
+          {role !== 'client' && <li><Link to="/transactions">ניהול עסקאות 💸</Link></li>}
           <li><Link to="/payment-links">יצירת קישורי תשלום 🔗</Link></li>
           <li><Link to="/reports">דוחות 📈</Link></li>
           <li><Link to="/settings">הגדרות מערכת ⚙️</Link></li>

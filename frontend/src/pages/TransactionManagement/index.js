@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import './index.css';
 
 const TransactionManagement = () => {
-  const userData = useAuth('admin');  // Use the hook to get user data for 'admin' role
+  const userData = useAuth('agent');  // Use the hook to get user data for 'admin' role
   const [transactions, setTransactions] = useState([]);
   const [clients, setClients] = useState([]);
   const [agents, setAgents] = useState([]);
@@ -59,32 +59,6 @@ const TransactionManagement = () => {
     } catch (err) {
       console.error('שגיאה בטעינת סוכנים:', err);
       toast.error('שגיאה בטעינת סוכנים');
-    }
-  };
-
-  const handleApproveTransaction = async (transactionId) => {
-    if (window.confirm('האם אתה בטוח שברצונך לאשר את העסקה?')) {
-      try {
-        await api.put(`/api/transaction/${transactionId}/approve`);
-        toast.success('העסקה אושרה בהצלחה ✔️');
-        fetchTransactions();
-      } catch (err) {
-        console.error('שגיאה באישור עסקה:', err);
-        toast.error('אירעה שגיאה בעת אישור העסקה');
-      }
-    }
-  };
-
-  const handleRejectTransaction = async (transactionId) => {
-    if (window.confirm('האם אתה בטוח שברצונך לדחות את העסקה?')) {
-      try {
-        await api.put(`/api/transaction/${transactionId}/reject`);
-        toast.success('העסקה נדחתה בהצלחה ❌');
-        fetchTransactions();
-      } catch (err) {
-        console.error('שגיאה בדחיית עסקה:', err);
-        toast.error('אירעה שגיאה בעת דחיית העסקה');
-      }
     }
   };
 
@@ -150,7 +124,6 @@ const TransactionManagement = () => {
               <th>שיטת תשלום</th>
               <th>תאריך יצירה</th>
               <th>סטטוס</th>
-              <th>פעולות</th>
             </tr>
           </thead>
         </table>
@@ -160,12 +133,12 @@ const TransactionManagement = () => {
             <tbody>
               {filteredTransactions.length === 0 ? (
                 <tr>
-                  <td colSpan={8} style={{
-                  textAlign: 'center',
-                  color: '#777',
-                  padding: '20px',
-                  fontSize: '16px',
-                }}>
+                  <td colSpan={7} style={{
+                    textAlign: 'center',
+                    color: '#777',
+                    padding: '20px',
+                    fontSize: '16px',
+                  }}>
                     לא נמצאו עסקאות
                   </td>
                 </tr>
@@ -179,14 +152,6 @@ const TransactionManagement = () => {
                     <td>{transaction.paymentMethod}</td>
                     <td>{new Date(transaction.createdAt).toLocaleDateString('he-IL')}</td>
                     <td>{transaction.status === 'completed' ? 'הושלמה' : transaction.status === 'pending' ? 'ממתינה' : 'נכשלה'}</td>
-                    <td>
-                      {transaction.status === 'pending' && (
-                        <>
-                          <button onClick={() => handleApproveTransaction(transaction._id)}>✔️ אישור</button>
-                          <button onClick={() => handleRejectTransaction(transaction._id)}>❌ דחייה</button>
-                        </>
-                      )}
-                    </td>
                   </tr>
                 ))
               )}

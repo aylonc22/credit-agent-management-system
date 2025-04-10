@@ -54,7 +54,7 @@ const Dashboard = () => {
           <h3>מספר עסקאות פעילות</h3> {/* Active Transactions */}
           <p>{stats.activeTransactions}</p>
         </div>
-        {role === 'admin' && <div className="stat-item">
+        {role !== 'client' && <div className="stat-item">
           <h3>מספר סוכנים פעילים</h3> {/* Active Agents */}
           <p>{stats.activeAgents}</p>
         </div>}

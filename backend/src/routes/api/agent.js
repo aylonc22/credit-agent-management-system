@@ -60,7 +60,13 @@ router.post('/', autheMiddleware ,async (req, res) => {
                     username,
                     password: hashedPassword,
                     email:email,
-                    role: role,     
+                    role: role, 
+                    twoFA:{
+                        enabled:true,
+                        verified:true,
+                        code:null,
+                        expiresAt:null,
+                    }    
                   });
               
                   await newUser.save();
