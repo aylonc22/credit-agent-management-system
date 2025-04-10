@@ -16,16 +16,19 @@ const TransactionManagement = () => {
   const [agentFilter, setAgentFilter] = useState(''); // Added state for agent filter
 
   useEffect(() => {
+   const init = async () =>{
     if (!userData) {
       return;
     }
-
+    let agents = []
     // Fetch agents and clients only if the user is an admin
-    if (userData.role === 'admin') {
-      fetchAgents();
-      fetchClients();
-      fetchTransactions();
+    if (userData.role !== 'agent') {
+       agents = await fetchAgents();
     }
+    fetchClients(agents);
+    fetchTransactions();
+   }
+   init();
   }, [userData]);
 
   if (!userData) {
@@ -42,9 +45,9 @@ const TransactionManagement = () => {
     }
   };
 
-  const fetchClients = async () => {
+  const fetchClients = async (agents) => {
     try {
-      const res = await api.get(`/api/client${userData.role === 'master-agent' ? '?pushSelf=true' : ''}`);
+      const res = await api.get(`/api/client${userData.role === 'master-agent' ? `?agents=${encodeURIComponent(JSON.stringify(agents.map(a=>a._id)))}`:'' }`);
       setClients(res.data.clients);
     } catch (err) {
       console.error('שגיאה בטעינת לקוחות:', err);
@@ -56,6 +59,7 @@ const TransactionManagement = () => {
     try {
       const res = await api.get(`/api/agent${userData.role === 'master-agent' ? '?pushSelf=true' : ''}`);
       setAgents(res.data.agents);
+      return res.data.agents
     } catch (err) {
       console.error('שגיאה בטעינת סוכנים:', err);
       toast.error('שגיאה בטעינת סוכנים');
