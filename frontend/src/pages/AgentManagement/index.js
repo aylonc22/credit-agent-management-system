@@ -126,8 +126,8 @@ const AgentManagement = () => {
     }
   };
 
-  const goToReports = (agentId) => {
-    navigate('/reports'); // Redirect to the reports page
+  const goToReports = (agentId) => {   
+    navigate(`/reports?agent_id=${agentId}`);
   };
 
   const goToClients = (agentId) => {

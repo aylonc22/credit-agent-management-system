@@ -23,6 +23,7 @@ const ClientManagement = () => {
 
   // Use `useLocation` to get the query parameters
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
    const init = async ()=>{
@@ -101,6 +102,11 @@ const ClientManagement = () => {
       }
     }
   };
+
+  const goToReports = (clientId) => {
+    navigate(`/reports?client_id=${clientId}`);
+  };
+  
 
   const handleInputChange = (e) => {
     setNewClient({ ...newClient, [e.target.name]: e.target.value });
@@ -230,6 +236,9 @@ const ClientManagement = () => {
                         ) : (
                           <button onClick={() => handleBlockClient(client._id)}>🚫 חסום</button>
                         )}
+                         <button className="reports" onClick={() => goToReports(client._id)}>
+                          🔍 דוחות
+                        </button>
                       </td>
                     </tr>
                   );
