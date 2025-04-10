@@ -1,14 +1,13 @@
 /* General Sidebar Styling */
 .sidenav {
-  height: 90vh;
+  height: 100vh;
   width: 250px;
   background-color: #1e2a35;
   color: #ecf0f1;
   position: fixed;
   top: 0;
   right: 0; /* 🟢 Changed from left: 0 to right: 0 */
-  padding-top: 100px;
-  padding-bottom: 20px;
+  padding-top: 50px;
   box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1); /* 🟢 Shadow flipped for right side */
   border-radius: 10px 0 0 10px; /* 🟢 Rounded corners on the left side */
   transition: all 0.3s ease;
@@ -56,7 +55,12 @@
 
 /* Mobile and Tablet Responsiveness */
 @media (max-width: 768px) {
+  .sidebar-logo-container {
+    display: none;
+  }
   .sidenav {
+    padding-top: 100px;
+    height: 95vh;
     width: 0;
     visibility: hidden;
   }
@@ -141,6 +145,19 @@
 
 .sidenav ul li.terms-link a:hover {
   opacity: 1;
+}
+
+.sidebar-logo-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.sidebar-logo {
+  max-width: 160px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
 }
 
 
