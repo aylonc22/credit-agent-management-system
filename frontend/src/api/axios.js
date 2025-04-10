@@ -10,6 +10,7 @@ const api = axios.create({
 // Add JWT token automatically to headers if it exists
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
+ 
   if (token) {
     config.headers['Authorization'] = `Bearer ${token}`;
   }
@@ -19,14 +20,11 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => {
     // Check if there's a new token in the response headers (assuming the token is returned in the response)
-    const newToken = response.headers.get('x-access-token'); // Or use any other header field that your backend uses for tokens
+    const newToken = response.headers['x-access-token']; // Or use any other header field that your backend uses for tokens
    
     if (newToken) {
       // Update localStorage with the new token
-      localStorage.setItem('token', newToken);
-      
-      // Update the Authorization header for future requests
-      response.config.headers['Authorization'] = `Bearer ${newToken}`;
+      localStorage.setItem('token', newToken);               
     }
     return response;
   },

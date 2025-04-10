@@ -43,7 +43,7 @@ async function handle2FAVerification(user, twofaCode, res) {
   res.setHeader('x-access-token', newToken);
   return res.status(200).json({
     message: "הקוד אושר בהצלחה!",
-    welcome: settings?.welcomeMessage || '',
+    welcome: settings?.welcomeMessage || '',   
   });
 }
 

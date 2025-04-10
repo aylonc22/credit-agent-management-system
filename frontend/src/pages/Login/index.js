@@ -36,6 +36,7 @@ const Login = () => {
       // If 2FA is not required, proceed with the usual login
       try {
         const res = await api.post('/auth/login', { username, password });
+        console.log( res.data.token)
         localStorage.setItem('token', res.data.token); // Store JWT token
         toast.success(res.data.message);
         navigate('/');

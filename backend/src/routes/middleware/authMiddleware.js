@@ -3,7 +3,7 @@ const { verifyToken, generateToken } = require('../../utils/jwt');
 const authMiddleware = async (req, res, next) => {
   const authHeader = req.headers.authorization;
   const token = authHeader?.split(' ')[1];
-
+ 
   if (!token) return res.status(403).json({ message: 'Token required' });
 
   try {

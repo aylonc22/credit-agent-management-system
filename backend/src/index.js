@@ -55,14 +55,13 @@ async function initApp() {
       console.log('✅ Default admin user created.');
     } else {
       console.log('✅ Admin user already exists.');
-    }
-
+    }    
     // Check if the settings document exists
     const existingSettings = await Settings.findOne();
 
     if (!existingSettings) {
       const defaultSettings = new Settings({
-        logo: '',
+        logo: process.env.SERVER_URL + '/uploads/fish.jpg',
         backgroundImage: '',
         welcomeMessage: 'ברוך הבא למערכת!',
         termsOfUse: 'תנאי השימוש של המערכת.',

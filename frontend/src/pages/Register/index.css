@@ -1,25 +1,16 @@
-.phone-group {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .phone-group input {
-    flex: 1;
-  }
-  
-  .phone-group .country-code {
-    max-width: 80px;
-    text-align: center;
-  }
-  
-  .error-text {
-    color: #ff4d4f;
-    font-size: 14px;    
-  }
-  
-  /* Adjust the phone input group to reduce the gap */
-  .phone-group.error {
-    margin-bottom: -10px; /* Adjust this value to bring the input and error closer */
-  }
+.btn-secondary {
+  margin-top: 10px;
+  width: 100%;
+  background-color: #2980b9;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
 
-  
+.btn-secondary:hover {
+  background-color: #3498db;
+}

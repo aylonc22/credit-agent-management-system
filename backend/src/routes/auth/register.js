@@ -6,7 +6,18 @@ const OneTimeLink = require('../../models/OneTimeLink');
 const Agent = require('../../models/Agent');
 const Settings = require('../../models/Settings');
 const { generateToken } = require('../../utils/jwt');
+const { twoFaVerification } = require('../../utils/email');
 const router = express.Router();
+
+// Utility: Generate 6-digit verification code
+function generateVerificationCode(length = 6) {
+  const digits = '0123456789';
+  let code = '';
+  for (let i = 0; i < length; i++) {
+    code += digits[Math.floor(Math.random() * digits.length)];
+  }
+  return code;
+}
 
 router.post('/:agentId', async (req, res) => {  
   const { email, name, username, password, inviteToken } = req.body;
@@ -56,6 +67,23 @@ router.post('/:agentId', async (req, res) => {
         masterId: agentRef,
       });
       await newAgent.save(); 
+
+     
+        const code = generateVerificationCode(); // your 6-digit function
+        const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+  
+        newUser.twoFA = {
+          enabled:true,
+          verified:true,
+          code,
+          expiresAt,
+        }
+        await newUser.save();
+  
+        //await twoFaVerification(newUser.email)
+        console.log(code);
+        return res.status(202).json({message:"משתמש עם הרשאות נוצר אנא התחבר שוב ואמת את כתובת האימייל באמצעות המייל שקיבלת"});
+      
     }else{
         const newClient = new Client({
           username,
@@ -131,6 +159,23 @@ router.post('/', async (req, res) => {
         userId:newUser._id,
       });
       await newClient.save();
+    }
+
+    if(role !== 'client'){
+      const code = generateVerificationCode(); // your 6-digit function
+      const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+
+      newUser.twoFA = {
+        enabled:true,
+        verified:true,
+        code,
+        expiresAt,
+      }
+      await newUser.save();
+
+      //await twoFaVerification(newUser.email)
+      console.log(code);
+      return res.status(202).json({message:"משתמש עם הרשאות נוצר אנא התחבר שוב ואמת את כתובת האימייל באמצעות המייל שקיבלת"});
     }
     
     // 6 Get Welcome Message

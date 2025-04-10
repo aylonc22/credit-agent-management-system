@@ -139,7 +139,8 @@ const SecuritySettings = () => {
       </div>
 
       {/* Enable/Disable 2FA Section */}
-      <div className="section">
+     {role === 'client' && (
+       <div className="section">
         <h2>הפעלת אימות דו-שלבי (2FA)</h2>
         {is2faSent && !is2faVerified ? (
           <form onSubmit={handleVerify2fa}>
@@ -174,6 +175,7 @@ const SecuritySettings = () => {
         )}
         {is2faVerified && <p>הזדהות דו-שלבית הושלמה בהצלחה!</p>}
       </div>
+    )}
     </div>
   );
 };

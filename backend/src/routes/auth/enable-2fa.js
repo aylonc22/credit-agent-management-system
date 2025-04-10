@@ -65,4 +65,4 @@ router.post('/protected', authMiddleware, async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = {router,send2FACode};
