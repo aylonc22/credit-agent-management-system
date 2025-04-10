@@ -9,5 +9,6 @@ router.use('/enable-2fa',require('./enable-2fa').router);
 router.use('/disable-2fa',require('./disable-2fa'));
 router.use('/verify-2fa',require('./verify-2fa'));
 router.use('/resend-2fa',require('./resend-2fa'));
+router.use('/request-password-reset',require('./request-password-reset'));
 
 module.exports = router;

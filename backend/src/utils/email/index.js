@@ -11,13 +11,13 @@ const APP_NAME = "Fish pay";
 // Initialize EmailService once "mg.Fishpay.com"
 const emailService = new EmailService(process.env.MAILGUN_KEY);
 
-async function twoFaVerification(email) {
+async function twoFaVerification(email,code) {
   try {     
     const fileName = path.join(__dirname, './views/2faVerification.ejs');
     const template = await fs.readFile(fileName, 'utf8');
 
     const html = ejs.render(template, {
-        verificationCode:"1111",
+        verificationCode:code,
       logoUrl:null,     
     });
 
@@ -37,6 +37,31 @@ async function twoFaVerification(email) {
   }
 }
 
+async function resetPassword(email,link) {
+  try {     
+    const fileName = path.join(__dirname, './views/resetPassword.ejs');
+    const template = await fs.readFile(fileName, 'utf8');
+
+    const html = ejs.render(template, {
+      resetLink:link,
+      logoUrl:null,     
+    });
+
+    const textVersion = htmlToText(html, { wordwrap: 130 });   
+
+    await emailService.sendEmail(
+      `${APP_NAME} <${EMAIL_DOMAIN}>`,
+      email,
+      'Your Journey Is Starting Now',
+      textVersion,
+      html
+    );
+  } catch (err) {
+    console.error('Error sending 2FA email:',err);
+  }
+}
+
 module.exports = {
-  twoFaVerification
+  twoFaVerification,
+  resetPassword,
 };

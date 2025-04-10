@@ -1,36 +1,42 @@
 const express = require('express');
 const User = require('../../models/User');
+const OneTimeLink = require('../../models/OneTimeLink');
 const { encryptAES, decryptAES } = require('../../utils/hashPassword');
 
 const router = express.Router();
 
 router.put('/', async (req, res) => {
-    const { id, currentPassword, newPassword } = req.body;
+    const { id, currentPassword, newPassword, token } = req.body;
 
     try {
-        // Find the user by ID       
-        const user = await User.findById(id);        
+        const user = await User.findById(id);
         if (!user) {
             return res.status(404).json({ message: 'המשתמש לא נמצא' });
         }
 
-        // Decrypt the stored password to compare it with the current password provided by the user
-        const decryptedPassword = await decryptAES(user.password);
-        // Compare the current password with the decrypted stored password      
-        if (currentPassword !== decryptedPassword ) {
-            return res.status(400).json({ message: 'הסיסמה הנוכחית אינה נכונה' });
+        if (token) {
+            // Check one-time link
+            const oneTimeLink = await OneTimeLink.findOne({ token, used: false});
+            if (!oneTimeLink) {
+                return res.status(401).json({ message: 'הקישור לא חוקי או שפג תוקפו' });
+            }
+
+            // Invalidate the link
+            oneTimeLink.used = true;
+            await oneTimeLink.save();
+        } else {
+            // Normal password update, verify current password
+            const decryptedPassword = await decryptAES(user.password);
+            if (currentPassword !== decryptedPassword) {
+                return res.status(400).json({ message: 'הסיסמה הנוכחית אינה נכונה' });
+            }
         }
 
-        // Encrypt the new password
         const encryptedPassword = encryptAES(newPassword);
-
-        // Update the user's password with the new encrypted password
         user.password = encryptedPassword;
-        // Update the user's password change at to the current date
         user.passwordChangedAt = Date.now();
         await user.save();
 
-        // Return a success response
         return res.status(200).json({ message: 'הסיסמה שונתה בהצלחה' });
     } catch (error) {
         console.error(error);

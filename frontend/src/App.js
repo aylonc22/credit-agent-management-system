@@ -50,7 +50,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register/:agent?" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="change-password/:userId" element={<ChangePassword />} />
+          <Route path="/change-password/:userId" element={<ChangePassword />} />
           <Route path="/agents" element={<AgentManagement />} />
           <Route path="/clients" element={<ClientManagement />} />
           <Route path="/transactions" element={<TransactionManagement />} />
