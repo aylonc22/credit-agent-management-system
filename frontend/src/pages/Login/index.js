@@ -22,7 +22,7 @@ const Login = () => {
       // If 2FA is required, submit the 2FA code
       try {
         const res = await api.post('/auth/verify-2fa', { username , twofaCode });       
-        toast.success(res.data.welcome?res.data.welcome:'ההתחברות בוצעה בהצלחה');
+        toast.success(res.data.welcome ? res.data.welcome : 'ההתחברות בוצעה בהצלחה');
         navigate('/');
       } catch (err) {
         console.error('2FA verification error:', err);
@@ -36,7 +36,7 @@ const Login = () => {
       // If 2FA is not required, proceed with the usual login
       try {
         const res = await api.post('/auth/login', { username, password });
-        console.log( res.data.token)
+        console.log(res.data.token);
         localStorage.setItem('token', res.data.token); // Store JWT token
         toast.success(res.data.message);
         navigate('/');
@@ -60,6 +60,22 @@ const Login = () => {
         }
       }
     }
+  };
+
+  // Function to handle resend 2FA code
+  const handleResend2fa = async () => {
+    try {
+      await api.post('/auth/resend-2fa', { username });
+      toast.success('קוד האימות נשלח שוב');
+    } catch (err) {
+      toast.error('שגיאה בשליחת קוד האימות');
+    }
+  };
+
+  // Function to handle going back to login screen
+  const handleGoBack = () => {
+    setIsTwofaRequired(false);
+    setTwofaCode('');
   };
 
   return (
@@ -99,15 +115,25 @@ const Login = () => {
           )}
 
           {isTwofaRequired && (
-            <div className="input-group">
-              <input
-                type="text"
-                placeholder="הזן קוד אימות"
-                value={twofaCode}
-                onChange={(e) => setTwofaCode(e.target.value)}
-                required
-              />
-            </div>
+            <>
+              <div className="input-group">
+                <input
+                  type="text"
+                  placeholder="הזן קוד אימות"
+                  value={twofaCode}
+                  onChange={(e) => setTwofaCode(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="twofa-links">
+                <button type="button" onClick={handleResend2fa} className="resend-btn">
+                  שלח קוד אימות שוב
+                </button>
+                <button type="button" onClick={handleGoBack} className="go-back-btn">
+                  חזור להתחברות
+                </button>
+              </div>
+            </>
           )}
 
           <button type="submit" className="btn">
@@ -115,13 +141,18 @@ const Login = () => {
           </button>
         </form>
 
-        <div className="links">
-          <a href="/forgot-password">שכחת סיסמה?</a>
-        </div>
+        {/* Remove Forgot Password and Sign Up links when 2FA is required */}
+        {!isTwofaRequired && (
+          <div className="links">
+            <a href="/forgot-password">שכחת סיסמה?</a>
+          </div>
+        )}
 
-        <div className="register-link">
-          <p>אין לך חשבון? <Link to="/register">הירשם</Link></p>
-        </div>
+        {!isTwofaRequired && (
+          <div className="register-link">
+            <p>אין לך חשבון? <Link to="/register">הירשם</Link></p>
+          </div>
+        )}
       </div>
     </div>
   );
