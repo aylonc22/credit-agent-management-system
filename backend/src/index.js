@@ -3,9 +3,8 @@ const cors = require("cors");
 const path = require('path');
 const mongoose = require('mongoose');
 const User = require("./models/User");
-const { encryptAES, decryptAES } = require("./utils/hashPassword");
+const { encryptAES } = require("./utils/hashPassword");
 const Settings = require("./models/Settings");
-const { twoFaVerification } = require("./utils/email");
 require('dotenv').config();
 
 const app = express();
@@ -32,8 +31,10 @@ mongoose.connect(process.env.MONGO_URI, {
   .then(() => console.log('✅ Connected to MongoDB'))
   .catch((err) => console.error('❌ MongoDB connection error:', err));
 
-app.listen(3001, () => {
-    console.log("Backend running on http://localhost:3001");
+  const PORT = process.env.PORT || 3001;
+
+app.listen(PORT, () => {
+    console.log(`Backend running on http://localhost:${PORT}`);
     initApp();
 });
 
