@@ -32,9 +32,10 @@ mongoose.connect(process.env.MONGO_URI, {
   .catch((err) => console.error('❌ MongoDB connection error:', err));
 
   const PORT = process.env.PORT || 3001;
+  const HOST = process.env.SERVER_URL + ":"+ PORT ||  'http://localhost:' + PORT
 
 app.listen(PORT, () => {
-    console.log(`Backend running on http://localhost:${PORT}`);
+    console.log(`Backend running on${HOST}`);
     initApp();
 });
 

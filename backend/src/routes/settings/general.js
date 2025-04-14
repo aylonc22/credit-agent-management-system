@@ -81,11 +81,11 @@ router.put(
       }
 
       if (logo?.[0]) {
-        settings.logo = process.env.SERVER_URL + '/uploads/' + logo[0].filename;
+        settings.logo = process.env.SERVER_URL + ":" + process.env.PORT + '/uploads/' + logo[0].filename;
       }
 
       if (backgroundImage?.[0]) {
-        settings.backgroundImage = process.env.SERVER_URL + '/uploads/' + backgroundImage[0].filename;
+        settings.backgroundImage = process.env.SERVER_URL + ":" + process.env.PORT  + '/uploads/' + backgroundImage[0].filename;
       }
 
       if (welcomeMessage !== undefined) {
