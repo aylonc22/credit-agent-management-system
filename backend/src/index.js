@@ -35,7 +35,7 @@ mongoose.connect(process.env.MONGO_URI, {
   const HOST = process.env.SERVER_URL + ":"+ PORT ||  'http://localhost:' + PORT
 
 app.listen(PORT, () => {
-    console.log(`Backend running on${HOST}`);
+    console.log(`Backend running on ${HOST}`);
     initApp();
 });
 
