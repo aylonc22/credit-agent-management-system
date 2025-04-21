@@ -1,0 +1,61 @@
+/* Payment Form Styles */
+.payment-form {
+    background: #f7f7f7;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    direction: rtl;
+    max-width: 600px;
+  }
+  
+  .payment-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .payment-form input,
+  .payment-form textarea {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+    font-size: 14px;
+    resize: vertical;
+  }
+  
+  .payment-form button {
+    background-color: #1e2a35;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .payment-form button:hover {
+    background-color: #34495e;
+  }
+  
+  /* Result Display */
+  .payment-link-result {
+    margin-top: 20px;
+    background: #eef2f5;
+    padding: 15px;
+    border-radius: 6px;
+    direction: rtl;
+    max-width: 600px;
+  }
+  
+  .payment-form select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+    font-size: 14px;
+  }
+  

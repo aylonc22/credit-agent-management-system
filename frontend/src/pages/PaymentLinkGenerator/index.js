@@ -1,68 +1,114 @@
-// src/pages/PaymentLinkGenerator.js
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import './index.css';
 import useAuth from '../../hooks/useAuth';
+import api from '../../api/axios';
+import { toast } from 'react-toastify';
+import { useLocation } from 'react-router-dom';
 
 const PaymentLinkGenerator = () => {
   const [amount, setAmount] = useState('');
   const [notes, setNotes] = useState('');
+  const [clients, setClients] = useState([]);
+  const [agents, setAgents] = useState([]);
   const [client, setClient] = useState('');
   const [paymentLink, setPaymentLink] = useState('');
+  const location = useLocation();
+  const userData = useAuth();
 
-  const userData = useAuth(); 
+    useEffect(() => {
+     const init = async ()=>{
+      let agents = [];
+      if (userData) {  
+        if (userData.role !== 'agent') {
+         agents = await fetchAgents();
+        } 
+        fetchClients(agents);
+      }
+  
+      // Check if the URL contains the query parameter for agent_name
+      const urlParams = new URLSearchParams(location.search);
+      const clientID = urlParams.get('client_id');
+  
+      // If there's an agent name in the query, filter the client
+      if (clientID) {
+        setClient(clientID);
+      }
+     }
+  
+     init();
+    }, [userData, location]);
 
-  // Handle case when user is not authenticated (userData is null)
+
+    const fetchClients = async (agents) => {
+      try {           
+        const res = await api.get(`/api/client${userData.role==='master-agent'?`?agents=${encodeURIComponent(JSON.stringify(agents.map(a=>a._id)))}`:'' }`);
+        setClients(res.data.clients);     
+      } catch (err) {
+        console.error('שגיאה בטעינת לקוחות:', err);
+        toast.error('שגיאה בטעינת לקוחות');
+      }
+    };
+  
+    const fetchAgents = async () => {
+      try {
+        const res = await api.get(`/api/agent${userData.role === 'master-agent' ?'?pushSelf=true':'' }`);
+        setAgents(res.data.agents);
+       return res.data.agents;
+      } catch (err) {
+        console.error('שגיאה בקבלת סוכנים:', err);
+      }
+    };
+
   if (!userData) {
-    return <div>Loading...</div>; // Optionally show a loading state or redirect to login
+    return <div>טוען...</div>;
   }
 
-  const { id, role } = userData;
-
   const handleGenerateLink = () => {
-    // Sample link generation logic
     const link = `https://mysite.com/payment?id=${client}&amount=${amount}`;
     setPaymentLink(link);
   };
 
   return (
-    <div>
-      <h1>Payment Link Generator</h1>
-      <form onSubmit={(e) => e.preventDefault()}>
-        <label>Amount:</label>
+    <div className="dashboard">
+      <h1>יצירת קישור תשלום</h1>
+      <form className="payment-form" onSubmit={(e) => e.preventDefault()}>
+        <label>סכום לתשלום:</label>
         <input
           type="number"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
+          placeholder="הכנס סכום"
           required
         />
-        <br />
-        <label>Notes:</label>
+  
+        <label>הערות:</label>
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
+          placeholder="הכנס הערות (אופציונלי)"
         ></textarea>
-        <br />
-        <label>Client:</label>
-        <input
-          type="text"
+  
+        <label>לקוח:</label>
+        <select
           value={client}
           onChange={(e) => setClient(e.target.value)}
           required
-        />
-        <br />
-        <button onClick={handleGenerateLink}>Generate Payment Link</button>
-      </form>
-
-      {paymentLink && (
-        <div>
-          <h2>Generated Payment Link:</h2>
-          <a href={paymentLink} target="_blank" rel="noopener noreferrer">
-            {paymentLink}
-          </a>
-        </div>
-      )}
+        >
+          <option value="">בחר לקוח</option>
+          {clients.map((c) => (
+            <option key={c._id} value={c._id}>
+              {c.name} ({c._id})
+            </option>
+          ))}
+        </select>
+  
+        <button type="button" onClick={handleGenerateLink}>
+          יצירת קישור
+        </button>
+      </form>     
     </div>
   );
+  
 };
 
 export default PaymentLinkGenerator;
