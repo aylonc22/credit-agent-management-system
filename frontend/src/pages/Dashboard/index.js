@@ -44,11 +44,11 @@ const Dashboard = () => {
       <div className="stats">
         <div className="stat-item">
           <h3>סה"כ קרדיטים שנרכשו היום</h3> {/* Total Credits Purchased Today */}
-          <p>{stats.totalCreditsToday} ₪</p>
+          <p>{stats.totalCreditsToday} $</p>
         </div>
         <div className="stat-item">
           <h3>סה"כ קרדיטים שנרכשו החודש</h3> {/* Total Credits Purchased This Month */}
-          <p>{stats.totalCreditsThisMonth} ₪</p>
+          <p>{stats.totalCreditsThisMonth} $</p>
         </div>
         <div className="stat-item">
           <h3>מספר עסקאות פעילות</h3> {/* Active Transactions */}

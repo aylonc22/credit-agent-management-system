@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
 
 const transactionSchema = new mongoose.Schema({
-  agent: { type: mongoose.Schema.Types.ObjectId, ref: 'Agent', required: true },
+  agent: { type: mongoose.Schema.Types.ObjectId, ref: 'Agent'},
   client: { type: mongoose.Schema.Types.ObjectId, ref: 'Client', required: true },
   amount: { type: Number, required: true },
+  amount_paid: { type: Number, default:0 },
   status: { type: String, enum: ['completed', 'pending', 'failed'], default: 'pending' },
-  paymentMethod: { type: String, required: true },  // Example: 'credit card', 'paypal'
+  notes: { type:String },
   createdAt: { type: Date, default: Date.now },
 });
 

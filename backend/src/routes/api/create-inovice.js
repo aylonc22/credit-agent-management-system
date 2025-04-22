@@ -1,93 +1,59 @@
 const express = require('express');
-const crypto = require('crypto');
 const fetch = require('node-fetch');
 const autheMiddleware = require('../middleware/authMiddleware');
+const Transaction = require('../../models/Transaction'); // make sure path is correct
 const router = express.Router();
+require('dotenv').config();
 
-// Replace with your actual integration credentials
-const CLIENT_ID = process.COINPAYMENTS_ID;
-const CLIENT_SECRET = process.COINPAYMENTS_SECRET;
-const COINPAYMENTS_API_URL = 'https://api.coinpayments.com/api/v2/merchant/invoices';
+const WALLET_ADDRESS = process.env.WALLET;
+const SERVER_URL = process.env.SERVER_URL + ":" + process.env.PORT;
+const CARD2CRYPTO_API_URL = 'https://api.card2crypto.org/control/wallet.php';
 
-// Helper to generate HMAC signature
-function generateHmacSignature(method, url, clientId, timestamp, payload) {
-  const message =
-    '\ufeff' + // BOM
-    method.toUpperCase() +
-    url +
-    clientId +
-    timestamp +
-    payload;
-
-  return crypto
-    .createHmac('sha256', CLIENT_SECRET)
-    .update(message)
-    .digest('base64');
-}
-
-// Route to create a minimal invoice link
-router.post('/create-invoice', autheMiddleware, async (req, res) => {
+router.post('/', autheMiddleware, async (req, res) => {
   try {
-    const { name, amount } = req.body;
+    const { clientId, amount, email, notes } = req.body;
 
-    if (!name || !amount) {
+    if (!clientId || !amount || !email) {
       return res.status(400).json({ message: 'חסרים שדות חיוניים' });
     }
 
-    const invoicePayload = {
-      currency: 'USD',
-      items: [
-        {
-          name,
-          quantity: { value: 1, type: 1 },
-          amount: amount.toString()
-        }
-      ],
-      amount: {
-        breakdown: {
-          subtotal: amount.toString()
-        },
-        total: amount.toString()
-      }
-    };
+    // Create transaction with status "pending"
+    const transaction = await Transaction.create({
+      agent: req.user.agentId,
+      client: clientId,
+      amount,
+      notes,
+      status: 'pending',
+    });
 
-    const jsonPayload = JSON.stringify(invoicePayload);
-    const timestamp = new Date().toISOString().split('.')[0]; // No milliseconds or timezone
-    const signature = generateHmacSignature(
-      'POST',
-      '/api/v2/merchant/invoices',
-      CLIENT_ID,
-      timestamp,
-      jsonPayload
+    // ✅ Append transaction ID to callback URL
+    const callbackUrl = `${SERVER_URL}/api/payment-callback?transactionId=${transaction._id}`;
+
+    const walletRes = await fetch(
+      `${CARD2CRYPTO_API_URL}?address=${encodeURIComponent(WALLET_ADDRESS)}&callback=${encodeURIComponent(callbackUrl)}`
     );
 
-    const response = await fetch(COINPAYMENTS_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CoinPayments-Client': CLIENT_ID,
-        'X-CoinPayments-Timestamp': timestamp,
-        'X-CoinPayments-Signature': signature
-      },
-      body: jsonPayload
-    });
+    const walletData = await walletRes.json();
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      console.error('CoinPayments API Error:', data);
-      return res.status(500).json({ message: 'שגיאה ביצירת החשבונית', error: data });
+    if (!walletRes.ok || !walletData.address_in) {
+      console.error('Card2Crypto Wallet API Error:', walletData);
+      return res.status(500).json({ message: 'שגיאה בהפקת כתובת הארנק' });
     }
 
-    const { id, link } = data.result;
+    const encryptedAddress = walletData.address_in;
+
+    const paymentUrl = `https://pay.card2crypto.org/process-payment.php?address=${encryptedAddress}&amount=${amount}&provider=wert&email=${email}&currency=USD`;
+
+    console.log(callbackUrl+'&value_coin=2');
+
+
     return res.status(201).json({
       message: 'החשבונית נוצרה בהצלחה',
-      invoice_id: id,
-      checkout_url: link
+      checkout_url: paymentUrl,
     });
   } catch (err) {
-    console.error('Error creating invoice:', err);
-    return res.status(500).json({ message: 'שגיאה כללית ביצירת חשבונית' });
+    console.error('Error creating payment link:', err);
+    return res.status(500).json({ message: 'שגיאה כללית ביצירת חשבון' });
   }
 });
 

@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './index.css';
 import useAuth from '../../hooks/useAuth';
 import api from '../../api/axios';
@@ -15,57 +15,70 @@ const PaymentLinkGenerator = () => {
   const location = useLocation();
   const userData = useAuth();
 
-    useEffect(() => {
-     const init = async ()=>{
+  useEffect(() => {
+    const init = async () => {
       let agents = [];
-      if (userData) {  
+      if (userData) {
         if (userData.role !== 'agent') {
-         agents = await fetchAgents();
-        } 
+          agents = await fetchAgents();
+        }
         fetchClients(agents);
       }
-  
-      // Check if the URL contains the query parameter for agent_name
+
       const urlParams = new URLSearchParams(location.search);
       const clientID = urlParams.get('client_id');
-  
-      // If there's an agent name in the query, filter the client
       if (clientID) {
         setClient(clientID);
       }
-     }
-  
-     init();
-    }, [userData, location]);
-
-
-    const fetchClients = async (agents) => {
-      try {           
-        const res = await api.get(`/api/client${userData.role==='master-agent'?`?agents=${encodeURIComponent(JSON.stringify(agents.map(a=>a._id)))}`:'' }`);
-        setClients(res.data.clients);     
-      } catch (err) {
-        console.error('שגיאה בטעינת לקוחות:', err);
-        toast.error('שגיאה בטעינת לקוחות');
-      }
     };
-  
-    const fetchAgents = async () => {
-      try {
-        const res = await api.get(`/api/agent${userData.role === 'master-agent' ?'?pushSelf=true':'' }`);
-        setAgents(res.data.agents);
-       return res.data.agents;
-      } catch (err) {
-        console.error('שגיאה בקבלת סוכנים:', err);
-      }
-    };
+
+    init();
+  }, [userData, location]);
+
+  const fetchClients = async (agents) => {
+    try {
+      const res = await api.get(`/api/client${userData.role === 'master-agent' ? `?agents=${encodeURIComponent(JSON.stringify(agents.map(a => a._id)))}` : ''}`);
+      setClients(res.data.clients);
+    } catch (err) {
+      console.error('שגיאה בטעינת לקוחות:', err);
+      toast.error('שגיאה בטעינת לקוחות');
+    }
+  };
+
+  const fetchAgents = async () => {
+    try {
+      const res = await api.get(`/api/agent${userData.role === 'master-agent' ? '?pushSelf=true' : ''}`);
+      setAgents(res.data.agents);
+      return res.data.agents;
+    } catch (err) {
+      console.error('שגיאה בקבלת סוכנים:', err);
+    }
+  };
 
   if (!userData) {
     return <div>טוען...</div>;
   }
 
-  const handleGenerateLink = () => {
-    const link = `https://mysite.com/payment?id=${client}&amount=${amount}`;
-    setPaymentLink(link);
+  const handleGenerateLink = async () => {
+    if (!amount || !client) {
+      toast.warn('יש למלא את הסכום ולבחור לקוח');
+      return;
+    }
+console.log(clients[client]);
+    try {
+
+      const res = await api.post('/api/create-inovice', {
+        clientId: clients[client]._id,
+        email: clients[client].userId.email,
+        amount,
+        notes,
+      });
+      setPaymentLink(res.data.checkout_url);
+      toast.success('קישור נוצר בהצלחה');
+    } catch (err) {
+      console.error('שגיאה ביצירת קישור תשלום:', err);
+      toast.error('שגיאה ביצירת קישור');
+    }
   };
 
   return (
@@ -80,14 +93,15 @@ const PaymentLinkGenerator = () => {
           placeholder="הכנס סכום"
           required
         />
-  
+
         <label>הערות:</label>
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder="הכנס הערות (אופציונלי)"
+          style={{ resize: 'vertical', maxHeight: '100px' }} // limit dragability
         ></textarea>
-  
+
         <label>לקוח:</label>
         <select
           value={client}
@@ -95,20 +109,43 @@ const PaymentLinkGenerator = () => {
           required
         >
           <option value="">בחר לקוח</option>
-          {clients.map((c) => (
-            <option key={c._id} value={c._id}>
-              {c.name} ({c._id})
+          {clients.map((c,index) => (
+            <option key={c._id} value={index}>
+              {c.name}
             </option>
           ))}
         </select>
-  
+
         <button type="button" onClick={handleGenerateLink}>
           יצירת קישור
         </button>
-      </form>     
+      </form>
+
+      {paymentLink && (
+  <div className="generated-link">
+    <p>🔗 קישור תשלום:</p>
+    <div className="link-container">
+      <input
+        type="text"
+        value={paymentLink}
+        readOnly
+        onClick={(e) => e.target.select()}
+      />
+      <button
+        type="button"
+        className="copy-btn"
+        onClick={() => {
+          navigator.clipboard.writeText(paymentLink);
+          toast.success('הקישור הועתק!');
+        }}
+      >
+        העתק קישור
+      </button>
+    </div>
+  </div>
+)}
     </div>
   );
-  
 };
 
 export default PaymentLinkGenerator;

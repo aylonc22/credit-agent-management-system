@@ -58,4 +58,39 @@
     width: 100%;
     font-size: 14px;
   }
+
+  .generated-link {
+    margin-top: 20px;
+    direction: rtl;
+  }
+  
+  .link-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .link-container input {
+    flex: 1;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    direction: ltr;
+  }
+  
+  .copy-btn {
+    padding: 8px 12px;
+    background-color: #1e88e5;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.2s ease;
+  }
+  
+  .copy-btn:hover {
+    background-color: #1565c0;
+  }
+  
   
