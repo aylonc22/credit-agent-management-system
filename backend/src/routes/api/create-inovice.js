@@ -6,7 +6,10 @@ const router = express.Router();
 require('dotenv').config();
 
 const WALLET_ADDRESS = process.env.WALLET;
-const SERVER_URL = process.env.SERVER_URL + ":" + process.env.PORT;
+const isProduction = process.env.NODE_ENV === 'production';
+const port = process.env.PORT || '3001'; // fallback to default dev port
+const SERVER_URL = `${process.env.SERVER_URL}${isProduction ? '' : `:${port}`}`;
+
 const CARD2CRYPTO_API_URL = 'https://api.card2crypto.org/control/wallet.php';
 
 router.post('/', autheMiddleware, async (req, res) => {
