@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import api from '../../api/axios';
 import { toast } from 'react-toastify';
@@ -20,13 +19,14 @@ const TransactionManagement = () => {
     if (!userData) {
       return;
     }
-    let agents = []
+    let agents = [];
+    let clients = [];
     // Fetch agents and clients only if the user is an admin
     if (userData.role !== 'agent') {
        agents = await fetchAgents();
     }
-    fetchClients(agents);
-    fetchTransactions();
+    clients = await fetchClients(agents);
+    fetchTransactions(clients);
    }
    init();
   }, [userData]);
@@ -35,9 +35,9 @@ const TransactionManagement = () => {
     return <div>טוען...</div>;  // Optionally show a loading state or redirect to login
   }
 
-  const fetchTransactions = async () => {
+  const fetchTransactions = async (clients) => {
     try {
-      const res = await api.get('/api/transaction');
+      const res = await api.get(`/api/transaction${userData.role === 'master-agent' ? `?client=${encodeURIComponent(JSON.stringify(clients.map(a=>a._id)))}`:'' }`);
       setTransactions(res.data.transactions);
     } catch (err) {
       console.error('שגיאה בטעינת עסקאות:', err);
@@ -49,6 +49,7 @@ const TransactionManagement = () => {
     try {
       const res = await api.get(`/api/client${userData.role === 'master-agent' ? `?agents=${encodeURIComponent(JSON.stringify(agents.map(a=>a._id)))}`:'' }`);
       setClients(res.data.clients);
+      return res.data.clients;
     } catch (err) {
       console.error('שגיאה בטעינת לקוחות:', err);
       toast.error('שגיאה בטעינת לקוחות');
@@ -106,7 +107,8 @@ const TransactionManagement = () => {
           ))}
         </select>
 
-        <select value={agentFilter} onChange={(e) => setAgentFilter(e.target.value)}>
+        {userData.role !== 'client' && (
+          <select value={agentFilter} onChange={(e) => setAgentFilter(e.target.value)}>
           <option value="">כל הסוכנים</option>
           {agents.map((agent) => (
             <option key={agent._id} value={agent._id}>
@@ -114,6 +116,7 @@ const TransactionManagement = () => {
             </option>
           ))}
         </select>
+        )}
       </div>
 
       {/* Transaction Table */}
@@ -124,8 +127,7 @@ const TransactionManagement = () => {
               <th>מספר</th>
               <th>סוכן</th>
               <th>לקוח</th>
-              <th>סכום</th>
-              <th>שיטת תשלום</th>
+              <th>סכום</th>              
               <th>תאריך יצירה</th>
               <th>סטטוס</th>
             </tr>
@@ -152,8 +154,7 @@ const TransactionManagement = () => {
                     <td>{index + 1}</td>
                     <td>{transaction.agent?.name || '-'}</td>
                     <td>{transaction.client?.name || '-'}</td>
-                    <td>{transaction.amount}</td>
-                    <td>{transaction.paymentMethod}</td>
+                    <td>{transaction.amount}</td>                   
                     <td>{new Date(transaction.createdAt).toLocaleDateString('he-IL')}</td>
                     <td>{transaction.status === 'completed' ? 'הושלמה' : transaction.status === 'pending' ? 'ממתינה' : 'נכשלה'}</td>
                   </tr>
