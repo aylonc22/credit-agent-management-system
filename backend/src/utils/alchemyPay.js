@@ -36,8 +36,8 @@ function generateAlchemy(wallet, amount, merchantOrderNo, timestamp, callbackUrl
 const onRampHttpMethod = 'GET';
 const onRampRequestPath = '/index/rampPageBuy'; 
 
-const appId = process.env.appId
-const appSecret = process.env.appSecret;
+const appId = process.env.APP_ID
+const appSecret = process.env.APP_SECRET;
 
 // Request parameters
 const paramsToSign = {
