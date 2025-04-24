@@ -79,6 +79,3 @@ async function initApp() {
     console.error('❌ Error during initApp:', e.message);
   }
 }
-
-
-

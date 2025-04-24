@@ -5,6 +5,7 @@ const transactionSchema = new mongoose.Schema({
   client: { type: mongoose.Schema.Types.ObjectId, ref: 'Client', required: true },
   amount: { type: Number, required: true },
   amount_paid: { type: Number, default:0 },
+  merchantOrderNo: { type: String },
   status: { type: String, enum: ['completed', 'pending', 'failed'], default: 'pending' },
   notes: { type:String },
   createdAt: { type: Date, default: Date.now },

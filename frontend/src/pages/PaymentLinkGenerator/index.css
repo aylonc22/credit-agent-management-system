@@ -92,5 +92,10 @@
   .copy-btn:hover {
     background-color: #1565c0;
   }
+
+  .alchemyFrame{
+    display: flex;
+    justify-content: center;
+  }
   
   

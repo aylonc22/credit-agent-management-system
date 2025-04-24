@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { useLocation } from 'react-router-dom';
 
 const PaymentLinkGenerator = () => {
-  const [amount, setAmount] = useState('');
+  const [amount, setAmount] = useState(15);
   const [notes, setNotes] = useState('');
   const [clients, setClients] = useState([]);
   const [agents, setAgents] = useState([]);
@@ -19,10 +19,12 @@ const PaymentLinkGenerator = () => {
     const init = async () => {
       let agents = [];
       if (userData) {
-        if (userData.role !== 'agent') {
+        if (userData.role !== 'agent' && userData.role !== 'client') {
           agents = await fetchAgents();
         }
-        fetchClients(agents);
+        if(userData.role !=='client'){
+          fetchClients(agents);
+        }
       }
 
       const urlParams = new URLSearchParams(location.search);
@@ -60,16 +62,18 @@ const PaymentLinkGenerator = () => {
   }
 
   const handleGenerateLink = async () => {
-    if (!amount || !client) {
+    if (!amount || (!client && !userData.id)) {
       toast.warn('יש למלא את הסכום ולבחור לקוח');
       return;
     }
-console.log(clients[client]);
+    if(amount<15){
+      toast.warn('מינימום קניה של 15 דולר');
+      return;
+    }
     try {
 
       const res = await api.post('/api/create-inovice', {
-        clientId: clients[client]._id,
-        email: clients[client].userId.email,
+        clientId: clients[client]?._id || userData.id,
         amount,
         notes,
       });
@@ -83,13 +87,16 @@ console.log(clients[client]);
 
   return (
     <div className="dashboard">
-      <h1>יצירת קישור תשלום</h1>
+    {(!paymentLink || userData.role !=='client') ? (
+      <>
+        <h1>יצירת {userData.role !== 'client' && 'קישור'} תשלום</h1>
       <form className="payment-form" onSubmit={(e) => e.preventDefault()}>
         <label>סכום לתשלום:</label>
         <input
           type="number"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
+          min={15}
           placeholder="הכנס סכום"
           required
         />
@@ -102,7 +109,9 @@ console.log(clients[client]);
           style={{ resize: 'vertical', maxHeight: '100px' }} // limit dragability
         ></textarea>
 
-        <label>לקוח:</label>
+        {userData.role !== 'client' && (
+          <>
+          <label>לקוח:</label>
         <select
           value={client}
           onChange={(e) => setClient(e.target.value)}
@@ -115,13 +124,14 @@ console.log(clients[client]);
             </option>
           ))}
         </select>
+        </>)}
 
         <button type="button" onClick={handleGenerateLink}>
-          יצירת קישור
+          {userData.role!=='client'?"יצירת קישור":"מעבר לתשלום"}
         </button>
       </form>
 
-      {paymentLink && (
+      {paymentLink && userData.role !== 'cleint' && (
   <div className="generated-link">
     <p>🔗 קישור תשלום:</p>
     <div className="link-container">
@@ -144,6 +154,16 @@ console.log(clients[client]);
     </div>
   </div>
 )}
+      </>
+    ):(
+      <div className='alchemyFrame'>
+         <iframe height="625" title="AlchemyPay On/Off Ramp Widget"
+          src={paymentLink}
+          frameborder="no" allowtransparency="true" allowfullscreen="" 
+          />        
+      </div>
+    )}
+
     </div>
   );
 };
