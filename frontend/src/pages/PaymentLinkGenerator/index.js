@@ -62,7 +62,7 @@ const PaymentLinkGenerator = () => {
   }
 
   const handleGenerateLink = async () => {
-    if (!amount || (!client && !userData.id)) {
+    if (!amount || (!client && userData.role !== 'client')) {
       toast.warn('יש למלא את הסכום ולבחור לקוח');
       return;
     }

@@ -19,6 +19,7 @@ import Unauthorized from './pages/Unauthorized/index.js';
 import ChangePassword from './pages/ChangePassword/index.js';
 import TermsOfUse from './pages/TermsOfUse/index.js';
 import { useEffect } from 'react';
+import PaymentRedirectHandler from './pages/Payment/index.js';
 
 function App() {
   const location = useLocation();
@@ -28,7 +29,8 @@ function App() {
     location.pathname === '/forgot-password' ||
     location.pathname === '/change-password' ||
     location.pathname.startsWith('/change-password/') ||
-    location.pathname.startsWith('/register/');
+    location.pathname.startsWith('/register/') ||
+    location.pathname.startsWith('/payment');
 
     useEffect(() => {
       const favicon = document.querySelector("link[rel='icon']");
@@ -59,6 +61,7 @@ function App() {
           <Route path="/settings" element={<SystemSettings />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="/terms" element={<TermsOfUse/>} />
+          <Route path='/payment' element={<PaymentRedirectHandler/>}/>
         </Routes>
          
          {/* Toast notifications */}

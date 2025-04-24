@@ -7,5 +7,6 @@ router.use('/client', require('./client'));
 router.use('/transaction', require('./transaction'));
 router.use('/create-inovice', require('./create-inovice'));
 router.use('/payment-callback', require('./payment-callback'));
+router.use('/alchemy-redirect', require('./alchemy-redirect'));
 
 module.exports = router;
