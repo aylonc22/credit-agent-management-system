@@ -78,7 +78,9 @@ const PaymentLinkGenerator = () => {
         notes,
       });
       setPaymentLink(res.data.checkout_url);
-      toast.success('קישור נוצר בהצלחה');
+     if(userData.role !== 'client'){
+       toast.success('קישור נוצר בהצלחה');
+     }
     } catch (err) {
       console.error('שגיאה ביצירת קישור תשלום:', err);
       toast.error('שגיאה ביצירת קישור');
@@ -94,7 +96,7 @@ const PaymentLinkGenerator = () => {
         <label>סכום לתשלום:</label>
         <input
           type="number"
-          value={amount}
+          value={amount }
           onChange={(e) => setAmount(e.target.value)}
           min={15}
           placeholder="הכנס סכום"

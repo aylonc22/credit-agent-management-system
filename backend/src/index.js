@@ -63,7 +63,7 @@ async function initApp() {
 
     if (!existingSettings) {
       const defaultSettings = new Settings({
-        logo: process.env.SERVER_URL + '/uploads/fish.jpg',
+        logo: process.env.SERVER_URL +process.env.NODE_ENV === 'production'?'':process.env.PORT + '/uploads/fish.jpg',
         backgroundImage: '',
         welcomeMessage: 'ברוך הבא למערכת!',
         termsOfUse: 'תנאי השימוש של המערכת.',

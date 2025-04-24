@@ -17,7 +17,8 @@ const Navbar = () => {
       try {
         const response = await api.get('/settings/general');
         if (response.data?.logo) {
-          setLogoUrl(response.data.logo);         
+          setLogoUrl(response.data.logo); 
+          console.log(response.data.logo);        
         }
       } catch (error) {
         console.error('Failed to fetch settings:', error);
@@ -74,7 +75,7 @@ const Navbar = () => {
           )}
           {role !== 'client' && <li><Link to="/clients">ניהול לקוחות 👥</Link></li>}
           {role !== 'client' && <li><Link to="/transactions">ניהול עסקאות 💸</Link></li>}
-          <li><Link to="/payment-links">יצירת קישורי תשלום 🔗</Link></li>
+          <li><Link to="/payment-links">{role !== 'client'?'יצירת קישורי תשלום 🔗':'קניית קרדיטים 🪙'}</Link></li>
           <li><Link to="/reports">דוחות 📈</Link></li>
           <li><Link to="/settings">הגדרות מערכת ⚙️</Link></li>
           <li className="logout">

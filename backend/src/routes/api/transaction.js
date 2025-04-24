@@ -24,14 +24,14 @@ router.get('/', autheMiddleware ,async (req, res) => {
          }else if(isMaster){
             if (req.query.clients) {
                 try {
-                  clientIds.push(...JSON.parse(req.query.clients));                  
+                  clientIds.push(...JSON.parse(req.query.clients));                       
                 } catch (e) {
                   return res.status(400).json({ message: 'Invalid agents array' });
                 }
               }            
             const transactions = await Transaction.find({
                 client: { $in: clientIds }
-              })            
+              }).populate("client","name").populate("agent",'name');            
                          
             if(transactions)
             {                
@@ -41,7 +41,7 @@ router.get('/', autheMiddleware ,async (req, res) => {
             }
 
          }else if(isAgent){
-            const transactions = await Transaction.find({agentId:_agentId});           
+            const transactions = await Transaction.find({agent:_agentId}).populate("client","name").populate("agent",'name');;           
             if(transactions)
             {
                 return res.status(200).json({message:"לקוחות הוצאו בהצלחה", transactions});

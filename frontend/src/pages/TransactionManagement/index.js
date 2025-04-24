@@ -37,7 +37,7 @@ const TransactionManagement = () => {
 
   const fetchTransactions = async (clients) => {
     try {
-      const res = await api.get(`/api/transaction${userData.role === 'master-agent' ? `?client=${encodeURIComponent(JSON.stringify(clients.map(a=>a._id)))}`:'' }`);
+      const res = await api.get(`/api/transaction${userData.role === 'master-agent' ? `?clients=${encodeURIComponent(JSON.stringify(clients.map(a=>a._id)))}`:'' }`);
       setTransactions(res.data.transactions);
     } catch (err) {
       console.error('שגיאה בטעינת עסקאות:', err);
@@ -107,7 +107,7 @@ const TransactionManagement = () => {
           ))}
         </select>
 
-        {userData.role !== 'client' && (
+        {(userData.role !== 'client' && userData.role !== "agent") && (
           <select value={agentFilter} onChange={(e) => setAgentFilter(e.target.value)}>
           <option value="">כל הסוכנים</option>
           {agents.map((agent) => (
@@ -154,7 +154,7 @@ const TransactionManagement = () => {
                     <td>{index + 1}</td>
                     <td>{transaction.agent?.name || '-'}</td>
                     <td>{transaction.client?.name || '-'}</td>
-                    <td>{transaction.amount}</td>                   
+                    <td>{transaction.amount}$</td>                   
                     <td>{new Date(transaction.createdAt).toLocaleDateString('he-IL')}</td>
                     <td>{transaction.status === 'completed' ? 'הושלמה' : transaction.status === 'pending' ? 'ממתינה' : 'נכשלה'}</td>
                   </tr>

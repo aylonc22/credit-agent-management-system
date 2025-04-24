@@ -5,6 +5,7 @@ const {v4:uuidv4} = require('uuid');
 const Transaction = require('../../models/Transaction'); // make sure path is correct
 const OneTimeLink = require('../../models/OneTimeLink');
 const generateAlchemy = require('../../utils/alchemyPay');
+const Client = require('../../models/Client');
 const router = express.Router();
 require('dotenv').config();
 
@@ -21,14 +22,27 @@ router.post('/', autheMiddleware, async (req, res) => {
       return res.status(400).json({ message: 'חסרים שדות חיוניים' });
     }
 
+    let client;
+    let agent;
+    if(req.user.role === 'client'){
+        const res = await Client.findOne({userId:clientId});
+        if(res){
+          client = res._id;
+          agent = res.agentId;
+        }
+    }else{
+      const res = await Client.findOne({_id:clientId});
+      agent = res.agentId;
+    }
+
     const timestamp = String(Date.now());
     const uuid = uuidv4();
     const order = `${uuid}-${timestamp}`;
 
     // Create transaction with status "pending"
     const transaction = await Transaction.create({
-      agent: req.user.agentId,
-      client: clientId,
+      agent: agent,
+      client: client?client:clientId,
       amount,
       merchantOrderNo:order,
       notes,
