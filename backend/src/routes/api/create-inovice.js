@@ -48,7 +48,7 @@ router.post('/', autheMiddleware, async (req, res) => {
       notes,
       status: 'pending',
     });
-
+console.log(order);
     // ✅ Append transaction ID to callback URL
     const callbackUrl = `${SERVER_URL}/api/payment-callback?transactionOrder=${transaction.merchantOrderNo}`;
 
