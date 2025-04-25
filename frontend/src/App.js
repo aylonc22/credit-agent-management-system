@@ -30,7 +30,7 @@ function App() {
     location.pathname === '/change-password' ||
     location.pathname.startsWith('/change-password/') ||
     location.pathname.startsWith('/register/') ||
-    location.pathname.startsWith('/payment');
+    location.pathname.startsWith('/payment/');
 
     useEffect(() => {
       const favicon = document.querySelector("link[rel='icon']");
