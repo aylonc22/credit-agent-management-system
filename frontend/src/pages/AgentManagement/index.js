@@ -165,10 +165,10 @@ const AgentManagement = () => {
         <table className="agent-table-head">
           <thead>
             <tr>
-              <th>מספר סוכן</th>
+              <th className='mobile-hide'>מספר סוכן</th>
               <th>שם סוכן</th>
-              <th>מייל סוכן</th>
-              <th>סטטוס</th>
+              <th className='mobile-hide'>מייל סוכן</th>
+              <th className='mobile-hide'>סטטוס</th>
               <th>תפקיד</th>
               <th>פעולות</th>
             </tr>
@@ -183,10 +183,10 @@ const AgentManagement = () => {
               <tbody>
                 {filteredAgents.map((agent, index) => (
                   <tr key={agent._id}>
-                    <td>{index + 1}</td>
+                    <td className='mobile-hide'>{index + 1}</td>
                     <td>{agent.name}</td>
-                    <td>{agent.userId?.email || '-'}</td>
-                    <td>{agent.status === 'active' ? 'פעיל' : 'לא פעיל'}</td>
+                    <td className='mobile-hide'>{agent.userId?.email || '-'}</td>
+                    <td className='mobile-hide'>{agent.status === 'active' ? 'פעיל' : 'לא פעיל'}</td>
                     <td>{agent.userId?.role === 'master-agent' ? 'סוכן ראשי' : 'סוכן'}</td>
                     <td>
                       <div className="actions-container">

@@ -192,13 +192,13 @@ const ClientManagement = () => {
         <table className="agent-table-head">
           <thead>
             <tr>
-              <th>מספר</th>
+              <th className='mobile-hide'>מספר</th>
               <th>שם לקוח</th>
-              <th>מייל</th>
+              <th className='mobile-hide'>מייל</th>
               {userData.role !== 'agent' && <th>סוכן</th>}
               <th>קרדיטים</th>
-              <th>נוצר בתאריך</th>
-              <th>סטטוס</th>
+              <th className='mobile-hide'>נוצר בתאריך</th>
+              <th className='mobile-hide'>סטטוס</th>
               <th>פעולות</th>
             </tr>
           </thead>
@@ -223,12 +223,12 @@ const ClientManagement = () => {
                   const agent = agents.find((a) => a._id === client.agentId);
                   return (
                     <tr key={client._id}>
-                      <td>{index + 1}</td>
+                      <td className='mobile-hide' >{index + 1}</td>
                       <td>{client.name}</td>
-                      <td>{client.userId?.email || '-'}</td>
+                      <td className='mobile-hide'>{client.userId?.email || '-'}</td>
                       {userData.role !== 'agent' && <td>{agent?.name || '-'}</td>}
                       <td>{client.credits ?? 0}</td>
-                      <td>{new Date(client.createdAt).toLocaleDateString('he-IL')}</td>
+                      <td className='mobile-hide'>{new Date(client.createdAt).toLocaleDateString('he-IL')}</td>
                       <td>{client.status === 'active' ? 'פעיל' : 'לא פעיל'}</td>
                       <td>
                         {client.status === 'inactive' ? (

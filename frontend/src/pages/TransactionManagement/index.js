@@ -124,11 +124,11 @@ const TransactionManagement = () => {
         <table className="agent-table-head">
           <thead>
             <tr>
-              <th>מספר</th>
+              <th className='mobile-hide' >מספר</th>
               <th>סוכן</th>
               <th>לקוח</th>
               <th>סכום</th>              
-              <th>תאריך יצירה</th>
+              <th className='mobile-hide'>תאריך יצירה</th>
               <th>סטטוס</th>
             </tr>
           </thead>
@@ -151,11 +151,11 @@ const TransactionManagement = () => {
               ) : (
                 filteredTransactions.map((transaction, index) => (
                   <tr key={transaction._id}>
-                    <td>{index + 1}</td>
+                    <td className='mobile-hide'>{index + 1}</td>
                     <td>{transaction.agent?.name || '-'}</td>
                     <td>{transaction.client?.name || '-'}</td>
                     <td>{transaction.amount}$</td>                   
-                    <td>{new Date(transaction.createdAt).toLocaleDateString('he-IL')}</td>
+                    <td className='mobile-hide'>{new Date(transaction.createdAt).toLocaleDateString('he-IL')}</td>
                     <td>{transaction.status === 'completed' ? 'הושלמה' : transaction.status === 'pending' ? 'ממתינה' : 'נכשלה'}</td>
                   </tr>
                 ))
