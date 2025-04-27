@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const User = require("./models/User");
 const { encryptAES } = require("./utils/hashPassword");
 const Settings = require("./models/Settings");
+const Transaction = require("./models/Transaction");
 require('dotenv').config();
 
 const app = express();
@@ -40,6 +41,18 @@ app.listen(PORT, () => {
 });
 
 
+
+async function failExpiredTransactions() {
+  const now = new Date();
+
+  const result = await Transaction.updateMany(
+    { status: 'pending', expireAt: { $lte: now } },
+    { $set: { status: 'failed' } }
+  );
+
+  console.log(`Marked ${result.modifiedCount} transactions as failed due to overtime.`);
+}
+
 async function initApp() {
   try {
     // Check if the admin user exists
@@ -74,7 +87,9 @@ async function initApp() {
     } else {
       console.log('✅ Settings already exist.');
     }   
-    
+    setInterval(failExpiredTransactions, 5 * 60 * 1000);
+
+    failExpiredTransactions();
   } catch (e) {
     console.error('❌ Error during initApp:', e.message);
   }

@@ -49,12 +49,13 @@ const paramsToSign = {
     timestamp: timestamp,
     appId: appId,
     address:wallet,
+    callbackUrl:callbackUrl,
 };
 
 const rawDataToSign = getStringToSign(paramsToSign);
 const requestPathWithParams = onRampRequestPath + '?' + rawDataToSign;
 const onRampSignature = generateSignature(timestamp, onRampHttpMethod, requestPathWithParams, appSecret);
-console.log("https://ramptest.alchemypay.org?" + rawDataToSign + "&sign=" + onRampSignature);
+
 return "https://ramptest.alchemypay.org?" + rawDataToSign + "&sign=" + onRampSignature;
 }
 

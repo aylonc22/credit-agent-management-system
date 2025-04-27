@@ -46,11 +46,12 @@ router.post('/', autheMiddleware, async (req, res) => {
       amount,
       merchantOrderNo:order,
       notes,
+      expireAt: new Date(Date.now() + 60 * 60 * 1000), // 1 hour later
       status: 'pending',
     });
-console.log(order);
+
     // ✅ Append transaction ID to callback URL
-    const callbackUrl = `${SERVER_URL}/api/payment-callback?transactionOrder=${transaction.merchantOrderNo}`;
+    const callbackUrl = `${SERVER_URL}/api/payment-callback`;
 
    
 

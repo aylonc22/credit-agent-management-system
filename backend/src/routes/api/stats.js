@@ -3,7 +3,6 @@ const Client = require('../../models/Client');
 const Transaction = require('../../models/Transaction'); 
 const Agent = require('../../models/Agent'); 
 const authMiddleware = require('../middleware/authMiddleware');
-const User = require('../../models/User');
 const router = express.Router();
 
 router.get('/', authMiddleware , async (req, res) => {
@@ -24,15 +23,15 @@ router.get('/', authMiddleware , async (req, res) => {
           const client = await Client.findOne({userId:id});
 
           const clientStats = await Transaction.aggregate([
-            { $match: { client: client._id, createdAt: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) } } }, // Match today's transactions
-            { $group: { _id: null, totalCreditsToday: { $sum: "$amount_paid" } } }
+            { $match: { client: client._id, status:"completed", createdAt: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) } } }, // Match today's transactions
+            { $group: { _id: null, totalCreditsToday: { $sum: "$amount" } } }
           ]);
     
           if (clientStats.length > 0) stats.totalCreditsToday = clientStats[0].totalCreditsToday;
           else stats.totalCreditsToday = 0;
           const clientMonthlyStats = await Transaction.aggregate([
-            { $match: { client: client._id, createdAt: { $gte: new Date(new Date().setDate(1)) } } }, // Match this month's transactions
-            { $group: { _id: null, totalCreditsThisMonth: { $sum: "$amount_paid" } } }
+            { $match: { client: client._id, status:"completed", createdAt: { $gte: new Date(new Date().setDate(1)) } } }, // Match this month's transactions
+            { $group: { _id: null, totalCreditsThisMonth: { $sum: "$amount" } } }
           ]);
     
           if (clientMonthlyStats.length > 0) stats.totalCreditsThisMonth = clientMonthlyStats[0].totalCreditsThisMonth;
@@ -53,16 +52,16 @@ router.get('/', authMiddleware , async (req, res) => {
           const agentClientsIds = agentClients.map(client => client._id);
     
           const agentTransactions = await Transaction.aggregate([
-            { $match: { client: { $in: agentClientsIds }, createdAt: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) } } },
-            { $group: { _id: null, totalCreditsToday: { $sum: "$amount_paid" } } }
+            { $match: { client: { $in: agentClientsIds }, status:"completed",createdAt: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) } } },
+            { $group: { _id: null, totalCreditsToday: { $sum: "$amount" } } }
           ]);
     
           if (agentTransactions.length > 0) stats.totalCreditsToday = agentTransactions[0].totalCreditsToday;
           else  stats.totalCreditsToday = 0;
     
           const agentTransactionsMonth = await Transaction.aggregate([
-            { $match: { client: { $in: agentClientsIds }, createdAt: { $gte: new Date(new Date().setDate(1)) } } },
-            { $group: { _id: null, totalCreditsThisMonth: { $sum: "$amount_paid" } } }
+            { $match: { client: { $in: agentClientsIds }, status:"completed", createdAt: { $gte: new Date(new Date().setDate(1)) } } },
+            { $group: { _id: null, totalCreditsThisMonth: { $sum: "$amount" } } }
           ]);
     
           if (agentTransactionsMonth.length > 0) stats.totalCreditsThisMonth = agentTransactionsMonth[0].totalCreditsThisMonth;
@@ -97,13 +96,14 @@ router.get('/', authMiddleware , async (req, res) => {
           {
             $match: {
               client: { $in: agentClientsIds },
-              createdAt: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) }
+              createdAt: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) }, 
+              status:"completed"
             }
           },
           {
             $group: {
               _id: null,
-              totalCreditsToday: { $sum: "$amount_paid" }
+              totalCreditsToday: { $sum: "$amount" }
             }
           }
         ]);
@@ -116,13 +116,14 @@ router.get('/', authMiddleware , async (req, res) => {
           {
             $match: {
               client: { $in: agentClientsIds },
-              createdAt: { $gte: new Date(new Date().setDate(1)) }
+              createdAt: { $gte: new Date(new Date().setDate(1)) }, 
+              status:"completed"
             }
           },
           {
             $group: {
               _id: null,
-              totalCreditsThisMonth: { $sum: "$amount_paid" }
+              totalCreditsThisMonth: { $sum: "$amount" }
             }
           }
         ]);
@@ -148,16 +149,16 @@ router.get('/', authMiddleware , async (req, res) => {
         } else if (role === 'admin') {
           // Admin-specific stats
           stats.totalCreditsToday = await Transaction.aggregate([
-            { $match: { createdAt: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) } } },
-            { $group: { _id: null, totalCreditsToday: { $sum: "$amount_paid" } } }
+            { $match: {status:"completed", createdAt: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) } } },
+            { $group: { _id: null, totalCreditsToday: { $sum: "$amount" } } }
           ]);
     
           if (stats.totalCreditsToday.length > 0) stats.totalCreditsToday = stats.totalCreditsToday[0].totalCreditsToday;
           else stats.totalCreditsToday = 0;
 
           stats.totalCreditsThisMonth = await Transaction.aggregate([
-            { $match: { createdAt: { $gte: new Date(new Date().setDate(1)) } } },
-            { $group: { _id: null, totalCreditsThisMonth: { $sum: "$amount_paid" } } }
+            { $match: {status:"completed", createdAt: { $gte: new Date(new Date().setDate(1)) } } },
+            { $group: { _id: null, totalCreditsThisMonth: { $sum: "$amount" } } }
           ]);
     
           if (stats.totalCreditsThisMonth.length > 0) stats.totalCreditsThisMonth = stats.totalCreditsThisMonth[0].totalCreditsThisMonth;
