@@ -149,6 +149,13 @@
     border-radius: 5px;
     transition: background-color 0.3s ease;
   }
+  
+  .sidenav ul li.terms-link {
+    font-size: 12px;
+    opacity: 0.6;
+    position: relative;
+    margin-top: 50px;
+  }
 }
 
 /* Desktop (769px and above) */
