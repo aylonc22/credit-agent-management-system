@@ -55,6 +55,8 @@ const Navbar = () => {
 
   return (
     <>
+      <button className="sidebar-toggle" onClick={toggleSidebar}>☰</button>
+
       <div className={`sidenav ${isOpen ? 'active' : ''}`}>
         <div className="sidebar-logo-container">
           <img src={logoUrl} alt="Logo" className="sidebar-logo" />
