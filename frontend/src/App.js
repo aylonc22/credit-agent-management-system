@@ -39,7 +39,7 @@ function App() {
         favicon.href = `${process.env.REACT_APP_SERVER_URL}/uploads/logo.jpg`;
       }
     }, []);
-
+    console.log(isAuthPage)
   return (
     <div className={isAuthPage ? 'no-sidebar' : 'app-with-sidebar'}>
       {/* Navigation */}
