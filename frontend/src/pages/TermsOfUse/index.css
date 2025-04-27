@@ -1,5 +1,7 @@
 .terms-container {
     max-width: 800px;
+    min-width: 300px;
+    min-height: 300px;
     margin: 80px auto 40px;
     padding: 30px;
     background-color: #1e2a35;
