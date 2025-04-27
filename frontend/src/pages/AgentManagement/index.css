@@ -1,7 +1,16 @@
+/* Search and Filters */
 .agent-search {
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+/* On mobile, stack search items vertically */
+@media (max-width: 768px) {
+  .agent-search {
+    flex-direction: column;
+  }
 }
 
 .agent-search input,
@@ -11,107 +20,104 @@
   border: 1px solid #ccc;
 }
 
+/* Table Outer Wrapper */
+.agent-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* iOS smooth scroll */
+}
+
 /* Table Container */
 .agent-table-container {
+  min-width: 800px; /* Force wide enough for scroll */
+  background-color: #f9f9f9;
   border: 1px solid #ddd;
   border-radius: 6px;
   overflow: hidden;
-  margin-bottom: 30px;
-  background-color: #f9f9f9;
+}
+
+/* Whole Table Structure */
+.agent-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
 }
 
 /* Table Header */
-.agent-table-head {
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
-}
-
-.agent-table-head th {
+.agent-table thead th {
   background-color: #1e2a35;
   color: #ecf0f1;
-  padding: 10px 12px;
+  padding: 12px;
   text-align: right;
+  white-space: nowrap;
+  font-size: 16px;
 }
 
-/* Scrollable Table Body */
-.agent-table-body-wrapper {
-  max-height: 300px;
-  overflow-y: auto;
-  direction: rtl;
-}
-
-.agent-table-body {
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
-}
-
-.agent-table-body td {
+/* Table Body */
+.agent-table tbody td {
   text-align: right;
-  padding: 10px 12px;
+  padding: 12px;
   border-bottom: 1px solid #ddd;
+  white-space: nowrap;
+  font-size: 15px;
 }
 
-.agent-table-body td button {
+/* Buttons inside table */
+.agent-table tbody td button {
   margin-left: 8px;
   padding: 5px 10px;
   font-size: 13px;
   border: 1px solid #ddd;
   border-radius: 4px;
   cursor: pointer;
-  background-color: transparent;  /* Remove background color */
-  color: #333;  /* Neutral text color */
-  transition: all 0.3s ease; /* Smooth transition for hover effect */
+  background-color: transparent;
+  color: #333;
+  transition: all 0.3s ease;
   display: inline-block;
   vertical-align: middle;
   white-space: nowrap;
 }
 
-/* Button Hover effect */
-.agent-table-body td button:hover {
-  background-color: #f1f1f1; /* Subtle background color on hover */
-  color: #000; /* Darker text color on hover */
-  border-color: #ccc; /* Slightly darker border on hover */
+/* Button Hover */
+.agent-table tbody td button:hover {
+  background-color: #f1f1f1;
+  color: #000;
+  border-color: #ccc;
 }
 
 /* Column Widths */
-.agent-table-head th:nth-child(1),
-.agent-table-body td:nth-child(1) {
+.agent-table th:nth-child(1),
+.agent-table td:nth-child(1) {
   width: 10%;
 }
-
-.agent-table-head th:nth-child(2),
-.agent-table-body td:nth-child(2) {
+.agent-table th:nth-child(2),
+.agent-table td:nth-child(2) {
   width: 25%;
 }
-
-.agent-table-head th:nth-child(3),
-.agent-table-body td:nth-child(3) {
+.agent-table th:nth-child(3),
+.agent-table td:nth-child(3) {
   width: 25%;
 }
-
-.agent-table-head th:nth-child(4),
-.agent-table-body td:nth-child(4) {
+.agent-table th:nth-child(4),
+.agent-table td:nth-child(4) {
   width: 15%;
 }
-
-.agent-table-head th:nth-child(5),
-.agent-table-body td:nth-child(5) {
+.agent-table th:nth-child(5),
+.agent-table td:nth-child(5) {
   width: 25%;
 }
 
 /* Scrollbar Styling */
-.agent-table-body-wrapper::-webkit-scrollbar {
-  width: 8px;
+.agent-table-wrapper::-webkit-scrollbar {
+  height: 8px;
 }
 
-.agent-table-body-wrapper::-webkit-scrollbar-thumb {
+.agent-table-wrapper::-webkit-scrollbar-thumb {
   background-color: #888;
   border-radius: 4px;
 }
 
-.agent-table-body-wrapper::-webkit-scrollbar-thumb:hover {
+.agent-table-wrapper::-webkit-scrollbar-thumb:hover {
   background-color: #555;
 }
 
@@ -142,6 +148,13 @@
   align-items: center;
 }
 
+/* Make form 1 column on mobile */
+@media (max-width: 768px) {
+  .add-agent-form form {
+    grid-template-columns: 1fr;
+  }
+}
+
 .add-agent-form input,
 .add-agent-form select {
   padding: 8px 10px;
@@ -160,6 +173,7 @@
   cursor: pointer;
 }
 
+/* Button hover */
 .add-agent-form button:hover {
   background-color: #34495e;
 }

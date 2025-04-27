@@ -55,8 +55,6 @@ const Navbar = () => {
 
   return (
     <>
-    
-
       <div className={`sidenav ${isOpen ? 'active' : ''}`}>
         <div className="sidebar-logo-container">
           <img src={logoUrl} alt="Logo" className="sidebar-logo" />
