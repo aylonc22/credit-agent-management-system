@@ -46,36 +46,18 @@ router.post('/', autheMiddleware, async (req, res) => {
       amount,
       merchantOrderNo:order,
       notes,
-      expireAt: new Date(Date.now() + 60 * 60 * 1000), // 1 hour later
+      expireAt: new Date(Date.now() + 60 * 24 * 1000), // 1 day later
       status: 'pending',
     });
 
     // ✅ Append transaction ID to callback URL
     const callbackUrl = `${SERVER_URL}/api/payment-callback`;
 
-   
-
     const alchemyUrl = generateAlchemy(WALLET_ADDRESS, amount, order, timestamp, callbackUrl);
-
-    if(req.user.role === 'client'){
-      return res.status(201).json({
-        message: 'החשבונית נוצרה בהצלחה',
-        checkout_url: alchemyUrl,
-      });
-    }
-
-     const token = uuidv4();
-              const expiresAt = new Date(Date.now() + 1000 * 60 * 30); // 30 minutes expiry
-          
-              const link = new OneTimeLink({ token, role: 'payment', expiresAt, metadata: alchemyUrl});
-              await link.save();
-          
-              const paymentUrl = `${process.env.FRONTEND_URL}/payment?token=${token}`;
-
 
     return res.status(201).json({
       message: 'החשבונית נוצרה בהצלחה',
-      checkout_url: paymentUrl,
+      checkout_url: alchemyUrl,
     });
   } catch (err) {
     console.error('Error creating payment link:', err);

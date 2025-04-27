@@ -11,6 +11,21 @@
   .agent-search {
     flex-direction: column;
   }
+
+  /* Add Agent Form: Stack fields vertically on mobile */
+  .add-agent-form form {
+    display: flex;
+    flex-direction: column; /* Stack the fields vertically */
+  }
+
+  .add-agent-form input,
+  .add-agent-form select {
+    width: 100%; /* Ensure full width of the form fields */
+  }
+
+  .add-agent-form button {
+    width: 100%; /* Make button take full width */
+  }
 }
 
 .agent-search input,
@@ -142,17 +157,9 @@
 }
 
 .add-agent-form form {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(200px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 10px;
-  align-items: center;
-}
-
-/* Make form 1 column on mobile */
-@media (max-width: 768px) {
-  .add-agent-form form {
-    grid-template-columns: 1fr;
-  }
 }
 
 .add-agent-form input,
@@ -160,10 +167,26 @@
   padding: 8px 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
+  width: 48%; /* Each field takes up about half the width on large screens */
+}
+
+/* Stack form items vertically on mobile */
+@media (max-width: 768px) {
+  .add-agent-form form {
+    flex-direction: column; /* Stack the fields vertically */
+  }
+
+  .add-agent-form input,
+  .add-agent-form select {
+    width: 100%; /* Ensure full width of the form fields */
+  }
+
+  .add-agent-form button {
+    width: 100%; /* Make button take full width */
+  }
 }
 
 .add-agent-form button {
-  grid-column: span 2;
   padding: 10px;
   background-color: #1e2a35;
   color: white;
@@ -171,6 +194,7 @@
   border-radius: 5px;
   font-size: 16px;
   cursor: pointer;
+  margin-top: 10px;
 }
 
 /* Button hover */
