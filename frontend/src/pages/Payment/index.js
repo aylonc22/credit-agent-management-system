@@ -21,6 +21,7 @@ const PaymentRedirectHandler = () => {
 
         // Optionally redirect based on response
         if (res.data.redirectTo) {
+          console.log(res.data.redirectTo);
           window.location.href = res.data.redirectTo; // hard redirect
         } else {
           navigate("/login"); // soft redirect

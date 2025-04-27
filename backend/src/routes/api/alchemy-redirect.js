@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
 
             invite.clicked = true;
             await invite.save();
-
+            console.log(redirectTo);
             return res.status(200).json({redirectTo, message:"הועבר בהצלחה"});
         
        }
