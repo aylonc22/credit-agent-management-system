@@ -109,6 +109,7 @@
 @media (max-width: 768px) {
   .sidenav {
     transform: translateX(100%); /* Hidden by default on mobile */
+    padding-top: 30px;
   }
 
   .sidenav.active {
@@ -136,6 +137,17 @@
 
   .sidebar-toggle:focus {
     outline: none;
+  }
+
+  .sidebar-logo-container{
+    display: none;
+  }
+
+  .sidenav ul li {
+    padding: 7px 20px;
+    text-align: right;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
   }
 }
 
