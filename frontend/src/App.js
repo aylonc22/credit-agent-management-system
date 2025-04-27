@@ -56,7 +56,7 @@ function App() {
           <Route path="/agents" element={<AgentManagement />} />
           <Route path="/clients" element={<ClientManagement />} />
           <Route path="/transactions" element={<TransactionManagement />} />
-          <Route path="/payment-links" element={<PaymentLinkGenerator />} />
+          <Route path="/generate-payment-links" element={<PaymentLinkGenerator />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/settings" element={<SystemSettings />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
