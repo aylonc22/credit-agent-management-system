@@ -78,6 +78,18 @@ const TransactionManagement = () => {
     return matchesSearch && matchesStatus && matchesClient && matchesAgent;
   });
 
+  const approveTransaction = async (transactionId) => {
+    try {
+      await api.put(`/api/transaction/${transactionId}`); // Example endpoint
+      toast.success('העסקה אושרה בהצלחה');
+      // Refresh transactions after approval
+      fetchTransactions(clients);
+    } catch (err) {
+      console.error('שגיאה באישור עסקה:', err);
+      toast.error('שגיאה באישור עסקה');
+    }
+  };
+
   return (
     <div className="dashboard">
       <h1>ניהול עסקאות</h1>
@@ -136,7 +148,7 @@ const TransactionManagement = () => {
 
         <div className="agent-table-body-wrapper">
           <table className="agent-table-body">
-            <tbody>
+                      <tbody>
               {filteredTransactions.length === 0 ? (
                 <tr>
                   <td colSpan={7} style={{
@@ -154,13 +166,34 @@ const TransactionManagement = () => {
                     <td className='mobile-hide'>{index + 1}</td>
                     <td>{transaction.agent?.name || '-'}</td>
                     <td>{transaction.client?.name || '-'}</td>
-                    <td>{transaction.amount}$</td>                   
+                    <td>{transaction.amount}$</td>
                     <td className='mobile-hide'>{new Date(transaction.createdAt).toLocaleDateString('he-IL')}</td>
-                    <td>{transaction.status === 'completed' ? 'הושלמה' : transaction.status === 'pending' ? 'ממתינה' : 'נכשלה'}</td>
+                    <td>
+                      {transaction.status === 'completed'
+                        ? 'הושלמה'
+                        : transaction.status === 'pending'
+                        ? (
+                          <button
+                            style={{
+                              padding: '5px 10px',
+                              backgroundColor: '#4caf50',
+                              color: 'white',
+                              border: 'none',
+                              borderRadius: '4px',
+                              cursor: 'pointer',
+                            }}
+                            onClick={() => approveTransaction(transaction._id)}
+                          >
+                            אשר
+                          </button>
+                        )
+                        : 'נכשלה'}
+                    </td>
                   </tr>
                 ))
               )}
             </tbody>
+
           </table>
         </div>
       </div>

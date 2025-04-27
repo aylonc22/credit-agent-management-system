@@ -59,5 +59,28 @@ router.get('/', autheMiddleware ,async (req, res) => {
     }
 });
 
+router.put('/:transactionId',autheMiddleware ,async (req, res) => {
+  try{
+    console.log("here");
+    const {transactionId} = req.params;
+    if(req.user.role === 'admin'){
+            const transaction = await Transaction.findById(transactionId);
+            if(transaction){
+                transaction.status = 'completed';               
+                await transaction.save();
+                return res.status(200).json({message:"עסקה אושרה בהצלחה"});
+            }
+            return res.status(404).json({message:"עסקה לא נמצאה"});
+    }
+    else{
+        return res.status(403).json({message:"אין הרשאה לאישור עסקה"})
+    }
+  }
+  catch(e){
+        console.log(e);
+        return res.status(500).json({message:"משהו השתבש בעת אישור העסקה"});
+  }
+})
+
 
 module.exports = router;
