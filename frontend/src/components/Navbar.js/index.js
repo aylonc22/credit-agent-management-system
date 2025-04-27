@@ -76,26 +76,26 @@ const Navbar = () => {
           <img src={logoUrl} alt="Logo" className="sidebar-logo" />
         </div>
         <ul>
-          <li><Link to="/">לוח בקרה 📊</Link></li>
+          <li onClick={()=>setIsOpen(false)}><Link to="/">לוח בקרה 📊</Link></li>
           {(role === 'admin' || role === 'master-agent') && (
-            <li><Link to="/agents">ניהול סוכנים 🧑‍💼</Link></li>
+            <li onClick={()=>setIsOpen(false)}><Link to="/agents">ניהול סוכנים 🧑‍💼</Link></li>
           )}
           {role !== 'client' && (
-            <li>
+            <li onClick={()=>setIsOpen(false)}>
               <Link onClick={handleGenerateLink} className="quick-link-button">
                 {linkLabel}
               </Link>
             </li>
           )}
-          {role !== 'client' && <li><Link to="/clients">ניהול לקוחות 👥</Link></li>}
-          {role !== 'client' && <li><Link to="/transactions">ניהול עסקאות 💸</Link></li>}
-          <li><Link to="/generate-payment-links">{role !== 'client' ? 'יצירת קישורי תשלום 🔗' : 'קניית קרדיטים 🪙'}</Link></li>
-          <li><Link to="/reports">דוחות 📈</Link></li>
-          <li><Link to="/settings">הגדרות מערכת ⚙️</Link></li>
+          {role !== 'client' && <li onClick={()=>setIsOpen(false)}><Link to="/clients">ניהול לקוחות 👥</Link></li>}
+          {role !== 'client' && <li onClick={()=>setIsOpen(false)}><Link to="/transactions">ניהול עסקאות 💸</Link></li>}
+          <li onClick={()=>setIsOpen(false)}><Link to="/generate-payment-links">{role !== 'client' ? 'יצירת קישורי תשלום 🔗' : 'קניית קרדיטים 🪙'}</Link></li>
+          <li onClick={()=>setIsOpen(false)}><Link to="/reports">דוחות 📈</Link></li>
+          <li onClick={()=>setIsOpen(false)}><Link to="/settings">הגדרות מערכת ⚙️</Link></li>
           <li className="logout">
             <button onClick={handleLogout}>התנתק 🔌</button>
           </li>
-          <li className="terms-link">
+          <li onClick={()=>setIsOpen(false)} className="terms-link">
             <Link to="/terms">תנאי שימוש</Link>
           </li>
         </ul>

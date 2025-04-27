@@ -19,7 +19,7 @@ const SecuritySettings = () => {
   useEffect(()=>{
     const token = localStorage.getItem('token');
     const twofaEnabled = jwtDecode(token).twofaEnabled;  
-    console.log(twofaEnabled) ;
+    
     setIs2faEnabled(twofaEnabled);
     
   },[]);
