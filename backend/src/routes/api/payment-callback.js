@@ -31,12 +31,13 @@ function signCheck(content, secretkey) {
 router.get('/', async (req, res) => {
     try {
       const body = req.body;
-      console.log(body);
-      const {merchantOrderNo, status, newSignature} = req.body;
+      console.log(body);     
 
-      if (!merchantOrderNo || !status || !newSignature) {
+      if (!req.body?.merchantOrderNo || !req.body?.status || !req.body.newSignature) {
         return res.status(400).json({ message: 'Missing required parameters' });
       }
+
+      const {merchantOrderNo, status, newSignature} = req.body;
 
       const cleanedAndSorted = cleanAndSortParams(body);
       const timestamp = req.headers['timestamp'];  // Retrieving timestamp from headers
