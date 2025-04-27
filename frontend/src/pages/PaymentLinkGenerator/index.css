@@ -109,11 +109,10 @@
 @media (max-width: 600px) {
   .payment-form,
   .payment-link-result {
-    max-width: 100%;
-    width: 100%;
+    min-width: 200px;  
     margin: 0;
     border-radius: 0;
-    padding: 20px;
+    padding: 20px;   
   }
 
   .payment-form input,
