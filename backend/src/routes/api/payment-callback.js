@@ -31,6 +31,7 @@ function signCheck(content, secretkey) {
 router.get('/', async (req, res) => {
     try {
       const body = req.body;
+      console.log(body);
       const {merchantOrderNo, status, newSignature} = req.body;
 
       if (!merchantOrderNo || !status || !newSignature) {

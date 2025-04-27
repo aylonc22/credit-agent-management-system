@@ -103,5 +103,39 @@
     margin-left: 50px;    
   }
 
+  @media (max-width: 600px) {
+    .settings-section {
+      padding: 15px;
+    }
+  
+    .settings-section__header {
+      font-size: 18px;
+    }
+  
+    .settings-section p,
+    .form-group label,
+    .input-field,
+    .settings-section__btn,
+    .admin-link-section h4,
+    .generated-link label,
+    .generated-link input {
+      font-size: 13px;
+    }
+  
+    .settings-section__btn {
+      width: 100%;
+      padding: 12px;
+    }
+  
+    .admin-link-section .links {
+      flex-direction: column;
+    }
+  
+    .admin-link-section .links div {
+      margin-left: 0;
+      margin-bottom: 10px;
+    }
+  }
+
 
   

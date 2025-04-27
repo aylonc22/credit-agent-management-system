@@ -55,4 +55,35 @@
     color: #721c24;
     border-radius: 5px;
   }
+
+  @media (max-width: 600px) {
+    .settings-container {
+      padding: 15px;
+    }
+  
+    h2 {
+      font-size: 1.2rem;
+    }
+  
+    .settings-password {
+      font-size: 0.9rem;
+      padding: 8px;
+    }
+  
+    button.btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+    }
+  
+    .section {
+      margin-bottom: 20px;
+    }
+  
+    .success-message,
+    .error-message {
+      font-size: 0.9rem;
+      padding: 12px;
+    }
+  }
   
