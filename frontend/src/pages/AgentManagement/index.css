@@ -1,157 +1,96 @@
-/* Search and Filters */
+/* General Styles */
+.dashboard {
+  padding: 20px;
+  position: relative; /* Ensures content stays within the page */
+  transition: all 0.3s ease;
+}
+
+/* Agent Search */
 .agent-search {
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
   flex-wrap: wrap;
-  justify-content: space-between;
+  width: 100%;
 }
 
-.agent-search input,
-.agent-search select {
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  width: 100%; /* Full width on smaller screens */
-  max-width: 250px; /* Max width for large screens */
-}
-
-/* On mobile, stack search items vertically */
 @media (max-width: 768px) {
   .agent-search {
-    flex-direction: column;
-    gap: 15px;
+    flex-direction: column; /* Stack search items vertically */
+    width: 100%;
   }
 
   .agent-search input,
   .agent-search select {
-    width: 100%; /* Ensure filters take full width */
-    max-width: none; /* Remove max-width restriction */
-  }
-
-  .add-agent-form form {
-    display: flex;
-    flex-direction: column; /* Stack the fields vertically */
-  }
-
-  .add-agent-form input,
-  .add-agent-form select {
-    width: 100%; /* Ensure full width of the form fields */
-  }
-
-  .add-agent-form button {
-    width: 100%; /* Make button take full width */
+    width: 100%; /* Ensure full width on mobile */
+    margin-bottom: 10px; /* Add spacing between items */
   }
 }
 
-/* Table Outer Wrapper */
-.agent-table-wrapper {
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch; /* iOS smooth scroll */
-}
-
-/* Table Container */
+/* Agent Table */
 .agent-table-container {
   width: 100%;
-  max-width: 100%; /* Ensure the table container does not exceed the viewport width */
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  overflow: hidden;
+  overflow-x: auto;
+  margin-top: 20px;
 }
 
-/* Whole Table Structure */
-.agent-table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
+.agent-table-head th,
+.agent-table-body td {
+  padding: 12px;
+  text-align: right;
+  font-size: 15px;
+  border-bottom: 1px solid #ddd;
 }
 
-/* Table Header */
-.agent-table thead th {
+.agent-table-head th {
   background-color: #1e2a35;
   color: #ecf0f1;
-  padding: 12px;
-  text-align: right;
-  white-space: nowrap;
-  font-size: 16px;
 }
 
-/* Table Body */
-.agent-table tbody td {
-  text-align: right;
-  padding: 12px;
-  border-bottom: 1px solid #ddd;
-  white-space: nowrap;
-  font-size: 15px;
+.agent-table-body-wrapper {
+  overflow-x: auto;
 }
 
-/* Buttons inside table */
-.agent-table tbody td button {
-  margin-left: 8px;
-  padding: 5px 10px;
-  font-size: 13px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  cursor: pointer;
-  background-color: transparent;
-  color: #333;
-  transition: all 0.3s ease;
-  display: inline-block;
-  vertical-align: middle;
-  white-space: nowrap;
-}
-
-/* Button Hover */
-.agent-table tbody td button:hover {
-  background-color: #f1f1f1;
-  color: #000;
-  border-color: #ccc;
-}
-
-/* Column Widths */
-.agent-table th:nth-child(1),
-.agent-table td:nth-child(1) {
-  width: 10%;
-}
-.agent-table th:nth-child(2),
-.agent-table td:nth-child(2) {
-  width: 25%;
-}
-.agent-table th:nth-child(3),
-.agent-table td:nth-child(3) {
-  width: 25%;
-}
-.agent-table th:nth-child(4),
-.agent-table td:nth-child(4) {
-  width: 15%;
-}
-.agent-table th:nth-child(5),
-.agent-table td:nth-child(5) {
-  width: 25%;
-}
-
-/* Scrollbar Styling */
-.agent-table-wrapper::-webkit-scrollbar {
+.agent-table-body-wrapper::-webkit-scrollbar {
   height: 8px;
 }
 
-.agent-table-wrapper::-webkit-scrollbar-thumb {
+.agent-table-body-wrapper::-webkit-scrollbar-thumb {
   background-color: #888;
   border-radius: 4px;
 }
 
-.agent-table-wrapper::-webkit-scrollbar-thumb:hover {
+.agent-table-body-wrapper::-webkit-scrollbar-thumb:hover {
   background-color: #555;
 }
 
-/* Empty Message */
 .empty-table-message {
   text-align: center;
   color: #777;
   padding: 20px;
   font-size: 16px;
+}
+
+/* Actions in Table */
+.actions-container {
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  padding: 5px 10px;
+  font-size: 13px;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: transparent;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #f1f1f1;
+  color: #000;
+  border-color: #ccc;
 }
 
 /* Add Agent Form */
@@ -160,21 +99,30 @@
   padding: 20px;
   border-radius: 8px;
   margin-top: 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 500px; /* Restrict max width */
-  margin-left: auto;
-  margin-right: auto; /* Center the form */
-}
-
-.add-agent-form h2 {
-  margin-bottom: 15px;
 }
 
 .add-agent-form form {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(200px, 1fr)); /* Grid layout for PC */
   gap: 10px;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .add-agent-form form {
+    display: flex; /* Flex on mobile */
+    flex-direction: column; /* Stack fields vertically */
+    width: 100%; /* Ensure full width */
+  }
+
+  .add-agent-form input,
+  .add-agent-form select {
+    width: 100%; /* Ensure full width on mobile */
+  }
+
+  .add-agent-form button {
+    width: 100%; /* Full width for the button */
+  }
 }
 
 .add-agent-form input,
@@ -182,26 +130,10 @@
   padding: 8px 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  width: 48%; /* Each field takes up about half the width on large screens */
-}
-
-/* Stack form items vertically on mobile */
-@media (max-width: 768px) {
-  .add-agent-form form {
-    flex-direction: column; /* Stack the fields vertically */
-  }
-
-  .add-agent-form input,
-  .add-agent-form select {
-    width: 100%; /* Ensure full width of the form fields */
-  }
-
-  .add-agent-form button {
-    width: 100%; /* Make button take full width */
-  }
 }
 
 .add-agent-form button {
+  grid-column: span 2; /* Button spans across columns on larger screens */
   padding: 10px;
   background-color: #1e2a35;
   color: white;
@@ -209,18 +141,8 @@
   border-radius: 5px;
   font-size: 16px;
   cursor: pointer;
-  margin-top: 10px;
-  transition: background-color 0.3s ease;
 }
 
-/* Button hover */
 .add-agent-form button:hover {
   background-color: #34495e;
-}
-
-/* Table Actions Container */
-.actions-container {
-  display: flex;
-  gap: 5px;
-  justify-content: space-around;
 }

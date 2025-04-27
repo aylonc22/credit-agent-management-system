@@ -1,4 +1,5 @@
 const express = require('express');
+const OneTimeLink = require('../../models/OneTimeLink');
 const router = express.Router();
 require('dotenv').config();
 
@@ -13,7 +14,7 @@ router.post('/', async (req, res) => {
          }
    
             const redirectTo = invite.metadata;
-                        
+
             await invite.save();
            
             return res.status(200).json({redirectTo, message:"הועבר בהצלחה"});
