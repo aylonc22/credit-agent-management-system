@@ -9,12 +9,6 @@ const PaymentRedirectHandler = () => {
   useEffect(() => {
     const token = searchParams.get("token");
 
-    if (!token) {
-      // Token is missing, handle error
-      navigate("/login"); 
-      return;
-    }
-
     const sendToken = async () => {
       try {
         const res = await api.post("/api/alchemy-redirect", { token });
