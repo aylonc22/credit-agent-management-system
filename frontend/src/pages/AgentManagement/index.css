@@ -4,15 +4,31 @@
   gap: 10px;
   margin-bottom: 20px;
   flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.agent-search input,
+.agent-search select {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%; /* Full width on smaller screens */
+  max-width: 250px; /* Max width for large screens */
 }
 
 /* On mobile, stack search items vertically */
 @media (max-width: 768px) {
   .agent-search {
     flex-direction: column;
+    gap: 15px;
   }
 
-  /* Add Agent Form: Stack fields vertically on mobile */
+  .agent-search input,
+  .agent-search select {
+    width: 100%; /* Ensure filters take full width */
+    max-width: none; /* Remove max-width restriction */
+  }
+
   .add-agent-form form {
     display: flex;
     flex-direction: column; /* Stack the fields vertically */
@@ -28,13 +44,6 @@
   }
 }
 
-.agent-search input,
-.agent-search select {
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
 /* Table Outer Wrapper */
 .agent-table-wrapper {
   width: 100%;
@@ -44,7 +53,8 @@
 
 /* Table Container */
 .agent-table-container {
-  min-width: 800px; /* Force wide enough for scroll */
+  width: 100%;
+  max-width: 100%; /* Ensure the table container does not exceed the viewport width */
   background-color: #f9f9f9;
   border: 1px solid #ddd;
   border-radius: 6px;
@@ -150,6 +160,11 @@
   padding: 20px;
   border-radius: 8px;
   margin-top: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px; /* Restrict max width */
+  margin-left: auto;
+  margin-right: auto; /* Center the form */
 }
 
 .add-agent-form h2 {
@@ -195,9 +210,17 @@
   font-size: 16px;
   cursor: pointer;
   margin-top: 10px;
+  transition: background-color 0.3s ease;
 }
 
 /* Button hover */
 .add-agent-form button:hover {
   background-color: #34495e;
+}
+
+/* Table Actions Container */
+.actions-container {
+  display: flex;
+  gap: 5px;
+  justify-content: space-around;
 }

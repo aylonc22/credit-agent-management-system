@@ -13,8 +13,7 @@ router.post('/', async (req, res) => {
          }
    
             const redirectTo = invite.metadata;
-
-            invite.clicked = true;
+                        
             await invite.save();
            
             return res.status(200).json({redirectTo, message:"הועבר בהצלחה"});
