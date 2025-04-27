@@ -106,6 +106,7 @@
   @media (max-width: 600px) {
     .settings-section {
       padding: 15px;
+      max-width: 200px;
     }
   
     .settings-section__header {

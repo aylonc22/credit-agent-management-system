@@ -9,7 +9,6 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [logoUrl, setLogoUrl] = useState('/logo.png'); // Default fallback
   const navigate = useNavigate();
-
   const userData = useAuth();
 
   useEffect(() => {
@@ -17,8 +16,7 @@ const Navbar = () => {
       try {
         const response = await api.get('/settings/general');
         if (response.data?.logo) {
-          setLogoUrl(response.data.logo); 
-          console.log(response.data.logo);        
+          setLogoUrl(response.data.logo);
         }
       } catch (error) {
         console.error('Failed to fetch settings:', error);
@@ -26,6 +24,22 @@ const Navbar = () => {
     };
 
     fetchSettings();
+  }, []);
+
+  // Handle sidebar open/close based on screen size
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 769) {
+        setIsOpen(true); // Desktop = open
+      } else {
+        setIsOpen(false); // Mobile = closed
+      }
+    };
+
+    handleResize(); // run on mount
+    window.addEventListener('resize', handleResize); // run on resize
+
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   if (!userData) {
@@ -75,7 +89,7 @@ const Navbar = () => {
           )}
           {role !== 'client' && <li><Link to="/clients">ניהול לקוחות 👥</Link></li>}
           {role !== 'client' && <li><Link to="/transactions">ניהול עסקאות 💸</Link></li>}
-          <li><Link to="/generate-payment-links">{role !== 'client'?'יצירת קישורי תשלום 🔗':'קניית קרדיטים 🪙'}</Link></li>
+          <li><Link to="/generate-payment-links">{role !== 'client' ? 'יצירת קישורי תשלום 🔗' : 'קניית קרדיטים 🪙'}</Link></li>
           <li><Link to="/reports">דוחות 📈</Link></li>
           <li><Link to="/settings">הגדרות מערכת ⚙️</Link></li>
           <li className="logout">
