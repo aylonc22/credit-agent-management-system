@@ -14,8 +14,9 @@ const Reports = () => {
   useEffect(() => {
     const init = async () => {
       if (userData) {
-        await fetchAgents();
-        await fetchTransactions();
+        const _agents = await fetchAgents();
+      
+        await fetchTransactions(_agents);
       }
     };
     init();
@@ -29,15 +30,28 @@ const Reports = () => {
     try {
       const res = await api.get(`/api/agent${userData.role === 'master-agent' ? '?pushSelf=true' : ''}`);
       setAgents(res.data.agents);
+      return res.data.agents;
     } catch (err) {
       console.error('שגיאה בטעינת סוכנים:', err);
       toast.error('שגיאה בטעינת סוכנים');
     }
   };
 
-  const fetchTransactions = async () => {
+  const fetchTransactions = async (_agents) => {
     try {
-      const res = await api.get('/api/transaction');
+      console.log("agents",agents)
+      console.log("_agents",_agents);
+      if(agents.length>0){
+        _agents = agents;
+      }
+      let clients = [];
+      if(userData.role === 'master-agent'){
+        console.log(_agents);
+         const res = await api.get(`/api/client${userData.role === 'master-agent' ? `?agents=${encodeURIComponent(JSON.stringify(_agents.map(a=>a._id)))}`:'' }`);
+         clients = res.data.clients;
+         console.log(clients)
+      }
+      const res = await api.get(`/api/transaction${userData.role === 'master-agent' ? `?clients=${encodeURIComponent(JSON.stringify(clients.map(a=>a._id)))}`:'' }`);
       setTransactions(res.data.transactions);
     } catch (err) {
       console.error('שגיאה בטעינת עסקאות:', err);
@@ -47,7 +61,8 @@ const Reports = () => {
  
   const masterAgentAgents = agents.filter(a=>a.masterId === selectedAgent);
   const allowedAgentIds =  [selectedAgent, ...masterAgentAgents.map(a => a._id)];
-  console.log(allowedAgentIds);
+  //console.log('allowed',allowedAgentIds);
+  
   const filteredTransactions = transactions.filter(tx => {
     // If no selectedAgent, show all
     if (!selectedAgent) return true;
