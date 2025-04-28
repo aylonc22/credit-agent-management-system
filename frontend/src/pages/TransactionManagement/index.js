@@ -72,8 +72,8 @@ const TransactionManagement = () => {
     const matchesSearch = fullSearch.includes(search.trim());
 
     const matchesStatus = !statusFilter || transaction.status === statusFilter;
-    const matchesClient = !clientFilter || transaction.clientId === clientFilter;
-    const matchesAgent = !agentFilter || transaction.agentId === agentFilter;
+    const matchesClient = !clientFilter || transaction.client._id === clientFilter;
+    const matchesAgent = !agentFilter || transaction.agent._id === agentFilter;
 
     return matchesSearch && matchesStatus && matchesClient && matchesAgent;
   });

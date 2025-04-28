@@ -43,7 +43,7 @@
 
 .agent-table-body-wrapper {
   overflow-x: auto;
-  min-width: 350px;
+  min-width: 250px;
 }
 
 .agent-table-body-wrapper::-webkit-scrollbar {
