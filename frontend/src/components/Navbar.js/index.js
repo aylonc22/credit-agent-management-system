@@ -90,7 +90,7 @@ const Navbar = () => {
           {role !== 'client' && <li onClick={()=>setIsOpen(false)}><Link to="/clients">ניהול לקוחות 👥</Link></li>}
           {role !== 'client' && <li onClick={()=>setIsOpen(false)}><Link to="/transactions">ניהול עסקאות 💸</Link></li>}
           <li onClick={()=>setIsOpen(false)}><Link to="/generate-payment-links">{role !== 'client' ? 'יצירת קישורי תשלום 🔗' : 'קניית קרדיטים 🪙'}</Link></li>
-          <li onClick={()=>setIsOpen(false)}><Link to="/reports">דוחות 📈</Link></li>
+          {role !== 'client' && <li onClick={()=>setIsOpen(false)}><Link to="/reports">דוחות 📈</Link></li>}
           <li onClick={()=>setIsOpen(false)}><Link to="/settings">הגדרות מערכת ⚙️</Link></li>
           <li className="logout">
             <button onClick={handleLogout}>התנתק 🔌</button>
