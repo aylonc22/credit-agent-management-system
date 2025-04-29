@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { useLocation } from 'react-router-dom';
 
 const PaymentLinkGenerator = () => {
-  const [amount, setAmount] = useState(20);
+  const [amount, setAmount] = useState(15);
   const [notes, setNotes] = useState('');
   const [clients, setClients] = useState([]);
   const [agents, setAgents] = useState([]);
@@ -66,8 +66,8 @@ const PaymentLinkGenerator = () => {
       toast.warn('יש למלא את הסכום ולבחור לקוח');
       return;
     }
-    if(amount<20){
-      toast.warn('מינימום קניה של 20 דולר');
+    if(amount<15){
+      toast.warn('מינימום קניה של 15 דולר');
       return;
     }
     try {
@@ -98,7 +98,7 @@ const PaymentLinkGenerator = () => {
           type="number"
           value={amount }
           onChange={(e) => setAmount(e.target.value)}
-          min={20}
+          min={15}
           placeholder="הכנס סכום"
           required
         />
