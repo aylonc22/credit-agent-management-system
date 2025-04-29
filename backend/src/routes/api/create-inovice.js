@@ -58,6 +58,7 @@ router.post('/', autheMiddleware, async (req, res) => {
     const alchemyUrl = generateAlchemy(WALLET_ADDRESS, amount, order, timestamp, callbackUrl);
 
     if(req.user.role === 'client'){
+      console.log(alchemyUrl);
       return res.status(201).json({
         message: 'החשבונית נוצרה בהצלחה',
         checkout_url: alchemyUrl,
