@@ -5,8 +5,8 @@ const { htmlToText } = require("html-to-text");
 const EmailService = require("./email-service");
 require('dotenv').config();
 
-const EMAIL_DOMAIN = "mg@Fishpay.com";
-const APP_NAME = "Fish pay";
+const EMAIL_DOMAIN = "mg@payglow.com";
+const APP_NAME = "Pay Glow";
 
 // Initialize EmailService once "mg.Fishpay.com"
 const emailService = new EmailService(process.env.MAILGUN_KEY);
