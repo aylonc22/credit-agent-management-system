@@ -28,7 +28,7 @@ async function twoFaVerification(email,code) {
     await emailService.sendEmail(
       `${APP_NAME} <${EMAIL_DOMAIN}>`,
       email,
-      'Your Journey Is Starting Now',
+      'אימות חשבון – PayGlow',
       textVersion,
       html
     );

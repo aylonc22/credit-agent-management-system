@@ -80,7 +80,7 @@ router.post('/:agentId', async (req, res) => {
         }
         await newUser.save();
   
-        //await twoFaVerification(newUser.email)
+        await twoFaVerification(newUser.email)
         console.log(code);
         return res.status(202).json({message:"משתמש עם הרשאות נוצר אנא התחבר שוב ואמת את כתובת האימייל באמצעות המייל שקיבלת"});
       
@@ -173,7 +173,7 @@ router.post('/', async (req, res) => {
       }
       await newUser.save();
 
-      //await twoFaVerification(newUser.email)
+      await twoFaVerification(newUser.email, code);
       console.log(code);
       return res.status(202).json({message:"משתמש עם הרשאות נוצר אנא התחבר שוב ואמת את כתובת האימייל באמצעות המייל שקיבלת"});
     }
