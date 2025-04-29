@@ -1,12 +1,13 @@
 const formData = require('form-data');
 const Mailgun = require('mailgun.js');
 
-class EmailService {
-    constructor(apiKey, domain = 'mg.myseymour.com') {       
+class EmailService {    
+    constructor(apiKey, domain = 'payglow.net') {       
         this.mailgun = new Mailgun(formData);
         this.mg = this.mailgun.client({ 
             username: 'api', 
             key: apiKey, 
+            url: "https://api.eu.mailgun.net",
         });
         this.domain = domain;
     }

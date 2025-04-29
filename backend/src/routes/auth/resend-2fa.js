@@ -13,7 +13,9 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    const user = await User.findOne({ username });
+    console.log(username);
+    const user = await User.findOne({username });
+    console.log('resend',user);
     if (!user) {
       return res.status(404).json({ message: 'משתמש לא נמצא' });
     }
