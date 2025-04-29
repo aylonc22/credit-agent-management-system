@@ -23,6 +23,7 @@ router.post('/', async (req, res) => {
 
   try {
     const user = await User.findOne({ username });
+    console.log("login",user);
     if (!user) {
       return res.status(401).json({ message: 'פרטי ההתחברות אינם נכונים' });
     }
@@ -75,9 +76,8 @@ router.post('/', async (req, res) => {
             expiresAt: newExpiresAt,
           };
 
-          await user.save();
-
-            //await twoFaVerification(user.email);
+          await user.save();         
+            await twoFaVerification(user.email, newCode);
             console.log(newCode);
 
           return res.status(401).json({

@@ -94,3 +94,73 @@ async function initApp() {
     console.error('❌ Error during initApp:', e.message);
   }
 }
+
+// const crypto = require('crypto');
+// const fetch = require('node-fetch');
+
+// // === CONFIG ===
+// const API_KEY = 'f83Is2y7L425rxl8';
+// const SECRET_KEY = '5Zp9SmtLWQ4Fh2a1';
+// const BASE_URL = 'https://api.card2crypto.com'; // or your specific base URL
+
+
+// const method = 'GET';
+// const path = '/open/api/v4/merchant/query/UserHistory';
+// const timestamp = Date.now().toString();
+
+// const queryParams = {  
+//   side: 'BUY', 
+//   appid: API_KEY,
+//   timestamp:timestamp,
+// };
+
+// function generateSignature({ timestamp, method, path, queryParams, secretKey }) {
+//   const sortedKeys = Object.keys(queryParams).sort();
+//   const sortedQueryString = sortedKeys
+//     .map(k => `${k}=${queryParams[k]}`)
+//     .join('&');
+
+//   const fullPath = `${path}?${sortedQueryString}`;
+//   const signString = `${timestamp}${method.toUpperCase()}${fullPath}`;
+
+//   const hmac = crypto.createHmac('sha256', secretKey);
+//   hmac.update(signString);
+//   return hmac.digest('base64');
+// }
+
+// async function run() {
+//   const sign = generateSignature({
+//     timestamp,
+//     method,
+//     path,
+//     queryParams,
+//     secretKey: SECRET_KEY,
+//   });
+
+//   const queryString = Object.entries(queryParams)
+//     .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
+//     .join('&');
+
+//   const url = `https://openapi-test.alchemypay.org/merchant/query/UserHistory`;
+
+//   const headers = {
+//     'appId': API_KEY,
+//     'sign': sign,
+//     'timestamp': timestamp,
+//     'Content-Type': 'application/json',
+//   };
+
+//   try {
+//     const response = await fetch(url, {
+//       method,
+//       headers,
+//     });
+
+//     const data = await response.json();
+//     console.log('RESPONSE:', data);
+//   } catch (err) {
+//     console.error('ERROR:', err.message);
+//   }
+// }
+
+// run()

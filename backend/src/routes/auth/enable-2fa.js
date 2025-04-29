@@ -20,6 +20,8 @@ async function send2FACode(user) {
   const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
   user.twoFA = {
+    enabled:true,
+    verified:true,
     code,
     expiresAt,
   };
