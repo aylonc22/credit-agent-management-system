@@ -161,7 +161,7 @@ const PaymentLinkGenerator = () => {
       <div className='alchemyFrame'>
          <iframe height="625" title="AlchemyPay On/Off Ramp Widget"
           src={paymentLink}
-          frameborder="no" allowtransparency="true" allowfullscreen="" 
+          frameBorder="no" allowTransparency="true" allowFullScreen="" 
           />        
       </div>
     )}

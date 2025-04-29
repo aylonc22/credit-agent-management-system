@@ -1,6 +1,7 @@
 const express = require('express');
 const autheMiddleware = require('../middleware/authMiddleware');
 const Transaction = require('../../models/Transaction');
+const Client = require('../../models/Client');
 const router = express.Router();
 
 router.get('/', autheMiddleware ,async (req, res) => {
@@ -60,14 +61,19 @@ router.get('/', autheMiddleware ,async (req, res) => {
 });
 
 router.put('/:transactionId',autheMiddleware ,async (req, res) => {
-  try{
-    console.log("here");
+  try{   
     const {transactionId} = req.params;
     if(req.user.role === 'admin'){
             const transaction = await Transaction.findById(transactionId);
             if(transaction){
                 transaction.status = 'completed';               
                 await transaction.save();
+
+                const client = await Client.findById(transaction.client);
+                client.credit = client.credit + transaction.amount;
+                console.log(client.credit);
+                await client.save();
+
                 return res.status(200).json({message:"עסקה אושרה בהצלחה"});
             }
             return res.status(404).json({message:"עסקה לא נמצאה"});

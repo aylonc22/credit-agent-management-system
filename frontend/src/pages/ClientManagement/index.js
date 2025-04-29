@@ -227,7 +227,7 @@ const ClientManagement = () => {
                       <td>{client.name}</td>
                       <td className='mobile-hide'>{client.userId?.email || '-'}</td>
                       {userData.role !== 'agent' && <td>{agent?.name || '-'}</td>}
-                      <td>{client.credits ?? 0}</td>
+                      <td>{client.credit ?? 0}</td>
                       <td className='mobile-hide'>{new Date(client.createdAt).toLocaleDateString('he-IL')}</td>
                       <td>{client.status === 'active' ? 'פעיל' : 'לא פעיל'}</td>
                       <td>

@@ -1,5 +1,6 @@
 const express = require('express');
 const Transaction = require('../../models/Transaction'); // make sure path is correct
+const Client = require('../../models/Client');
 const router = express.Router();
 
 
@@ -80,6 +81,10 @@ router.get('/', async (req, res) => {
   
       // Save the updated transaction
       await transaction.save();
+
+      const client = await Client.findById(transaction.client);
+      client.credit = client.credit + transaction.amount;
+      await client.save();
   
       // Respond with success
       return res.status(200).json({
