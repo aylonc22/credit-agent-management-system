@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
       res.status(200).json({ message: 'לינק לשינוי סיסמה נשלח לכתובת האימייל שלך.' });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: 'חלה שגיאה בזמן ניסיון שלחית לינק לאיפוס סיסמה' });
+      res.status(500).json({ message: 'חלה שגיאה בזמן ניסיון שליחת לינק לאיפוס סיסמה' });
     }
   });
 

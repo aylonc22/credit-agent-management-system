@@ -27,7 +27,7 @@ async function send2FACode(user) {
   };
 
   await user.save();
-  // await twoFaVerification(user.email); // Uncomment when ready
+  await twoFaVerification(user.email, code);
   console.log('2FA Code:', code);
 }
 
