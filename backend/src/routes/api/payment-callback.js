@@ -82,15 +82,15 @@ router.post('/', async (req, res) => {
           return res.status(400).json({message:"status not supported"});
       }
     
-  
-      // Save the updated transaction
-      await transaction.save();
-
       if(transaction.status === 'completed'){
         const client = await Client.findById(transaction.client);
+        transaction.amount_paid = transaction.amount_paid + cryptoAmountInUSDT;
         client.credit = client.credit + cryptoAmountInUSDT;
         await client.save();
       }
+
+      // Save the updated transaction
+      await transaction.save();
   
       // Respond with success
       return res.status(200).json({

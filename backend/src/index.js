@@ -43,14 +43,11 @@ app.listen(PORT, () => {
 });
 
 
-validateTransaction('e4c6204d-ae3f-4262-aa68-d92a6228b17f-1746011361707').then(res=>console.log(res));
 async function failExpiredTransactions() {
   const now = new Date();
 
     const expiredTransactions = await Transaction.find( { status: 'pending', expireAt: { $lte: now } });
-    const test = await Transaction.findOne({merchantOrderNo:'e4c6204d-ae3f-4262-aa68-d92a6228b17f-1746011361707'})
-    console.log(test);
-    console.log('transactions',expiredTransactions);
+    const test = await Transaction.findOne({merchantOrderNo:'e4c6204d-ae3f-4262-aa68-d92a6228b17f-1746011361707'})   
     let failed = 0;
     let complete = 0;
     for(let i =0;i<expiredTransactions.length;i++){
@@ -69,7 +66,7 @@ async function failExpiredTransactions() {
             
                   if(expiredTransactions[i].status === 'completed'){
                     const client = await Client.findById(expiredTransactions[i].client);
-                    
+                    expiredTransactions[i].amount_paid = expiredTransactions[i].amount_paid + verify.amount;
                     client.credit = client.credit + verify.amount;
                     await client.save();
                   }
@@ -79,7 +76,7 @@ async function failExpiredTransactions() {
             }
             await expiredTransactions[i].save();
     }
-  console.log(`Marked ${failed} transactions as failed due to overtime.`);
+  console.log(`Marked ${failed} transactions as failed due to overtime. And found ${complete} transactions that were completed and verified them`);
 }
 
 async function initApp() {
