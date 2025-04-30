@@ -1,6 +1,7 @@
 const express = require('express');
 const Transaction = require('../../models/Transaction'); // make sure path is correct
 const Client = require('../../models/Client');
+const crypto = require('crypto');
 const router = express.Router();
 
 
