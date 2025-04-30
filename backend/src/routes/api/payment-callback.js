@@ -29,7 +29,7 @@ function signCheck(content, secretkey) {
   return hmac.digest('base64');
 }
 
-router.get('/', async (req, res) => {
+router.post('/', async (req, res) => {
     try {
       const body = req.body;
       console.log(body);     
@@ -38,7 +38,7 @@ router.get('/', async (req, res) => {
         return res.status(400).json({ message: 'Missing required parameters' });
       }
 
-      const {merchantOrderNo, status, newSignature} = req.body;
+      const {merchantOrderNo, status, newSignature, cryptoAmountInUSDT} = req.body;
 
       const cleanedAndSorted = cleanAndSortParams(body);
       const timestamp = req.headers['timestamp'];  // Retrieving timestamp from headers
@@ -68,10 +68,13 @@ router.get('/', async (req, res) => {
       // Update the status to 'completed' if the payment is successful (you can add more checks here if needed)
       switch (status) {
         case 'PAY_SUCCESS':
-          transaction.status = 'completed';
+         return; // we need only pay fail to fail the transaction or finish to complete the transaction
           break;
         case 'PAY_FAIL':
           transaction.status = 'failed';
+          break;
+        case 'FINISHED':
+          transaction.status = 'completed';
           break;
         default:
           console.log(status + ' is not supported webokhook');
@@ -82,9 +85,11 @@ router.get('/', async (req, res) => {
       // Save the updated transaction
       await transaction.save();
 
-      const client = await Client.findById(transaction.client);
-      client.credit = client.credit + transaction.amount;
-      await client.save();
+      if(transaction.status === 'completed'){
+        const client = await Client.findById(transaction.client);
+        client.credit = client.credit + cryptoAmountInUSDT;
+        await client.save();
+      }
   
       // Respond with success
       return res.status(200).json({

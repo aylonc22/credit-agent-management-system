@@ -4,7 +4,7 @@ const autheMiddleware = require('../middleware/authMiddleware');
 const {v4:uuidv4} = require('uuid');
 const Transaction = require('../../models/Transaction'); // make sure path is correct
 const OneTimeLink = require('../../models/OneTimeLink');
-const generateAlchemy = require('../../utils/alchemyPay');
+const {generateAlchemy} = require('../../utils/alchemyPay');
 const Client = require('../../models/Client');
 const router = express.Router();
 require('dotenv').config();

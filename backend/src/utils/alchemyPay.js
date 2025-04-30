@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const fetch = require('node-fetch');
 require('dotenv').config();
 //const querystring = require('querystring');
 
@@ -59,4 +60,76 @@ const onRampSignature = generateSignature(timestamp, onRampHttpMethod, requestPa
 return "https://ramptest.alchemypay.org?" + rawDataToSign + "&sign=" + onRampSignature;
 }
 
-module.exports = generateAlchemy;
+async function validateTransaction(merchantOrderNo){  
+    
+    // === CONFIG ===
+    const appId = process.env.APP_ID
+    const appSecret = process.env.APP_SECRET;
+    const BASE_URL = 'https://openapi-test.alchemypay.org'; // or your specific base URL
+    
+    
+    const method = 'GET';
+    const path = '/open/api/v4/merchant/query/trade';
+    const timestamp = Date.now().toString();
+    
+    const queryParams = {
+      merchantOrderNo:'75ea0e79-7936-47c3-900e-5d66a801f16c-1745931174659',//merchantOrderNo,
+      side: 'BUY', 
+      appid: appId,
+      timestamp:timestamp,
+    
+    };
+    
+    function generateSignature({ timestamp, method, path, queryParams, secretKey }) {
+      const sortedKeys = Object.keys(queryParams).sort();
+      const sortedQueryString = sortedKeys
+        .map(k => `${k}=${queryParams[k]}`)
+        .join('&');
+    
+      const fullPath = `${path}?${sortedQueryString}`;
+      const signString = `${timestamp}${method.toUpperCase()}${fullPath}`;
+    
+      const hmac = crypto.createHmac('sha256', secretKey);
+      hmac.update(signString);
+      return hmac.digest('base64');
+    }
+    
+   
+      const sign = generateSignature({
+        timestamp,
+        method,
+        path,
+        queryParams,
+        secretKey: appSecret,
+      });
+    
+      const queryString = Object.entries(queryParams)
+        .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
+        .join('&');
+    
+        const url = `${BASE_URL}${path}?${queryString}`;
+    
+    
+      const headers = {
+        'appid': appId,
+        'sign': sign,
+        'timestamp': timestamp,
+        'Content-Type': 'application/json',
+      };
+    
+      try {
+        const response = await fetch(url, {
+          method,
+          headers,
+        });
+    
+        const data = await response.json();
+       return {amount:data.data?.cryptoAmountInUSDT , status:data.data?.status};
+      } catch (err) {
+        console.error('ERROR:', err.message);
+      }
+    
+    
+}
+
+module.exports = {generateAlchemy,validateTransaction};

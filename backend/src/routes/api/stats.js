@@ -24,14 +24,14 @@ router.get('/', authMiddleware , async (req, res) => {
 
           const clientStats = await Transaction.aggregate([
             { $match: { client: client._id, status:"completed", createdAt: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) } } }, // Match today's transactions
-            { $group: { _id: null, totalCreditsToday: { $sum: "$amount" } } }
+            { $group: { _id: null, totalCreditsToday: { $sum: "$amount_paid" } } }
           ]);
     
           if (clientStats.length > 0) stats.totalCreditsToday = clientStats[0].totalCreditsToday;
           else stats.totalCreditsToday = 0;
           const clientMonthlyStats = await Transaction.aggregate([
             { $match: { client: client._id, status:"completed", createdAt: { $gte: new Date(new Date().setDate(1)) } } }, // Match this month's transactions
-            { $group: { _id: null, totalCreditsThisMonth: { $sum: "$amount" } } }
+            { $group: { _id: null, totalCreditsThisMonth: { $sum: "$amount_paid" } } }
           ]);
     
           if (clientMonthlyStats.length > 0) stats.totalCreditsThisMonth = clientMonthlyStats[0].totalCreditsThisMonth;
@@ -53,7 +53,7 @@ router.get('/', authMiddleware , async (req, res) => {
     
           const agentTransactions = await Transaction.aggregate([
             { $match: { client: { $in: agentClientsIds }, status:"completed",createdAt: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) } } },
-            { $group: { _id: null, totalCreditsToday: { $sum: "$amount" } } }
+            { $group: { _id: null, totalCreditsToday: { $sum: "$amount_paid" } } }
           ]);
     
           if (agentTransactions.length > 0) stats.totalCreditsToday = agentTransactions[0].totalCreditsToday;
@@ -61,7 +61,7 @@ router.get('/', authMiddleware , async (req, res) => {
     
           const agentTransactionsMonth = await Transaction.aggregate([
             { $match: { client: { $in: agentClientsIds }, status:"completed", createdAt: { $gte: new Date(new Date().setDate(1)) } } },
-            { $group: { _id: null, totalCreditsThisMonth: { $sum: "$amount" } } }
+            { $group: { _id: null, totalCreditsThisMonth: { $sum: "$amount_paid" } } }
           ]);
     
           if (agentTransactionsMonth.length > 0) stats.totalCreditsThisMonth = agentTransactionsMonth[0].totalCreditsThisMonth;
@@ -103,7 +103,7 @@ router.get('/', authMiddleware , async (req, res) => {
           {
             $group: {
               _id: null,
-              totalCreditsToday: { $sum: "$amount" }
+              totalCreditsToday: { $sum: "$amount_paid" }
             }
           }
         ]);
@@ -123,7 +123,7 @@ router.get('/', authMiddleware , async (req, res) => {
           {
             $group: {
               _id: null,
-              totalCreditsThisMonth: { $sum: "$amount" }
+              totalCreditsThisMonth: { $sum: "$amount_paid" }
             }
           }
         ]);
@@ -150,7 +150,7 @@ router.get('/', authMiddleware , async (req, res) => {
           // Admin-specific stats
           stats.totalCreditsToday = await Transaction.aggregate([
             { $match: {status:"completed", createdAt: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) } } },
-            { $group: { _id: null, totalCreditsToday: { $sum: "$amount" } } }
+            { $group: { _id: null, totalCreditsToday: { $sum: "$amount_paid" } } }
           ]);
     
           if (stats.totalCreditsToday.length > 0) stats.totalCreditsToday = stats.totalCreditsToday[0].totalCreditsToday;
@@ -158,7 +158,7 @@ router.get('/', authMiddleware , async (req, res) => {
 
           stats.totalCreditsThisMonth = await Transaction.aggregate([
             { $match: {status:"completed", createdAt: { $gte: new Date(new Date().setDate(1)) } } },
-            { $group: { _id: null, totalCreditsThisMonth: { $sum: "$amount" } } }
+            { $group: { _id: null, totalCreditsThisMonth: { $sum: "$amount_paid" } } }
           ]);
     
           if (stats.totalCreditsThisMonth.length > 0) stats.totalCreditsThisMonth = stats.totalCreditsThisMonth[0].totalCreditsThisMonth;
