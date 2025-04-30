@@ -43,12 +43,12 @@ app.listen(PORT, () => {
 });
 
 
-
+validateTransaction('"e4c6204d-ae3f-4262-aa68-d92a6228b17f-1746011361707').then(res=>console.log(res));
 async function failExpiredTransactions() {
   const now = new Date();
 
     const expiredTransactions = await Transaction.find( { status: 'pending', expireAt: { $lte: now } });
-    console.log(expiredTransactions);
+    console.log('transactions',expiredTransactions);
     let failed = 0;
     let complete = 0;
     for(let i =0;i<expiredTransactions.length;i++){
