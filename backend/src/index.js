@@ -48,6 +48,7 @@ async function failExpiredTransactions() {
   const now = new Date();
 
     const expiredTransactions = await Transaction.find( { status: 'pending', expireAt: { $lte: now } });
+    console.log(expiredTransactions);
     let failed = 0;
     let complete = 0;
     for(let i =0;i<expiredTransactions.length;i++){
