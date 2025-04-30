@@ -70,11 +70,7 @@ async function failExpiredTransactions() {
                   if(expiredTransactions[i].status === 'completed'){
                     const client = await Client.findById(expiredTransactions[i].client);
                     
-                    const currentCredit = Number(client.credit) || 0;
-                    const amountToAdd = Number(verify.cryptoAmountInUSDT) || 0;
-                    console.log('client.credit:', client.credit);
-                    console.log('verify.cryptoAmountInUSDT:', verify.cryptoAmountInUSDT);
-                    client.credit = currentCredit + amountToAdd;
+                    client.credit = client.credit + verify.amount;
                     await client.save();
                   }
             }else{
