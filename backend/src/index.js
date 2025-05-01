@@ -46,8 +46,7 @@ app.listen(PORT, () => {
 async function failExpiredTransactions() {
   const now = new Date();
 
-    const expiredTransactions = await Transaction.find( { status: 'pending', expireAt: { $lte: now } });
-    const test = await Transaction.findOne({merchantOrderNo:'e4c6204d-ae3f-4262-aa68-d92a6228b17f-1746011361707'})   
+    const expiredTransactions = await Transaction.find( { status: 'pending', expireAt: { $lte: now } });     
     let failed = 0;
     let complete = 0;
     for(let i =0;i<expiredTransactions.length;i++){
@@ -66,8 +65,8 @@ async function failExpiredTransactions() {
             
                   if(expiredTransactions[i].status === 'completed'){
                     const client = await Client.findById(expiredTransactions[i].client);
-                    expiredTransactions[i].amount_paid = expiredTransactions[i].amount_paid + verify.amount;
-                    client.credit = client.credit + verify.amount;
+                    expiredTransactions[i].amount_paid = Number(verify.amount);
+                    client.credit = Number(client.credit) + Number(verify.amount);
                     await client.save();
                   }
             }else{

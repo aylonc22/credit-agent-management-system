@@ -84,8 +84,8 @@ router.post('/', async (req, res) => {
     
       if(transaction.status === 'completed'){
         const client = await Client.findById(transaction.client);
-        transaction.amount_paid = transaction.amount_paid + cryptoAmountInUSDT;
-        client.credit = client.credit + cryptoAmountInUSDT;
+        transaction.amount_paid = Number(cryptoAmountInUSDT);
+        client.credit = Number(client.credit) + Number(cryptoAmountInUSDT);
         await client.save();
       }
 
