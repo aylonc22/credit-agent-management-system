@@ -73,7 +73,7 @@ async function validateTransaction(merchantOrderNo){
     const timestamp = Date.now().toString();
     
     const queryParams = {
-      merchantOrderNo:'75ea0e79-7936-47c3-900e-5d66a801f16c-1745931174659',//merchantOrderNo,
+      merchantOrderNo:merchantOrderNo,
       side: 'BUY', 
       appid: appId,
       timestamp:timestamp,
