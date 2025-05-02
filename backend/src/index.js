@@ -51,7 +51,7 @@ async function failExpiredTransactions() {
     let complete = 0;
     for(let i =0;i<expiredTransactions.length;i++){
             const verify = await validateTransaction(expiredTransactions[i].merchantOrderNo);           
-            if(verify){
+            if(!verify.status){
                 switch (verify.status) {                    
                     case 'PAY_FAIL':
                         expiredTransactions[i].status = 'failed';
