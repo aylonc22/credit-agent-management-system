@@ -46,7 +46,7 @@ router.post('/', autheMiddleware, async (req, res) => {
       amount,
       merchantOrderNo:order,
       notes,
-      expireAt:new Date(),// new Date(Date.now() + 60 * 60 * 24 * 1000), // 1 day later
+      expireAt: new Date(Date.now() + 60 * 60 * 24 * 1000), // 1 day later
       status: 'pending',
     });
 
