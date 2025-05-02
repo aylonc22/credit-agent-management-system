@@ -70,7 +70,7 @@ async function failExpiredTransactions() {
                     await client.save();
                   }
             }else{
-                expiredTransactions[initApp].status = "failed";
+                expiredTransactions[i].status = "failed";
                 failed++;
             }
             await expiredTransactions[i].save();
