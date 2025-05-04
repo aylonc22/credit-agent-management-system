@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
 
   try {
     const user = await User.findOne({ username });
-    console.log("login",user);
+       
     if (!user) {
       return res.status(401).json({ message: 'פרטי ההתחברות אינם נכונים' });
     }

@@ -70,8 +70,7 @@ router.put('/:transactionId',autheMiddleware ,async (req, res) => {
                 await transaction.save();
 
                 const client = await Client.findById(transaction.client);
-                client.credit = client.credit + transaction.amount;
-                console.log(client.credit);
+                client.credit = client.credit + transaction.amount;                
                 await client.save();
 
                 return res.status(200).json({message:"עסקה אושרה בהצלחה"});
