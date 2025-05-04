@@ -20,8 +20,7 @@ const PaymentRedirectHandler = () => {
         const res = await api.post("/api/alchemy-redirect", { token });
 
         // Optionally redirect based on response
-        if (res.data.redirectTo) {
-          console.log(res.data.redirectTo);
+        if (res.data.redirectTo) {        
           window.location.href = res.data.redirectTo; // hard redirect
         } else {
           navigate("/login"); // soft redirect

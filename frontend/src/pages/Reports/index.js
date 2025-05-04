@@ -38,9 +38,7 @@ const Reports = () => {
   };
 
   const fetchTransactions = async (_agents) => {
-    try {
-      console.log("agents",agents)
-      console.log("_agents",_agents);
+    try {    
       if(agents.length>0){
         _agents = agents;
       }
