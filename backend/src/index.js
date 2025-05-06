@@ -86,7 +86,7 @@ async function initApp() {
     if (!existingAdmin) {
       const newAdmin = new User({
         username: 'admin',
-        password: encryptAES('admin'),
+        password: encryptAES('X7r#9pL!a2Vq'),
         email: process.env.DEFAULT_EMAIL,
         role: 'admin',       
       });
