@@ -39,7 +39,7 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      <h1>מערכת ניהול קרדיטים וסוכנים</h1> {/* Credit and Agent Management System */}
+      <h1>{role ==='client'?'ברוך הבא! למערכת התשלומים של PAY GLOW':'מערכת ניהול קרדיטים וסוכנים'}</h1> {/* Credit and Agent Management System */}
 
       <div className="stats">
         <div className="stat-item">
