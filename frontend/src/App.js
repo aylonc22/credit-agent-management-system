@@ -13,7 +13,7 @@ import SystemSettings from './pages/SystemSettings/index';
 import Navbar from './components/Navbar.js';
 import Register from './pages/Register/index.js';
 import ForgotPassword from './pages/ForgotPassword/index.js';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Import CSS for toastify
 import Unauthorized from './pages/Unauthorized/index.js';
 import ChangePassword from './pages/ChangePassword/index.js';

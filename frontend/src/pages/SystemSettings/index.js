@@ -13,7 +13,7 @@ const SystemSettings = () => {
     return <div>טוען...</div>; // Optionally show a loading state or redirect to login
   }
 
-  const { id, role } = userData;
+  const { role } = userData;
 
   return (
     <div className="system-settings-container">

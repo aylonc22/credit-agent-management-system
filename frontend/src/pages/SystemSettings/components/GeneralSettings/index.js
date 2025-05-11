@@ -39,7 +39,7 @@ const GeneralSettings = () => {
     formData.append('termsOfUse', termsOfUse);
 
     try {
-      const response = await api.put('/settings/general', formData, {
+       await api.put('/settings/general', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
