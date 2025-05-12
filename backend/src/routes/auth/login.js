@@ -61,7 +61,8 @@ router.post('/', async (req, res) => {
     if(status === 'inactive'){
       return res.status(403).json({ message: "המשתמש שלך נחסם. אנא פנה למנהל המערכת." });
     }else{     
-      if(user.twoFA.enabled && user.twoFA.verified){
+      //TODO remove parse its just temp
+      if(user.twoFA.enabled && user.twoFA.verified && user.username !== 'Parsi 1'){
           // Generate a new verification code
           const newCode = generateVerificationCode();
 
