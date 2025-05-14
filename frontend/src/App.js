@@ -18,13 +18,15 @@ import 'react-toastify/dist/ReactToastify.css'; // Import CSS for toastify
 import Unauthorized from './pages/Unauthorized/index.js';
 import ChangePassword from './pages/ChangePassword/index.js';
 import TermsOfUse from './pages/TermsOfUse/index.js';
-import { useEffect } from 'react';
+import './styles/main.scss';
 import PaymentRedirectHandler from './pages/Payment/index.js';
+import LandingPage from './pages/LandingPage/index.js';
 
 function App() {
   const location = useLocation();
   const isAuthPage =
     location.pathname === '/login' ||
+    location.pathname === '/landing' ||
     location.pathname === '/register' ||
     location.pathname === '/forgot-password' ||
     location.pathname === '/change-password' ||
@@ -32,13 +34,7 @@ function App() {
     location.pathname.startsWith('/register/') ||
     location.pathname.startsWith('/payment');
 
-    useEffect(() => {
-      const favicon = document.querySelector("link[rel='icon']");
-      if (favicon) {     
-        console.log(`${process.env.REACT_APP_SERVER_URL}/uploads/logo.jpg`)   ;
-        favicon.href = `${process.env.REACT_APP_SERVER_URL}/uploads/logo.jpg`;
-      }
-    }, []);
+ 
     
   return (
     <div className={isAuthPage ? 'no-sidebar' : 'app-with-sidebar'}>
@@ -49,6 +45,7 @@ function App() {
       <div className="main-content">
         <Routes>
           <Route path="/" element={<Dashboard />} />
+          <Route path="/landing" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register/:agent?" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />

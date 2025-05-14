@@ -10,8 +10,8 @@ const useAuth = (requiredRole) => {
     const token = localStorage.getItem('token'); // You can use sessionStorage if needed
 
     if (!token) {
-      // If no token is found, redirect to login
-      navigate('/login');
+      // If no token is found, redirect to landing
+      navigate('/landing');
       return;
     }
 
@@ -24,9 +24,9 @@ const useAuth = (requiredRole) => {
       // Check if the token has expired (assuming 'exp' is in the JWT payload)
       const currentTime = Date.now() / 1000; // JWT 'exp' is in seconds, not milliseconds
       if (decodedToken.exp < currentTime) {
-        // Token has expired, clear it and redirect to login
+        // Token has expired, clear it and redirect to landing
         localStorage.removeItem('token');
-        navigate('/login');
+        navigate('/landing');
       }
 
       // Check if the user's role matches the required role
@@ -36,9 +36,9 @@ const useAuth = (requiredRole) => {
       }
 
     } catch (error) {
-      // If JWT is invalid or cannot be decoded, remove it and redirect to login
+      // If JWT is invalid or cannot be decoded, remove it and redirect to landing
       localStorage.removeItem('token');
-      navigate('/login');
+      navigate('/landing');
     }
   }, [navigate, requiredRole]);
 
