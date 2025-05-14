@@ -10,10 +10,12 @@ const Register = () => {
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [inviteToken, setInviteToken] = useState(null);
   const [isPendingVerification, setIsPendingVerification] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
   const [isResending, setIsResending] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
   const { agent } = useParams();
@@ -39,8 +41,31 @@ const Register = () => {
     }
   }, [location]);
 
+  const validateFields = () => {
+    const newErrors = {};
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!username.trim()) newErrors.username = "This field is required.";
+    if (!name.trim()) newErrors.name = "This field is required.";
+    if (!email.trim()) {
+      newErrors.email = "This field is required.";
+    } else if (!emailRegex.test(email)) {
+      newErrors.email = "Please enter a valid email address.";
+    }
+    if (!password.trim()) newErrors.password = "This field is required.";
+    if (!confirmPassword.trim()) {
+      newErrors.confirmPassword = "This field is required.";
+    } else if (password !== confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleRegister = (e) => {
     e.preventDefault();
+    if (!validateFields()) return;
 
     const registrationData = { email, name, username, password };
     if (inviteToken) registrationData.inviteToken = inviteToken;
@@ -119,7 +144,7 @@ const Register = () => {
           </div>
         </div>
       </header>
-  
+
       <div className="login">
         <div className="login__content">
           <div className="splash__logo__left">Pay<strong>glow</strong></div>
@@ -127,51 +152,62 @@ const Register = () => {
             <>
               <h2 className="login__title">Create an account</h2>
               <div className="login-form">
-                <form onSubmit={handleRegister}>
+                <form onSubmit={handleRegister} noValidate>
                   <div className="login-form__row">
                     <label className="login-form__label">Username</label>
                     <input
                       type="text"
-                      className="login-form__input required"
+                      className="login-form__input"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
-                      required
                     />
+                    {errors.username && <label className="error">{errors.username}</label>}
                   </div>
-  
+
                   <div className="login-form__row">
                     <label className="login-form__label">Full Name</label>
                     <input
                       type="text"
-                      className="login-form__input required"
+                      className="login-form__input"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      required
                     />
+                    {errors.name && <label className="error">{errors.name}</label>}
                   </div>
-  
+
                   <div className="login-form__row">
                     <label className="login-form__label">Email</label>
                     <input
                       type="email"
-                      className="login-form__input required email"
+                      className="login-form__input"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      required
                     />
+                    {errors.email && <label className="error">{errors.email}</label>}
                   </div>
-  
+
                   <div className="login-form__row">
                     <label className="login-form__label">Password</label>
                     <input
-                      type= "password"
-                      className="login-form__input required"
+                      type="password"
+                      className="login-form__input"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      required
-                    />                    
+                    />
+                    {errors.password && <label className="error">{errors.password}</label>}
                   </div>
-  
+
+                  <div className="login-form__row">
+                    <label className="login-form__label">Verify Password</label>
+                    <input
+                      type="password"
+                      className="login-form__input"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                    />
+                    {errors.confirmPassword && <label className="error">{errors.confirmPassword}</label>}
+                  </div>
+
                   <div className="login-form__row">
                     <input
                       type="submit"
@@ -179,7 +215,7 @@ const Register = () => {
                       value="SIGN UP"
                     />
                   </div>
-                </form>                
+                </form>
               </div>
             </>
           ) : (
@@ -191,12 +227,12 @@ const Register = () => {
                     <label className="login-form__label">Verification Code</label>
                     <input
                       type="text"
-                      className="login-form__input required"
+                      className="login-form__input"
                       value={verificationCode}
                       onChange={(e) => setVerificationCode(e.target.value)}
-                      required
                     />
                   </div>
+
                   <div className="login-form__row">
                     <input
                       type="submit"
@@ -205,7 +241,7 @@ const Register = () => {
                     />
                   </div>
                 </form>
-  
+
                 <div className="login-form__row links">
                   <button
                     className="button button--border button--full"
@@ -215,7 +251,7 @@ const Register = () => {
                     {isResending ? "Sending..." : "Resend Code"}
                   </button>
                 </div>
-  
+
                 <div className="login-form__row links">
                   <button
                     className="button button--border button--full"
@@ -235,7 +271,6 @@ const Register = () => {
       </div>
     </div>
   );
-  
 };
 
 export default Register;

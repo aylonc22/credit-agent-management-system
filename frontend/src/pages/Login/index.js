@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './index.scss';
 import '../LandingPage/index.scss';
 import api from "../../api/axios";
 import { toast } from 'react-toastify';
+
 import backArrow from '../../assets/images/icons/arrow-back.svg';
 
 const Login = () => {
@@ -12,16 +12,29 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [twofaCode, setTwofaCode] = useState('');
   const [isTwofaRequired, setIsTwofaRequired] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
 
+  const validateFields = () => {
+    const newErrors = {};
+
+    if (!isTwofaRequired && !username.trim()) newErrors.username = "This field is required.";
+    if (!isTwofaRequired && !password.trim()) newErrors.password = "This field is required.";
+    if (isTwofaRequired && !twofaCode.trim()) newErrors.twofaCode = "This field is required.";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateFields()) return;
 
     if (isTwofaRequired) {
       try {
         const res = await api.post('/auth/verify-2fa', { username, twofaCode });
-        toast.success(res.data.welcome ? res.data.welcome : 'ההתחברות בוצעה בהצלחה');
+        toast.success(res.data.welcome || 'ההתחברות בוצעה בהצלחה');
         navigate('/');
       } catch (err) {
         console.error('2FA verification error:', err);
@@ -59,10 +72,11 @@ const Login = () => {
   const handleGoBack = () => {
     setIsTwofaRequired(false);
     setTwofaCode('');
+    setErrors({});
   };
 
   return (
-    <div className="page page--login" data-page="login" >
+    <div className="page page--login" data-page="login">
       <header className="header header--fixed">
         <div className="header__inner">
           <div className="header__icon">
@@ -77,18 +91,20 @@ const Login = () => {
           <h2 className="login__title">LOGIN</h2>
 
           <div className="login-form">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} noValidate>
               {!isTwofaRequired ? (
                 <>
                   <div className="login-form__row">
-                    <label className="login-form__label required">Username</label>
+                    <label className="login-form__label">Username</label>
                     <input
                       type="text"
                       className="login-form__input"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
-                      required
                     />
+                    {errors.username && (
+                      <label className="error" htmlFor="username">{errors.username}</label>
+                    )}
                   </div>
 
                   <div className="login-form__row">
@@ -98,8 +114,10 @@ const Login = () => {
                       className="login-form__input"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      required
-                    />                   
+                    />
+                    {errors.password && (
+                      <label className="error" htmlFor="password">{errors.password}</label>
+                    )}
                   </div>
 
                   <div className="login-form__forgot-pass">
@@ -115,8 +133,10 @@ const Login = () => {
                       className="login-form__input"
                       value={twofaCode}
                       onChange={(e) => setTwofaCode(e.target.value)}
-                      required
                     />
+                    {errors.twofaCode && (
+                      <label className="error" htmlFor="twofaCode">{errors.twofaCode}</label>
+                    )}
                   </div>
 
                   <div className="twofa-links">
@@ -141,7 +161,7 @@ const Login = () => {
 
             {!isTwofaRequired && (
               <div className="login-form__bottom">
-                <p> Don't have an account? <br /><Link to="/register">SIGNUP NOW!</Link></p>
+                <p>Don't have an account? <br /><Link to="/register">SIGNUP NOW!</Link></p>
               </div>
             )}
           </div>
