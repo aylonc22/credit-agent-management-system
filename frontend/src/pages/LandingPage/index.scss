@@ -1,14 +1,5 @@
 @import "../../styles/variables";
 
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
 .page--splash {
   height: 100vh;
   background-color: $color-darkgray;
@@ -29,7 +20,21 @@
     text-align: center;
     color: #ffffff;
     font-weight: 300;
-    font-size: 4.2rem;
+    font-size: 4.2rem; // updated to match CSS
+    margin-bottom: 40px;
+
+    & strong {
+      font-weight: 600;
+      color: $color-lightgreen;
+    }
+  }
+
+  &__logo__left {
+    width: 100%;
+    text-align: left;
+    color: #ffffff;
+    font-weight: 300;
+    font-size: 3.2rem;
     margin-bottom: 40px;
 
     & strong {
@@ -42,7 +47,7 @@
     width: 100%;
     text-align: center;
 
-    img {
+    & img {
       max-width: 50%;
       display: block;
       margin: auto;
@@ -63,7 +68,7 @@
     width: 70%;
     margin: auto;
 
-    .button {
+    & .button {
       margin-bottom: 10px;
     }
   }
@@ -72,14 +77,14 @@
     width: 100%;
     text-align: center;
 
-    p {
+    & p {
       text-transform: uppercase;
       color: #fff;
       font-size: 1.1rem;
       letter-spacing: 1px;
       opacity: 0.7;
 
-      a {
+      & a {
         color: #fff;
         opacity: 1;
       }
@@ -93,15 +98,14 @@
     margin: 20px 0;
   }
 }
-.icon{
-	display:block;
-	&--social{
-	width:20px;
-	height:20px;
-	margin:0 10px;
-		& img{
-		display:block;
-		max-width:100%;
-		}
-	}
+
+// Add bounce animation
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
+

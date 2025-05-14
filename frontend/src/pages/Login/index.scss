@@ -1,0 +1,117 @@
+@import "../../styles/variables";
+.page--login{
+	height:100vh;
+	background-color:$color-darkgray;
+}
+.login{
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	width:100%;
+	height:100%;
+	&__content{
+	width:calc(100% - 80px);
+	margin:auto;
+	}
+	&__title{
+	width:100%;
+	text-align:left;
+	color:#ffffff;
+	font-weight:600;
+	font-size:1.6rem;
+	letter-spacing:2px;
+	text-transform:uppercase;
+	margin-bottom:40px;
+	padding:0px;
+	}
+	&__text{
+	width:70%;
+	text-align:center;
+	color:#fff;
+	margin:0 auto 40px auto;
+	line-height:1.5;
+	}
+}
+
+
+
+.login-form{
+	width:100%;
+	margin:auto;
+	&__row{
+	width:100%;
+	margin-bottom:10px;
+	}
+	&__label{
+	width:100%;
+	display:block;
+	padding-bottom:10px;
+	color:#fff;
+	text-transform:uppercase;
+	font-size:1rem;
+	letter-spacing:1px;
+	font-weight:600;
+	}
+	& label.error{
+	color:#ffbde1;
+	padding:10px 0 0 5px;
+	font-size:1.1rem;
+	}
+	&__input{
+	width:calc(100% - 20px);
+	border:none;
+	background-color:transparent;
+	padding:10px 10px;
+	border-radius:0px;
+	border-bottom:1px rgba(255, 255, 255, .3) solid;
+	color:#fff;
+	}
+	&__submit{
+	margin-top:20px;
+	box-shadow: none;
+	-webkit-box-shadow: none;
+	-webkit-appearance: none;
+	}
+	&__forgot-pass{
+	width:100%;
+	text-align:right;
+		& a{
+		color:#fff;
+		font-weight:600;
+		font-size:1.2rem;
+		}
+	}
+	&__bottom{
+	width:100%;
+	text-align:center;
+	margin-top:20px;
+		& p{
+		color:#fff;
+		padding-bottom:10px;
+			& a{
+			color:$color-lightgreen;
+			font-weight:600;
+			font-size:1.2rem;
+			}
+		}
+	}
+}
+.icon{
+	display:block;
+	&--social{
+	width:20px;
+	height:20px;
+	margin:0 10px;
+		& img{
+		display:block;
+		max-width:100%;
+		}
+	}
+}
+
+input.login-form__input:-webkit-autofill {
+  background-color: transparent !important;
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+  -webkit-text-fill-color: #fff !important;
+  transition: background-color 9999s ease-in-out 0s;
+}
