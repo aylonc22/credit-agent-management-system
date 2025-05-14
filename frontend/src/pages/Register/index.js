@@ -3,13 +3,13 @@ import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 import './index.scss';
 import api from "../../api/axios";
 import { toast } from 'react-toastify';
+import backArrow from '../../assets/images/icons/arrow-back.svg';
 
 const Register = () => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   const [inviteToken, setInviteToken] = useState(null);
   const [isPendingVerification, setIsPendingVerification] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
@@ -111,102 +111,131 @@ const Register = () => {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-box">
-        {!isPendingVerification ? (
-          <>
-            <h2>צור חשבון חדש</h2>
-            <form onSubmit={handleRegister}>
-              <div className="input-group">
-                <input
-                  type="text"
-                  placeholder="שם משתמש"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  required
-                />
+    <div className="page page--login" data-page="login">
+      <header className="header header--fixed">
+        <div className="header__inner">
+          <div className="header__icon">
+            <Link to="/"><img src={backArrow} alt="Back" /></Link>
+          </div>
+        </div>
+      </header>
+  
+      <div className="login">
+        <div className="login__content">
+          <div className="splash__logo__left">Pay<strong>glow</strong></div>
+          {!isPendingVerification ? (
+            <>
+              <h2 className="login__title">Create an account</h2>
+              <div className="login-form">
+                <form onSubmit={handleRegister}>
+                  <div className="login-form__row">
+                    <label className="login-form__label">Username</label>
+                    <input
+                      type="text"
+                      className="login-form__input required"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      required
+                    />
+                  </div>
+  
+                  <div className="login-form__row">
+                    <label className="login-form__label">Full Name</label>
+                    <input
+                      type="text"
+                      className="login-form__input required"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                    />
+                  </div>
+  
+                  <div className="login-form__row">
+                    <label className="login-form__label">Email</label>
+                    <input
+                      type="email"
+                      className="login-form__input required email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                    />
+                  </div>
+  
+                  <div className="login-form__row">
+                    <label className="login-form__label">Password</label>
+                    <input
+                      type= "password"
+                      className="login-form__input required"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                    />                    
+                  </div>
+  
+                  <div className="login-form__row">
+                    <input
+                      type="submit"
+                      className="login-form__submit button button--main button--full"
+                      value="SIGN UP"
+                    />
+                  </div>
+                </form>                
               </div>
-
-              <div className="input-group">
-                <input
-                  type="text"
-                  placeholder="שם מלא"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                />
+            </>
+          ) : (
+            <>
+              <h2 className="login__title">Verify your email</h2>
+              <div className="login-form">
+                <form onSubmit={handleVerifyCode}>
+                  <div className="login-form__row">
+                    <label className="login-form__label">Verification Code</label>
+                    <input
+                      type="text"
+                      className="login-form__input required"
+                      value={verificationCode}
+                      onChange={(e) => setVerificationCode(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="login-form__row">
+                    <input
+                      type="submit"
+                      className="login-form__submit button button--main button--full"
+                      value="VERIFY"
+                    />
+                  </div>
+                </form>
+  
+                <div className="login-form__row links">
+                  <button
+                    className="button button--border button--full"
+                    onClick={handleResendCode}
+                    disabled={isResending}
+                  >
+                    {isResending ? "Sending..." : "Resend Code"}
+                  </button>
+                </div>
+  
+                <div className="login-form__row links">
+                  <button
+                    className="button button--border button--full"
+                    onClick={() => {
+                      sessionStorage.removeItem("pendingUsername");
+                      setIsPendingVerification(false);
+                      setUsername('');
+                    }}
+                  >
+                    Change User
+                  </button>
+                </div>
               </div>
-
-              <div className="input-group">
-                <input
-                  type="email"
-                  placeholder="כתובת אימייל"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="input-group">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="צור סיסמה"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-                <span
-                  className="password-toggle"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? "הסתר" : "הצג"}
-                </span>
-              </div>
-
-              <button type="submit" className="btn">הירשם</button>
-            </form>
-
-            {!inviteToken && (
-              <div className="links">
-                כבר יש לך חשבון? <Link to="/login">התחבר</Link>
-              </div>
-            )}
-          </>
-        ) : (
-          <>
-            <h2>אימות כתובת אימייל</h2>
-            <form onSubmit={handleVerifyCode}>
-              <div className="input-group">
-                <input
-                  type="text"
-                  placeholder="הזן את קוד האימות שנשלח אליך"
-                  value={verificationCode}
-                  onChange={(e) => setVerificationCode(e.target.value)}
-                  required
-                />
-              </div>
-              <button type="submit" className="btn">אמת</button>
-            </form>
-            <div className="links">
-              <button className="btn-secondary" onClick={handleResendCode} disabled={isResending}>
-                {isResending ? "שולח..." : "שלח קוד מחדש"}
-              </button>
-              <button
-                className="btn-secondary"
-                onClick={() => {
-                  sessionStorage.removeItem("pendingUsername");
-                  setIsPendingVerification(false);
-                  setUsername('');
-                }}
-              >
-                שינוי משתמש
-              </button>
-            </div>
-          </>
-        )}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
+  
 };
 
 export default Register;

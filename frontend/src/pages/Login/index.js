@@ -5,8 +5,8 @@ import './index.scss';
 import '../LandingPage/index.scss';
 import api from "../../api/axios";
 import { toast } from 'react-toastify';
-
 import backArrow from '../../assets/images/icons/arrow-back.svg';
+
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
