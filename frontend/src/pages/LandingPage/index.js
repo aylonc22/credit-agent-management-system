@@ -34,13 +34,13 @@ const LandingPage = () => {
               <a href="/login">Already Registered? Login here</a>
             </p>
             <div className="splash__social-icons">
-              <a href="#" className="icon icon--social">
+              <a href="https://www.facebook.com/" className="icon icon--social">
                 <img src={facebookIcon} alt="facebook" />
               </a>
-              <a href="#" className="icon icon--social">
+              <a href="https://www.twitter.com/" className="icon icon--social">
                 <img src={twitterIcon} alt="twitter" />
               </a>
-              <a href="#" className="icon icon--social">
+              <a href="https://www.instagram.com/" className="icon icon--social">
                 <img src={instagramIcon} alt="instagram" />
               </a>
             </div>
