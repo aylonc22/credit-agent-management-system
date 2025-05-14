@@ -1,4 +1,5 @@
 import './App.css';
+import './styles/main.scss';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 
 // Import pages
@@ -18,7 +19,6 @@ import 'react-toastify/dist/ReactToastify.css'; // Import CSS for toastify
 import Unauthorized from './pages/Unauthorized/index.js';
 import ChangePassword from './pages/ChangePassword/index.js';
 import TermsOfUse from './pages/TermsOfUse/index.js';
-import './styles/main.scss';
 import PaymentRedirectHandler from './pages/Payment/index.js';
 import LandingPage from './pages/LandingPage/index.js';
 

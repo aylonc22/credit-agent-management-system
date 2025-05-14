@@ -1,11 +1,12 @@
 import React from "react";
-//import "./LandingPage.scss";
+import "./index.scss";
 import splashImage from "../../assets/images/splash.png";
 import facebookIcon from "../../assets/images/icons/facebook.svg";
 import twitterIcon from "../../assets/images/icons/twitter.svg";
 import instagramIcon from "../../assets/images/icons/instagram.svg";
 
 const LandingPage = () => {
+    
   return (
     <div className="page page--splash" data-page="splash">
       <div className="splash">
@@ -23,7 +24,7 @@ const LandingPage = () => {
           </div>
 
           <div className="splash__buttons">
-            <a href="/signup" className="button button--full button--main">
+            <a href="/register" className="button button--full button--main">
               Signup
             </a>
           </div>

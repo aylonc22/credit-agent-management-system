@@ -1,0 +1,107 @@
+@import "../../styles/variables";
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.page--splash {
+  height: 100%;
+  background-color: $color-darkgray;
+}
+
+.splash {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+  &__content {
+    width: 100%;
+  }
+
+  &__logo {
+    width: 100%;
+    text-align: center;
+    color: #ffffff;
+    font-weight: 300;
+    font-size: 2.8rem;
+    margin-bottom: 40px;
+
+    & strong {
+      font-weight: 600;
+      color: $color-lightgreen;
+    }
+  }
+
+  &__image {
+    width: 100%;
+    text-align: center;
+
+    img {
+      max-width: 50%;
+      display: block;
+      margin: auto;
+      transition: transform 0.3s ease-in-out;
+      animation: bounce 2.5s infinite;
+    }
+  }
+
+  &__text {
+    width: 70%;
+    text-align: center;
+    color: #fff;
+    margin: 0 auto 40px auto;
+    line-height: 1.5;
+  }
+
+  &__buttons {
+    width: 70%;
+    margin: auto;
+
+    .button {
+      margin-bottom: 10px;
+    }
+  }
+
+  &__social-login {
+    width: 100%;
+    text-align: center;
+
+    p {
+      text-transform: uppercase;
+      color: #fff;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      opacity: 0.7;
+
+      a {
+        color: #fff;
+        opacity: 1;
+      }
+    }
+  }
+
+  &__social-icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+  }
+}
+.icon{
+	display:block;
+	&--social{
+	width:20px;
+	height:20px;
+	margin:0 10px;
+		& img{
+		display:block;
+		max-width:100%;
+		}
+	}
+}
