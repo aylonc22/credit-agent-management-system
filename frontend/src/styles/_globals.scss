@@ -550,9 +550,9 @@ ul.custom-listing{
       &__title{
       padding-bottom:20px;
       }
-      &__text{
+    //   &__text{
       
-      }
+    //   }
       &__icon{
           & img{
           display:block;
@@ -1103,7 +1103,7 @@ ul.custom-listing{
 	&__submit{
 	box-shadow: none;
 	-webkit-box-shadow: none;
-	-webkit-appearance: none;
+	// -webkit-appearance: none;
 	}
 }
 
