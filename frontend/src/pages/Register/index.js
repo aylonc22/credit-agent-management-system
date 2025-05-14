@@ -140,7 +140,7 @@ const Register = () => {
       <header className="header header--fixed">
         <div className="header__inner">
           <div className="header__icon">
-            <Link to="/"><img src={backArrow} alt="Back" /></Link>
+            <Link to="/landing"><img src={backArrow} alt="Back" /></Link>
           </div>
         </div>
       </header>

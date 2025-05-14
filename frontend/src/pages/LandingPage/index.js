@@ -4,6 +4,7 @@ import splashImage from "../../assets/images/splash.png";
 import facebookIcon from "../../assets/images/icons/facebook.svg";
 import twitterIcon from "../../assets/images/icons/twitter.svg";
 import instagramIcon from "../../assets/images/icons/instagram.svg";
+import { Link } from "react-router-dom";
 
 const LandingPage = () => {
     
@@ -24,25 +25,25 @@ const LandingPage = () => {
           </div>
 
           <div className="splash__buttons">
-            <a href="/register" className="button button--full button--main">
+            <Link to="/register" className="button button--full button--main">
               Signup
-            </a>
+            </Link>
           </div>
 
           <div className="splash__social-login">
             <p>
-              <a href="/login">Already Registered? Login here</a>
+              <Link to="/login">Already Registered? Login here</Link>
             </p>
             <div className="splash__social-icons">
-              <a href="https://www.facebook.com/" className="icon icon--social">
+              <Link to="https://www.facebook.com/" className="icon icon--social">
                 <img src={facebookIcon} alt="facebook" />
-              </a>
-              <a href="https://www.twitter.com/" className="icon icon--social">
+              </Link>
+              <Link to="https://www.twitter.com/" className="icon icon--social">
                 <img src={twitterIcon} alt="twitter" />
-              </a>
-              <a href="https://www.instagram.com/" className="icon icon--social">
+              </Link>
+              <Link to="https://www.instagram.com/" className="icon icon--social">
                 <img src={instagramIcon} alt="instagram" />
-              </a>
+              </Link>
             </div>
           </div>
         </div>

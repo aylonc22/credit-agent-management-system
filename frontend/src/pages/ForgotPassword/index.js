@@ -1,45 +1,90 @@
 import React, { useState } from "react";
-import './index.css';
+import './index.scss';
 import { Link } from "react-router-dom";
 import api from "../../api/axios";
 import { toast } from "react-toastify";
+import backArrow from '../../assets/images/icons/arrow-back.svg';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [emailError, setEmailError] = useState('');
+
+  const validateEmail = (email) => {
+    // Simple email validation regex
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return regex.test(email);
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault();   
+    // Basic validation check before submission
+    if (!email) {
+      setEmailError("Email is required.");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setEmailError("Please enter a valid email address.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setEmailError(''); // Clear any previous error messages
 
     try {
       await api.post("/auth/request-password-reset", { email });
-      toast.success("קישור לאיפוס סיסמה נשלח לדוא\"ל שלך");
+      toast.success("Password reset link was sent to your email.");
     } catch (error) {
-      console.error("שגיאה בשליחת קישור איפוס:", error);
-      toast.error("שגיאה בשליחת קישור. בדוק את הדוא\"ל ונסה שוב.");
+      console.error("Error sending reset link:", error);
+      toast.error("Failed to send reset link. Please check your email and try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
-
+  
   return (
-    <div className="login-container" dir="rtl">
-      <div className="login-box">
-        <h2>איפוס סיסמה</h2>
-
-        <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <input
-              type="email"
-              placeholder='הזן את כתובת הדוא\"ל שלך'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+    <div className="page page--login" data-page="login">
+      {/* HEADER */}
+      <header className="header header--fixed">
+        <div className="header__inner">
+          <div className="header__icon">
+            <Link to="/login"><img src={backArrow} alt="Back" /></Link>
           </div>
+        </div>
+      </header>
 
-          <button type="submit" className="btn">שלח קישור איפוס</button>
-        </form>
+      <div className="login">
+        <div className="login__content">
+          <h2 className="login__title">WE GOT YOU COVERED</h2>
+          <div className="login-form">
+            <form onSubmit={handleSubmit}>
+              <div className="login-form__row">
+                <label className="login-form__label">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  className="login-form__input required email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                {emailError && <label className="error">{emailError}</label>} {/* Display error message */}
+              </div>
 
-        <div className="links">
-          נזכרת בסיסמה? <Link to="/login">חזור להתחברות</Link>
+              <div className="login-form__row">
+                <input
+                  type="submit"
+                  className="login-form__submit button button--main button--full"
+                  value={isSubmitting ? "Sending..." : "RESEND PASSWORD"}
+                  disabled={isSubmitting}
+                />
+              </div>
+            </form>
+
+            <div className="login-form__bottom">
+              <p>Check your email and follow the instructions to reset your password.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
