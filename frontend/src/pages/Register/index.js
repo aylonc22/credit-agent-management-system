@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import './index.scss';
 import api from "../../api/axios";
 import { toast } from 'react-toastify';
-import backArrow from '../../assets/images/icons/arrow-back.svg';
+import Header from "../../components/Header";
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -137,13 +137,7 @@ const Register = () => {
 
   return (
     <div className="page page--login" data-page="login">
-      <header className="header header--fixed">
-        <div className="header__inner">
-          <div className="header__icon">
-            <Link to="/landing"><img src={backArrow} alt="Back" /></Link>
-          </div>
-        </div>
-      </header>
+       <Header flag={true}/>
 
       <div className="login">
         <div className="login__content">

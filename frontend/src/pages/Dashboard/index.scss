@@ -1,0 +1,408 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
+.cards{
+  display:flex;
+  flex-wrap:wrap;
+    &--11{
+      & .card{
+      width:calc(100% - 40px);
+      padding:20px;
+      margin-bottom:20px;
+        &__icon{
+          & img{
+          max-width:65px !important;
+          }
+        }
+        &__title{
+        font-size:1.8rem !important;
+        }
+        &--style-thumb{
+        width:100%;
+        padding:0px;
+        }
+        &--style-inline{
+        width:100%;
+          padding:0 0 10px 0;
+          &-bg{
+          width:calc(100% - 30px);
+          padding:20px 10px 20px 20px;
+          }
+          & .card__icon{
+          flex: 0 0 40px;
+          margin-right: 20px;
+          margin-bottom:0px !important;
+            & img{
+            max-width:40px !important;
+            }
+          }
+          & .card__thumb{
+          margin-right: 20px;
+          margin-bottom:0px !important;
+            & img{
+            max-width:60px !important;
+            }
+          }
+          & .card__details {
+            flex-grow: 1;
+            padding-right:10px;
+          }
+          & .card__title{
+          font-size:1.6rem !important;
+          padding-bottom: 5px;
+          }
+          & .card__more{
+          flex:0 0 5px;
+            &--play{
+            flex:0 0 35px;
+            }
+          }
+        }
+      }
+    }
+    &--12{
+      & .card{
+      width:calc(50% - 50px);
+      padding:20px;
+      margin-right:20px;
+      margin-bottom:20px;
+        &:nth-child(2n+2){
+        margin-right:0px;
+        }
+        &__title{
+        padding-bottom:5px !important;
+        font-size:1.4rem;
+        }
+        &--style-thumb{
+        width:calc(50% - 10px);
+        padding:0px;
+        }
+        
+      }
+    }
+    &--13{
+      & .card{
+      width:calc(33.333% - 28.333px);
+      padding:10px;
+      margin-right:10px;
+      margin-bottom:10px;
+      
+        &:nth-child(3n+3){
+        margin-right:0px;
+        }
+        &__icon{
+          & img{
+          max-width:34px !important;
+          }
+        }
+        &__title{
+        font-size:1.1rem !important;
+        padding-bottom:5px !important;
+        }
+        &--style-cover{
+        width:calc(33.333% - 28.333px);
+        padding:10px;
+        }
+        &--style-thumb{
+        width:calc(33.333% - 8.333px);
+        padding:0px;
+        }
+      }
+    }
+    &--14{
+      & .card{
+      width:calc(25% - 55px);
+      padding:20px;
+      margin-right:20px;
+      margin-bottom:20px;
+      
+        &:nth-child(4n+4){
+        margin-right:0px;
+        }
+        &__icon{
+          & img{
+          max-width:16px !important;
+          }
+        }
+        &__title{
+        font-size:1.2rem !important;
+        padding-bottom:0px !important;
+        }
+        &--style-thumb{
+        width:calc(25% - 15px);
+        padding:0px;
+        }
+      }
+    }
+  }
+  
+  .card{
+  position:relative;
+  overflow:hidden;
+    &__icon{
+    margin-bottom:10px;
+    position:relative;
+    z-index:33;
+      & img{
+      display:block;
+      max-width:50px;
+      }
+      &--centered{
+      width:100%;
+      text-align:center;
+        & img{
+        margin-left:auto;
+        margin-right:auto;
+        }
+      }
+    }
+    &__thumb{
+    margin-bottom:10px;
+    position:relative;
+      & img{
+      display:block;
+      max-width:100%;
+      }
+      &--round-corners{
+        & img{
+        border-radius:15px;
+        }
+      }
+      &--round-corners-full{
+        & img{
+        border-radius:100%;
+        }
+      }
+      &--round-corners-top{
+        & img{
+        border-top-left-radius:15px;
+        border-top-right-radius:15px;
+        }
+      }
+    }
+    &__plan{
+    font-size:3.6rem;
+    width:100%;
+    text-align:center;
+    color:#fff;
+    font-weight:600;
+    letter-spacing:-1px;
+    margin-bottom:10px;
+      &--premium{
+      font-size:4.8rem;
+      }
+    }
+    &__title{
+    padding-bottom:10px;
+    position:relative;
+    z-index:33;
+      &--centered{
+      width:100%;
+      text-align:center;
+      }
+      & a{
+      color:#fff;
+      font-weight:500;
+      }
+    }
+    &__text{
+    font-size:1.2rem;
+    position:relative;
+    z-index:333;
+      &--centered{
+      width:100%;
+      text-align:center;
+      }
+      & a{
+      color:$color-body;
+      font-weight:400;
+      }
+    }
+    &__more{
+    width:5px;
+    padding:5px;
+      & a img{
+      display:block;
+      max-width:100%;
+      }
+    }
+    &__top-left-info{
+    position:absolute;
+    top:10px;
+    left:10px;
+    z-index:88;
+    }
+    &__top-right-info{
+    position:absolute;
+    top:10px;
+    right:10px;
+    z-index:88;
+    }
+    &__bottom-left-info{
+    position:absolute;
+    bottom:10px;
+    left:10px;
+    z-index:88;
+    }
+    &__bottom-right-info{
+    position:absolute;
+    bottom:10px;
+    right:10px;
+    z-index:88;
+    }
+    &__price{
+    padding:5px 10px;
+    font-weight:600;
+    background-color:#fff;
+    color:$color-blue;
+    border-radius:10px;
+      & span{
+      text-decoration:line-through;
+      opacity:0.5;
+      padding-left:5px;
+      }
+    }
+    &__badge{
+    background-color:$color-lightgreen;
+    height: 25px;
+    line-height:25px;
+    left: -30px;
+    position: absolute;
+    top: 5px;
+    width: 100px;
+    text-align:center;
+    -webkit-transform: rotate(-45deg);
+      & span {
+        color: #fff;
+        font-size:1.2rem;
+        font-weight:600;
+        letter-spacing:1px;
+      }
+    }
+    &__addtocart{
+      & a{ 
+      display:inline-block;
+      width:40px;
+      height:40px;
+      background-color:#fff;
+      border-radius:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+        & img{
+          display:block;
+          max-width:50%;
+          border-radius:0px !important;
+        }
+      }
+    }
+    &__gradient{
+      width:100%;
+      height:100%;
+      position:absolute;
+      bottom:0px;
+      left:0px;
+      z-index:11;
+      background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.2),
+      rgba(0, 0, 0, 1)
+      );
+    }
+    &__details{
+    position:relative;
+    z-index:55;
+      &--bg{
+      width:calc(100% - 30px);
+      padding:15px;
+      background-color:$color-gray;
+      }
+      &--round-corners-bottom{
+      border-bottom-left-radius:15px;
+      border-bottom-right-radius:15px;
+      }
+    }
+    &--style-icon{
+    background-color:$color-gray;
+    }
+    &--style-round-corners{
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
+    }
+    &--style-plan-premium{
+    @extend .gradient-lightgreen;
+    }
+    &--style-cover{
+    @extend %background-cover;
+      & .card{
+        &__title{
+        color:#ffffff !important;
+        font-weight:600;
+        }
+        &__text{
+        color:#ffffff !important;
+        }
+      }
+    }
+    &--style-bg{
+    @extend .gradient-lightgreen;
+    }
+    &--style-inline{
+      &-bg{
+      background-color:$color-gray;
+      }
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    }
+  }
+  
+  
+  .card-coin{
+    width:calc(100% - 30px);
+    padding:15px;
+    margin-bottom:10px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background-color:$color-gray;
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
+    color:#fff;
+    &__logo{
+    display:flex;
+    align-items:center;
+      & img{
+      display:block;
+      width:20px;
+      margin-right:10px;
+      }
+      & span{
+      font-weight:600;
+        & b{
+        display:block;
+        font-weight:300;
+        font-size:1.1rem;
+        }
+      }
+    }
+    &__price{
+      & strong{
+      font-weight:600;
+      }
+      & span{
+      display:block;
+      text-align:right;
+      }
+      & .plus{
+      color:$color-lightgreen;
+      }
+      & .minus{
+      color:$color-red;
+      }
+    }
+    &__chart{
+    width:50px;
+    }
+    
+  }

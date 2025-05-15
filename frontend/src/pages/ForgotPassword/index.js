@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import './index.scss';
-import { Link } from "react-router-dom";
 import api from "../../api/axios";
 import { toast } from "react-toastify";
-import backArrow from '../../assets/images/icons/arrow-back.svg';
+import Header from "../../components/Header";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -42,17 +41,10 @@ const ForgotPassword = () => {
       setIsSubmitting(false);
     }
   };
-  
+
   return (
     <div className="page page--login" data-page="login">
-      {/* HEADER */}
-      <header className="header header--fixed">
-        <div className="header__inner">
-          <div className="header__icon">
-            <Link to="/login"><img src={backArrow} alt="Back" /></Link>
-          </div>
-        </div>
-      </header>
+       <Header flag={true}/>
 
       <div className="login">
         <div className="login__content">

@@ -10,7 +10,7 @@ import TransactionManagement from './pages/TransactionManagement/index';
 import PaymentLinkGenerator from './pages/PaymentLinkGenerator/index';
 import Reports from './pages/Reports/index';
 import SystemSettings from './pages/SystemSettings/index';
-import Navbar from './components/Navbar.js';
+import Navbar from './components/Navbar.js/index.js';
 import Register from './pages/Register/index.js';
 import ForgotPassword from './pages/ForgotPassword/index.js';
 import { ToastContainer } from 'react-toastify';
@@ -25,6 +25,7 @@ function App() {
   const location = useLocation();
   const isAuthPage =
     location.pathname === '/login' ||
+    location.pathname === '/' 
     location.pathname === '/landing' ||
     location.pathname === '/register' ||
     location.pathname === '/forgot-password' ||

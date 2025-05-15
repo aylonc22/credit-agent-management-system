@@ -6,6 +6,7 @@ import api from "../../api/axios";
 import { toast } from 'react-toastify';
 
 import backArrow from '../../assets/images/icons/arrow-back.svg';
+import Header from "../../components/Header";
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -77,13 +78,7 @@ const Login = () => {
 
   return (
     <div className="page page--login" data-page="login">
-      <header className="header header--fixed">
-        <div className="header__inner">
-          <div className="header__icon">
-            <Link to='/landing'><img src={backArrow} alt="Back" title="back" /></Link>
-          </div>
-        </div>
-      </header>
+      <Header flag={true}/>
 
       <div className="login">
         <div className="login__content">

@@ -1,9 +1,10 @@
-// src/pages/Dashboard.js
 import React, { useEffect, useState } from 'react';
-import './index.css';
+import './index.scss';
 import useAuth from '../../hooks/useAuth';
 import api from '../../api/axios';
-import { data } from 'react-router-dom';
+import coin from '../../assets/images/logos/bitcoin.png';
+import swap from '../../assets/images/icons/swap.svg';
+import users from '../../assets/images/icons/users.svg';
 
 const Dashboard = () => {
   const userData = useAuth();
@@ -16,11 +17,10 @@ const Dashboard = () => {
     activeClients: 0,
   });
 
-  // Fetch statistics data from the API
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await api.get('/api/stats');       
+        const response = await api.get('/api/stats');
         setStats(response.data);
       } catch (error) {
         console.error('Error fetching statistics', error);
@@ -30,39 +30,65 @@ const Dashboard = () => {
     fetchStats();
   }, []);
 
-  // Handle case when user is not authenticated (userData is null)
   if (!userData) {
-    return <div>טוען...</div>; // Loading...
+    return <div>Loading...</div>;
   }
 
-  const { id, role } = userData;
+  const { role } = userData;
+
+  const cards = [
+    {
+      icon: coin,
+      title: "Total Credits Today",
+      value: `${stats.totalCreditsToday} $`
+    },
+    {
+      icon: coin,
+      title: "Total Credits This Month",
+      value: `${stats.totalCreditsThisMonth} $`
+    },
+    {
+      icon: swap,
+      title: "Active Transactions",
+      value: stats.activeTransactions
+    },
+    ...(role !== 'client' ? [
+      {
+        icon:users,
+        title: "Active Agents",
+        value: stats.activeAgents
+      },
+      {
+        icon: users,
+        title: "Active Clients",
+        value: stats.activeClients
+      }
+    ] : [])
+  ];
 
   return (
-    <div className="dashboard">
-      <h1>{role ==='client'?'ברוך הבא! למערכת התשלומים של PAY GLOW':'מערכת ניהול קרדיטים וסוכנים'}</h1> {/* Credit and Agent Management System */}
+    <div class="page page--main" data-page="cards">
+    <div className="page__content page__content--with-header">
+      <h1 className="mb-20">
+        {role === 'client'
+          ? "Welcome to PAY GLOW Payment System"
+          : "Credit and Agent Management System"}
+      </h1>
 
-      <div className="stats">
-        <div className="stat-item">
-          <h3>סה"כ קרדיטים שנרכשו היום</h3> {/* Total Credits Purchased Today */}
-          <p>{stats.totalCreditsToday} $</p>
-        </div>
-        <div className="stat-item">
-          <h3>סה"כ קרדיטים שנרכשו החודש</h3> {/* Total Credits Purchased This Month */}
-          <p>{stats.totalCreditsThisMonth} $</p>
-        </div>
-        <div className="stat-item">
-          <h3>מספר עסקאות פעילות</h3> {/* Active Transactions */}
-          <p>{stats.activeTransactions}</p>
-        </div>
-        {role !== 'client' && <div className="stat-item">
-          <h3>מספר סוכנים פעילים</h3> {/* Active Agents */}
-          <p>{stats.activeAgents}</p>
-        </div>}
-        {role !== 'client' && <div className="stat-item">
-          <h3>מספר לקוחות פעילים</h3> {/* Active Agents */}
-          <p>{stats.activeClients}</p>
-        </div>}
+      <div className="cards cards--11 mb-20">
+        {cards.map((card, index) => (
+          <div key={index} className="card card--style-inline card--style-inline-bg card--style-round-corners">
+            <div className="card__icon">
+              <img src={card.icon} alt={card.title} />
+            </div>
+            <div className="card__details">
+              <h4 className="card__title">{card.title}</h4>
+              <p className="card__text">{card.value}</p>
+            </div>            
+          </div>
+        ))}
       </div>
+    </div>
     </div>
   );
 };
