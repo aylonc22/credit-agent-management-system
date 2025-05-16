@@ -20,8 +20,10 @@ import ChangePassword from './pages/ChangePassword/index.js';
 import TermsOfUse from './pages/TermsOfUse/index.js';
 import PaymentRedirectHandler from './pages/Payment/index.js';
 import LandingPage from './pages/LandingPage/index.js';
+import { useState } from 'react';
 
 function App() {
+  const [isPanelOpen , setIsPanelOpen ] = useState(false);
   const location = useLocation();
   const isAuthPage =
     location.pathname === '/login' ||
@@ -42,7 +44,7 @@ function App() {
       {!isAuthPage && <Navbar />}
 
       {/* Routes */}
-      <div className="main-content">
+      <div className={`panel-closing ${isPanelOpen?"with-panel-left-reveal":""}`}>
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/landing" element={<LandingPage />} />

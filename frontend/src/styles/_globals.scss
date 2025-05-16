@@ -426,9 +426,9 @@ ul.custom-listing{
       }
   }
   
-  body.with-panel-left-reveal .page,
+  div.with-panel-left-reveal .page,
   body.with-panel-right-reveal .page,
-  body.with-panel-left-reveal .bottom-toolbar,
+  div.with-panel-left-reveal .bottom-toolbar,
   body.with-panel-right-reveal .bottom-toolbar {
     -webkit-transition-duration: 500ms;
     transition-duration: 500ms;
@@ -436,18 +436,18 @@ ul.custom-listing{
     -moz-transition-property: -moz-transform;
     transition-property: transform;
   }
-  body.with-panel-left-reveal .body-overlay,
+  div.with-panel-left-reveal .body-overlay,
   body.with-panel-right-reveal .body-overlay {
     display: block;
   }
-  body.with-panel-left-reveal .page, body.with-panel-left-reveal .bottom-toolbar {
+  div.with-panel-left-reveal .page, div.with-panel-left-reveal .bottom-toolbar {
     -webkit-transform: translate3d(calc(100% - 64px), 0, 0);
     transform: translate3d(calc(100% - 64px), 0, 0);
   }
-  body.with-panel-left-reveal .body-overlay {
+  div.with-panel-left-reveal .body-overlay {
     margin-left: calc(100% - 64px);
   }
-  body.with-panel-left-reveal .panel--left {
+  div.with-panel-left-reveal .panel--left {
     -webkit-transform: translate3d(100%, 0, 0);
     transform: translate3d(100%, 0, 0);
     -webkit-transition-duration: 400ms;

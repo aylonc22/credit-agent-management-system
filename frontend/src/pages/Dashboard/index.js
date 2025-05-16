@@ -69,7 +69,7 @@ const Dashboard = () => {
 
   return (
 <>
-    <div className="body-overlay"></div>
+    <div className="body-overlay active" style={{display:'block'}}></div>
     <div id="panel-left"></div>
     <Header flag={false}/>
     <div className="page page--main" data-page="cards">
