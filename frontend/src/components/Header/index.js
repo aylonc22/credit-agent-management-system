@@ -1,6 +1,7 @@
 import React from 'react';
 import './index.scss';
 import backArrow from '../../assets/images/icons/arrow-back.svg';
+import user from '../../assets/images/icons/user.svg';
 import { Link, useLocation } from 'react-router-dom';
 
 const Header = ({ flag }) => {
@@ -31,7 +32,7 @@ const Header = ({ flag }) => {
             </a>
           </div>
           <div className="header__icon open-panel" data-panel="left">
-            <img src="images/icons/user.svg" alt="image" title="image" />
+            <img src={user} alt="image" title="image" />
           </div>
         </div>
       </header>

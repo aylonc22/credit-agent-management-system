@@ -5,6 +5,7 @@ import api from '../../api/axios';
 import coin from '../../assets/images/logos/bitcoin.png';
 import swap from '../../assets/images/icons/swap.svg';
 import users from '../../assets/images/icons/users.svg';
+import Header from '../../components/Header';
 
 const Dashboard = () => {
   const userData = useAuth();
@@ -67,29 +68,34 @@ const Dashboard = () => {
   ];
 
   return (
-    <div class="page page--main" data-page="cards">
-    <div className="page__content page__content--with-header">
-      <h1 className="mb-20">
+<>
+    <div className="body-overlay"></div>
+    <div id="panel-left"></div>
+    <Header flag={false}/>
+    <div className="page page--main" data-page="cards">
+     
+	
+	<div className="page__content page__content--with-header">
+  <h1 className="mb-20">
         {role === 'client'
           ? "Welcome to PAY GLOW Payment System"
           : "Credit and Agent Management System"}
-      </h1>
-
-      <div className="cards cards--11 mb-20">
+      </h1>				
+	  
+        <div className="cards cards--11 mb-20">
         {cards.map((card, index) => (
-          <div key={index} className="card card--style-inline card--style-inline-bg card--style-round-corners">
-            <div className="card__icon">
+          <div key={index} className="card card--style-icon card--style-round-corners">
+            <div className="card__icon card__icon--centered">
               <img src={card.icon} alt={card.title} />
             </div>
-            <div className="card__details">
-              <h4 className="card__title">{card.title}</h4>
-              <p className="card__text">{card.value}</p>
-            </div>            
+              <h4 className="card__title card__title--centered">{card.title}</h4>
+              <p className="card__text card__text--centered">{card.value}</p>                       
           </div>
         ))}
-      </div>
+        </div>
     </div>
     </div>
+</>
   );
 };
 
