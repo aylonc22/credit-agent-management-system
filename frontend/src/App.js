@@ -25,7 +25,7 @@ function App() {
   const location = useLocation();
   const isAuthPage =
     location.pathname === '/login' ||
-    location.pathname === '/' 
+    location.pathname === '/' ||
     location.pathname === '/landing' ||
     location.pathname === '/register' ||
     location.pathname === '/forgot-password' ||
