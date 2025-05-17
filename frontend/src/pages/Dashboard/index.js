@@ -7,7 +7,7 @@ import swap from '../../assets/images/icons/swap.svg';
 import users from '../../assets/images/icons/users.svg';
 import Header from '../../components/Header';
 
-const Dashboard = () => {
+const Dashboard = ({panelClickHandle, isPanelOpen}) => {
   const userData = useAuth();
 
   const [stats, setStats] = useState({
@@ -69,10 +69,10 @@ const Dashboard = () => {
 
   return (
 <>
-    <div className="body-overlay active" style={{display:'block'}}></div>
+    <div className={`body-overlay ${isPanelOpen?'active':""}`} style={isPanelOpen? { display: 'block' } : {}}></div>
     <div id="panel-left"></div>
-    <Header flag={false}/>
     <div className="page page--main" data-page="cards">
+    <Header panelClickHandle={panelClickHandle} flag={false}/>
      
 	
 	<div className="page__content page__content--with-header">

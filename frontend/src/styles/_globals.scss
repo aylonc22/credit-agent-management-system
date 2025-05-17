@@ -469,7 +469,7 @@ ul.custom-listing{
     transition-duration: 400ms;
   }
   
-  body.panel-closing .page, body.panel-closing .bottom-toolbar {
+  div.panel-closing .page, div.panel-closing .bottom-toolbar {
     -webkit-transition-duration: 400ms;
     transition-duration: 400ms;
     -webkit-transition-property: -webkit-transform;

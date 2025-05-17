@@ -4,7 +4,7 @@ import backArrow from '../../assets/images/icons/arrow-back.svg';
 import user from '../../assets/images/icons/user.svg';
 import { Link, useLocation } from 'react-router-dom';
 
-const Header = ({ flag }) => {
+const Header = ({ flag, panelClickHandle }) => {
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
 
@@ -46,7 +46,7 @@ const Header = ({ flag }) => {
                 Pay<strong>glow</strong>
               </a>
             </div>
-            <div className="header__icon open-panel" data-panel="left">
+            <div onClick={()=> panelClickHandle()} className="header__icon open-panel" data-panel="left">
               <img src={user} alt="image" title="image" />
             </div>
           </>
