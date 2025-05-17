@@ -26,8 +26,7 @@ function App() {
   const [isPanelOpen , setIsPanelOpen ] = useState(false);
   const location = useLocation();
   const isAuthPage =
-    location.pathname === '/login' ||
-    location.pathname === '/' ||
+    location.pathname === '/login' ||    
     location.pathname === '/landing' ||
     location.pathname === '/register' ||
     location.pathname === '/forgot-password' ||
@@ -37,18 +36,17 @@ function App() {
     location.pathname.startsWith('/payment');
 
  
-  const panelClickHandle = ()=>{
-    console.log("HERE");
+  const panelClickHandle = ()=>{   
     setIsPanelOpen(state=>!state);
   }  
-  console.log(isPanelOpen)
+ 
   return (
     <div className={isAuthPage ? 'no-sidebar' : 'app-with-sidebar'}>
       {/* Navigation */}
-      {!isAuthPage && <Navbar />}
 
       {/* Routes */}
       <div className={`panel-closing ${isPanelOpen?"with-panel-left-reveal":""}`}>
+      {(!isAuthPage && isPanelOpen )&& <Navbar panelClickHandle={panelClickHandle}/>}
         <Routes>
           <Route path="/" element={<Dashboard isPanelOpen={isPanelOpen} panelClickHandle={panelClickHandle}/>} />
           <Route path="/landing" element={<LandingPage />} />

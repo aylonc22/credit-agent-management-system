@@ -42,9 +42,9 @@ const Header = ({ flag, panelClickHandle }) => {
         ) : (
           <>
             <div className="header__logo header__logo--text">
-              <a href="index.html">
+              <Link to="/">
                 Pay<strong>glow</strong>
-              </a>
+              </Link>
             </div>
             <div onClick={()=> panelClickHandle()} className="header__icon open-panel" data-panel="left">
               <img src={user} alt="image" title="image" />
