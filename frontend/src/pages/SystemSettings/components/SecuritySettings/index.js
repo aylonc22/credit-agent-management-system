@@ -139,7 +139,7 @@ const SecuritySettings = ({isPanelOpen, panelClickHandle}) => {
 
       {/* Enable/Disable 2FA Section */}
       {role === 'client' && (
-        <div className="section">
+        <div>
           <h3 className="pb-20 pt-20">Two-Factor Authentication (2FA)</h3>            
           {is2faSent && !is2faVerified ? (
             <form onSubmit={handleVerify2fa}>
@@ -178,89 +178,6 @@ const SecuritySettings = ({isPanelOpen, panelClickHandle}) => {
       )}
     </div>
   )
-
-  return (
-    <div className="settings-container">
-      {/* Change Password Section */}
-      <div className="section">
-        <h2>שינוי סיסמה</h2>
-        <form onSubmit={handleChangePassword}>
-          <div className="input-group">
-            <input
-              className="settings-password"
-              type="password"
-              placeholder="סיסמה נוכחית"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-              required
-            />
-          </div>
-          <div className="input-group">
-            <input
-              className="settings-password"
-              type="password"
-              placeholder="סיסמה חדשה"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              required
-            />
-          </div>
-          <div className="input-group">
-            <input
-              className="settings-password"
-              type="password"
-              placeholder="אשר סיסמה חדשה"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit" className="btn">
-            שנה סיסמה
-          </button>
-        </form>
-      </div>
-
-      {/* Enable/Disable 2FA Section */}
-     {role === 'client' && (
-       <div className="section">
-        <h2>הפעלת אימות דו-שלבי (2FA)</h2>
-        {is2faSent && !is2faVerified ? (
-          <form onSubmit={handleVerify2fa}>
-            <div className="input-group">
-              <input
-                type="text"
-                placeholder="הזן קוד אימות 2FA"
-                value={twofaCode}
-                onChange={(e) => setTwofaCode(e.target.value)}
-                required
-              />
-            </div>
-            <button type="submit" className="btn">
-              אמת קוד
-            </button>
-          </form>
-        ) : !is2faEnabled && (
-          <>
-            <p>הפעל אימות דו-שלבי (2FA) באמצעות אימייל כדי לאבטח את חשבונך.</p>
-            <button className="btn" onClick={handleEnable2fa}>
-              הפעל 2FA
-            </button>
-          </>
-        )}
-        {is2faEnabled && (
-          <>
-            <p>הפעלת אימות דו-שלבי הושלמה בהצלחה!</p>
-            <button className="btn" onClick={handleDisable2fa}>
-              בטל 2FA
-            </button>
-          </>
-        )}
-        {is2faVerified && <p>הזדהות דו-שלבית הושלמה בהצלחה!</p>}
-      </div>
-    )}
-    </div>
-  );
 };
 
 export default SecuritySettings;

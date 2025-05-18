@@ -28,7 +28,7 @@ const SystemSettings = ({isPanelOpen, panelClickHandle}) => {
           <PermissionsSettings role={role}/>
         </div>}
 
-        <div className="settings-section">
+        <div>
           <p className="welcome"> Security Settings </p>                            
           <SecuritySettings />
         </div>
