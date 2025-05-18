@@ -5,8 +5,8 @@ import { toast } from 'react-toastify';
 import * as XLSX from 'xlsx';
 import './index.css'; // reuse your CSS
 
-const Reports = () => {
-  const userData = useAuth();
+const Reports = ({isPanelOpen, panelClickHandle}) => {
+  const userData = useAuth(isPanelOpen, panelClickHandle);
   const [agents, setAgents] = useState([]);
   const [transactions, setTransactions] = useState([]);
   const [selectedAgent, setSelectedAgent] = useState('');

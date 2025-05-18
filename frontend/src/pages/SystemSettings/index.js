@@ -5,8 +5,8 @@ import SecuritySettings from './components/SecuritySettings/'; // Import the Sec
 import GeneralSettings from './components/GeneralSettings';
 import PermissionsSettings from './components/PermissionsSettings';
 
-const SystemSettings = () => {
-  const userData = useAuth(); 
+const SystemSettings = ({isPanelOpen, panelClickHandle}) => {
+  const userData = useAuth(isPanelOpen, panelClickHandle); 
 
   // Handle case when user is not authenticated (userData is null)
   if (!userData) {

@@ -54,12 +54,12 @@ function App() {
           <Route path="/register/:agent?" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/change-password/:userId" element={<ChangePassword />} />
-          <Route path="/agents" element={<AgentManagement />} />
-          <Route path="/clients" element={<ClientManagement />} />
-          <Route path="/transactions" element={<TransactionManagement />} />
-          <Route path="/generate-payment-links" element={<PaymentLinkGenerator />} />
-          <Route path="/reports" element={<Reports />} />
-          <Route path="/settings" element={<SystemSettings />} />
+          <Route path="/agents"  isPanelOpen={isPanelOpen} panelClickHandle={panelClickHandle} element={<AgentManagement />} />
+          <Route path="/clients"  isPanelOpen={isPanelOpen} panelClickHandle={panelClickHandle} element={<ClientManagement />} />
+          <Route path="/transactions" isPanelOpen={isPanelOpen} panelClickHandle={panelClickHandle} element={<TransactionManagement />} />
+          <Route path="/generate-payment-links"  isPanelOpen={isPanelOpen} panelClickHandle={panelClickHandle} element={<PaymentLinkGenerator />} />
+          <Route path="/reports"  isPanelOpen={isPanelOpen} panelClickHandle={panelClickHandle} element={<Reports />} />
+          <Route path="/settings"  isPanelOpen={isPanelOpen} panelClickHandle={panelClickHandle} element={<SystemSettings />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="/terms" element={<TermsOfUse/>} />
           <Route path='/payment' element={<PaymentRedirectHandler/>}/>

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {jwtDecode} from 'jwt-decode'; // Make sure to import jwtDecode
 
-const useAuth = (requiredRole) => {
+const useAuth = (isPanelOpen, panelClickHandle, requiredRole=undefined) => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null); // State to store the decoded JWT
 
@@ -26,11 +26,17 @@ const useAuth = (requiredRole) => {
       if (decodedToken.exp < currentTime) {
         // Token has expired, clear it and redirect to landing
         localStorage.removeItem('token');
+        if(isPanelOpen){
+          panelClickHandle();
+        }
         navigate('/landing');
       }
 
       // Check if the user's role matches the required role
       if ((requiredRole && decodedToken.role !== requiredRole && decodedToken.role !== 'admin') && !(requiredRole === 'agent' && decodedToken.role === 'master-agent') ) {
+        if(isPanelOpen){
+          panelClickHandle();
+        }
         // Unauthorized role, redirect to unauthorized page
         navigate('/unauthorized');
       }
@@ -38,6 +44,9 @@ const useAuth = (requiredRole) => {
     } catch (error) {
       // If JWT is invalid or cannot be decoded, remove it and redirect to landing
       localStorage.removeItem('token');
+      if(isPanelOpen){
+        panelClickHandle();
+      }
       navigate('/landing');
     }
   }, [navigate, requiredRole]);

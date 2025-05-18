@@ -5,8 +5,8 @@ import api from '../../api/axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
-const AgentManagement = () => {
-  const userData = useAuth('master-agent');
+const AgentManagement = ({isPanelOpen, panelClickHandle}) => {
+  const userData = useAuth(isPanelOpen, panelClickHandle, 'master-agent');
   const navigate = useNavigate();
 
   const [agents, setAgents] = useState([]);

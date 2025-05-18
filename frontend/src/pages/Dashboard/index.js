@@ -8,7 +8,7 @@ import users from '../../assets/images/icons/users.svg';
 import Header from '../../components/Header';
 
 const Dashboard = ({panelClickHandle, isPanelOpen}) => {
-  const userData = useAuth();
+  const userData = useAuth(isPanelOpen, panelClickHandle);
 
   const [stats, setStats] = useState({
     totalCreditsToday: 0,

@@ -4,8 +4,8 @@ import api from '../../api/axios';
 import { toast } from 'react-toastify';
 import './index.css';
 
-const TransactionManagement = () => {
-  const userData = useAuth('agent');  // Use the hook to get user data for 'admin' role
+const TransactionManagement = ({isPanelOpen, panelClickHandle}) => {
+  const userData = useAuth(isPanelOpen, panelClickHandle, 'agent');  // Use the hook to get user data for 'admin' role
   const [transactions, setTransactions] = useState([]);
   const [clients, setClients] = useState([]);
   const [agents, setAgents] = useState([]);

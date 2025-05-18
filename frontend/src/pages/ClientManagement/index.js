@@ -5,8 +5,8 @@ import api from '../../api/axios';
 import { toast } from 'react-toastify';
 import './index.css';
 
-const ClientManagement = () => {
-  const userData = useAuth('agent');
+const ClientManagement = ({ isPanelOpen, panelClickHandle }) => {
+  const userData = useAuth(isPanelOpen, panelClickHandle, 'agent');
   const [clients, setClients] = useState([]);
   const [agents, setAgents] = useState([]);
   const [search, setSearch] = useState('');

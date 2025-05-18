@@ -12,11 +12,11 @@ import contact from '../../assets/images/icons/contact.svg';
 import avatar from '../../assets/images/splash.png';
 
 
-const Navbar = ({panelClickHandle}) => {
+const Navbar = ({isPanelOpen,panelClickHandle}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [logoUrl, setLogoUrl] = useState('/logo.png'); // Default fallback
   const navigate = useNavigate();
-  const userData = useAuth();
+  const userData = useAuth(isPanelOpen, panelClickHandle);
 
   useEffect(() => {
     const fetchSettings = async () => {

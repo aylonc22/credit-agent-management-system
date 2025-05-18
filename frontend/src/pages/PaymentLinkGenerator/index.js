@@ -5,7 +5,7 @@ import api from '../../api/axios';
 import { toast } from 'react-toastify';
 import { useLocation } from 'react-router-dom';
 
-const PaymentLinkGenerator = () => {
+const PaymentLinkGenerator = ({isPanelOpen, panelClickHandle}) => {
   const [amount, setAmount] = useState(15);
   const [notes, setNotes] = useState('');
   const [clients, setClients] = useState([]);
@@ -13,7 +13,7 @@ const PaymentLinkGenerator = () => {
   const [client, setClient] = useState('');
   const [paymentLink, setPaymentLink] = useState('');
   const location = useLocation();
-  const userData = useAuth();
+  const userData = useAuth(isPanelOpen, panelClickHandle);
 
   useEffect(() => {
     const init = async () => {

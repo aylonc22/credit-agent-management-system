@@ -5,7 +5,7 @@ import './index.css';
 import useAuth from '../../../../hooks/useAuth';
 import {jwtDecode} from 'jwt-decode';
 
-const SecuritySettings = () => {
+const SecuritySettings = ({isPanelOpen, panelClickHandle}) => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -14,7 +14,7 @@ const SecuritySettings = () => {
   const [twofaCode, setTwofaCode] = useState('');
   const [is2faVerified, setIs2faVerified] = useState(false);
   
-  const userData = useAuth();
+  const userData = useAuth(isPanelOpen, panelClickHandle);
   
   useEffect(()=>{
     const token = localStorage.getItem('token');
