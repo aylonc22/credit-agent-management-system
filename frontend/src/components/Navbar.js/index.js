@@ -69,18 +69,21 @@ const Navbar = ({isPanelOpen,panelClickHandle}) => {
             </div>
             <nav className="main-nav">
               <ul>
-                <li>
-                  <a href="/user-profile">
-                    <img src={user} alt="" />
-                    <span>My Account</span>
-                  </a>
-                </li>
+              
                 <li>
                   <Link onClick={toggleSidebar} to="/settings">
                     <img src={settings} alt="" />
                     <span>Settings</span>
                   </Link>
                 </li>
+
+                <li onClick={toggleSidebar}>
+                <Link to="/generate-payment-links">
+                  <img src={management} alt="" />
+                  <span>{role !== 'client' ? 'Generate Payment Links' : 'Buy Credits'}</span> 
+                </Link>
+              </li>
+
                 <li className="subnav opensubnav" onClick={() => swiperRef.current.slideNext()}>
                   <div style={{display:'flex', cursor:'pointer'}}>
                     <img src={listing} alt="" />
@@ -146,11 +149,7 @@ const Navbar = ({isPanelOpen,panelClickHandle}) => {
               </li>
             )}
 
-            <li onClick={toggleSidebar}>
-              <Link to="/generate-payment-links">
-                <img src={management} alt="" />
-                <span>{role !== 'client' ? 'Generate Payment Links' : 'Buy Credits'}</span> 
-              </Link></li>
+            
 
             {role !== 'client' && <li onClick={toggleSidebar}>
               <Link to="/reports">
