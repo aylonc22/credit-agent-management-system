@@ -39,26 +39,6 @@ const SystemSettings = ({isPanelOpen, panelClickHandle}) => {
       </div>
     </div>
   )
-  return (
-    <div className="system-settings-container">
-      <h1>הגדרות מערכת</h1>      
-
-      {(role === 'admin' || role === 'master-agent') && <div className="settings-section">
-        <h2>הגדרת הרשאות ויצירת קישורים</h2>
-        <PermissionsSettings role={role}/>
-      </div>}
-
-      <div className="settings-section">
-        <h2>הגדרות אבטחה</h2>                      
-        <SecuritySettings />
-      </div>
-
-      {role === 'admin' && <div className="settings-section">
-        <h2>הגדרות כלליות</h2>
-        <GeneralSettings/>
-      </div>}
-    </div>
-  );
 };
 
 export default SystemSettings;

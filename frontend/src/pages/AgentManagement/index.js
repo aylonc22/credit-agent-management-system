@@ -4,6 +4,7 @@ import useAuth from '../../hooks/useAuth';
 import api from '../../api/axios'; 
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import Header from '../../components/Header';
 
 const AgentManagement = ({isPanelOpen, panelClickHandle}) => {
   const userData = useAuth(isPanelOpen, panelClickHandle, 'master-agent');
@@ -135,55 +136,62 @@ const AgentManagement = ({isPanelOpen, panelClickHandle}) => {
   };
 
   return (
-    <div className="dashboard">
-      <h1>ניהול סוכנים</h1>
-
+    <div className="page page--main">
+      <Header flag={false} panelClickHandle={panelClickHandle}/>
+      <div className="page__content page__content--with-header">     
+      <h2 class="page__title">Agent Management</h2>
       {/* 🔍 Advanced Search */}
       <div className="agent-search">
-        <input
-          type="text"
-          placeholder="חיפוש לפי שם או מספר סוכן..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
         <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-          <option value="">כל הסטטוסים</option>
-          <option value="active">פעיל</option>
-          <option value="inactive">לא פעיל</option>
+          <option value="">All Status</option>
+          <option value="active">Active</option>
+          <option value="inactive">InActive</option>
         </select>
 
         {/* Role filter dropdown */}
         <select value={roleFilter} onChange={(e) => setRoleFilter(e.target.value)}>
-          <option value="">כל התפקידים</option>
-          <option value="agent">סוכן</option>
-          <option value="master-agent">סוכן ראשי</option>
+          <option value="">All Roles</option>
+          <option value="agent">Agent</option>
+          <option value="master-agent">Primary Agent</option>
         </select>
+        
+        <input
+          type="text"
+          placeholder="Search by name or id"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </div>
 
       {/* 📋 Agent Table */}
-      <div className="agent-table-container">
-        <table className="agent-table-head">
-          <thead>
-            <tr>
-              <th className='mobile-hide'>מספר סוכן</th>
-              <th>שם סוכן</th>
-              <th className='mobile-hide'>מייל סוכן</th>
-              <th className='mobile-hide'>סטטוס</th>
-              <th>תפקיד</th>
-              <th>פעולות</th>
-            </tr>
-          </thead>
-        </table>
-
-        <div className="agent-table-body-wrapper">
+      <div className="table table--6cols mb-20">                 
+        <div className="table__inner">
+          <div class="table__row">
+            <div class="table__section table__section--header">Agent Number</div>
+            <div class="table__section table__section--header">Agent Name</div>
+            <div class="table__section table__section--header">Agent Email</div>
+            <div class="table__section table__section--header">Status</div>	
+            <div class="table__section table__section--header">Role</div>
+            <div class="table__section table__section--header">Actions</div>            						
+          </div>
           {filteredAgents.length === 0 ? (
             <div className="empty-table-message">אין סוכנים לתצוגה</div> // Display this if no agents match the filters
           ) : (
-            <table className="agent-table-body">
-              <tbody>
+              <>
                 {filteredAgents.map((agent, index) => (
-                  <tr key={agent._id}>
-                    <td className='mobile-hide'>{index + 1}</td>
+                  
+                  <>
+
+                  <div class="table__row">
+                    <div class="table__section">{index + 1}</div>
+                    <div class="table__section">{agent.name}</div>
+                    <div class="table__section">{agent.userId?.email || '-'}</div> 
+                    <div class="table__section">{agent.status === 'active' ? 'active' : 'inactive'}</div>
+                    <div class="table__section">{agent.userId?.role === 'master-agent' ? 'primary agent' : 'agent'}</div>                    
+                    <div class="table__section"><a  onClick={() => goToReports(agent._id)} class="button button--main button--ex-small">Reports</a></div>
+                  </div>
+                    
+                    {/* <td className='mobile-hide'>{index + 1}</td>
                     <td>{agent.name}</td>
                     <td className='mobile-hide'>{agent.userId?.email || '-'}</td>
                     <td className='mobile-hide'>{agent.status === 'active' ? 'פעיל' : 'לא פעיל'}</td>
@@ -218,11 +226,10 @@ const AgentManagement = ({isPanelOpen, panelClickHandle}) => {
                           <span>🔍</span> לקוחות
                         </button>
                       </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                    </td> */}
+                  </>
+                ))}              
+            </>
           )}
         </div>
       </div>
@@ -245,6 +252,7 @@ const AgentManagement = ({isPanelOpen, panelClickHandle}) => {
           </form>
         </div>
       )}
+      </div>
     </div>
   );
 };

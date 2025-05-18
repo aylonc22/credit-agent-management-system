@@ -78,6 +78,13 @@ const Navbar = ({isPanelOpen,panelClickHandle}) => {
                 </li>
 
                 <li onClick={toggleSidebar}>
+                  <Link to="/">
+                    <img src={user} alt="" />
+                    <span>My Account</span>
+                  </Link>
+                </li>
+
+                <li onClick={toggleSidebar}>
                 <Link to="/generate-payment-links">
                   <img src={management} alt="" />
                   <span>{role !== 'client' ? 'Generate Payment Links' : 'Buy Credits'}</span> 
@@ -128,7 +135,7 @@ const Navbar = ({isPanelOpen,panelClickHandle}) => {
 
             {role !== 'client' && <li onClick={toggleSidebar}>
               <Link to="/clients">
-                <img src={management} alt="" />
+                <img src={user} alt="" />
                 <span>Clients</span>  
               </Link>
             </li>}

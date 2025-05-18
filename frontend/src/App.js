@@ -24,29 +24,17 @@ import { useState } from 'react';
 
 function App() {
   const [isPanelOpen , setIsPanelOpen ] = useState(false);
-  const location = useLocation();
-  const isAuthPage =
-    location.pathname === '/login' ||    
-    location.pathname === '/landing' ||
-    location.pathname === '/register' ||
-    location.pathname === '/forgot-password' ||
-    location.pathname === '/change-password' ||
-    location.pathname.startsWith('/change-password/') ||
-    location.pathname.startsWith('/register/') ||
-    location.pathname.startsWith('/payment');
 
- 
   const panelClickHandle = ()=>{   
     setIsPanelOpen(state=>!state);
   }  
  
   return (
-    <div className={isAuthPage ? 'no-sidebar' : 'app-with-sidebar'}>
-      {/* Navigation */}
-
+    <div>
       {/* Routes */}
       <div className={`panel-closing ${isPanelOpen?"with-panel-left-reveal":""}`}>
-      {(!isAuthPage && isPanelOpen )&& <Navbar isPanelOpen={isPanelOpen} panelClickHandle={panelClickHandle}/>}
+        {/* Navigation */}
+        { isPanelOpen && <Navbar isPanelOpen={isPanelOpen} panelClickHandle={panelClickHandle}/>}
         <Routes>
           <Route path="/" element={<Dashboard isPanelOpen={isPanelOpen} panelClickHandle={panelClickHandle}/>} />
           <Route path="/landing" element={<LandingPage />} />
