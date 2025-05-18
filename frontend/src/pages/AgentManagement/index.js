@@ -158,6 +158,7 @@ const AgentManagement = ({isPanelOpen, panelClickHandle}) => {
         <input
           type="text"
           placeholder="Search by name or id"
+          className='input-field-d'
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -188,7 +189,20 @@ const AgentManagement = ({isPanelOpen, panelClickHandle}) => {
                     <div class="table__section">{agent.userId?.email || '-'}</div> 
                     <div class="table__section">{agent.status === 'active' ? 'active' : 'inactive'}</div>
                     <div class="table__section">{agent.userId?.role === 'master-agent' ? 'primary agent' : 'agent'}</div>                    
-                    <div class="table__section"><a  onClick={() => goToReports(agent._id)} class="button button--main button--ex-small">Reports</a></div>
+                    <div class="table__section">
+                    {agent.userId?.role !== 'master-agent' ? (
+                      <a  onClick={() => handlePromoteToMaster(agent.userId._id)} class="button button--main button--ex-small">Promote</a>                               
+                        ) : (
+                          <a  onClick={() => handleDemoteToAgent(agent.userId._id)} class="button button--main button--ex-small">Demote</a>                           
+                        )}
+                    {agent.status === 'inactive' ? (
+                       <a  onClick={() => handleUnblockAgent(agent._id)} class="button button--main button--ex-small">Unblock</a>                         
+                        ) : (
+                          <a  onClick={() => handleBlockAgent(agent._id)} class="button button--main button--ex-small">Block</a>                         
+                        )}
+                      <a  onClick={() => goToReports(agent._id)} class="button button--main button--ex-small">Reports</a>
+                      <a  onClick={() => goToClients(agent._id)} class="button button--main button--ex-small">Clients</a>
+                    </div>                    
                   </div>
                     
                     {/* <td className='mobile-hide'>{index + 1}</td>
@@ -233,23 +247,56 @@ const AgentManagement = ({isPanelOpen, panelClickHandle}) => {
           )}
         </div>
       </div>
-
+{/**
+ * 
+ * <div class="fieldset">
+			<div class="form">
+				<form id="Form" method="post" action="checkout.html">
+					<div class="form__row">
+						<input type="text" name="Text" value="" class="form__input required" placeholder="Text" />
+					</div>
+					<div class="form__row d-flex align-items-center justify-space">
+						<input type="text" name="Text" value="" class="form__input form__input--12" placeholder="Text 1/2" />
+						<input type="text" name="Text" value="" class="form__input form__input--12" placeholder="Text 1/2" />
+					</div>
+					<div class="form__row d-flex align-items-center justify-space">
+						<input type="text" name="Text" value="" class="form__input form__input--23" placeholder="Text 2/3" />
+						<input type="text" name="Text" value="" class="form__input form__input--13" placeholder="Text 1/3" />
+					</div>
+ */}
       {/* ➕ Add Agent Form */}
       {userData.role === 'admin' && (
-        <div className="add-agent-form">
-          <h2>הוסף סוכן חדש</h2>
-          <form onSubmit={handleFormSubmit}>
-            <input name="name" type="text" placeholder="שם סוכן" value={newAgent.name} onChange={handleInputChange} />
-            <input name="email" type="email" placeholder="כתובת אימייל" value={newAgent.email} onChange={handleInputChange} />
-            <input name="username" type="text" placeholder="שם משתמש" value={newAgent.username} onChange={handleInputChange} />
-            <input name="password" type="password" placeholder="סיסמה" value={newAgent.password} onChange={handleInputChange} />
-            {/* Role selection */}
-            <select name="role" value={newAgent.role} onChange={handleInputChange}>
-              <option value="agent">סוכן</option>
-              <option value="master-agent">סוכן ראשי</option>
-            </select>
-            <button type="submit">שמור</button>
-          </form>
+        <div className="fieldset">
+          <div className="form">
+            <p class="welcome">
+                Add new agent
+            </p>	
+          
+            <form onSubmit={handleFormSubmit}>
+              <div class="form__row">
+                <input class="form__input required" name="name" type="text" placeholder="full name" value={newAgent.name} onChange={handleInputChange} />
+              </div>
+              <div class="form__row">
+                <input class="form__input required"  name="email" type="email" placeholder="email" value={newAgent.email} onChange={handleInputChange} />
+              </div>
+              <div class="form__row">
+                <input class="form__input required" name="username" type="text" placeholder="username" value={newAgent.username} onChange={handleInputChange}/>
+              </div>
+              <div class="form__row">
+                <input class="form__input required" name="password" type="password" placeholder="password" value={newAgent.password} onChange={handleInputChange} />
+              </div>                    
+              {/* Role selection */}
+              <div class="form__select">
+							<select name="role" value={newAgent.role} onChange={handleInputChange}>								
+                <option value="agent">agent</option>
+                <option value="master-agent">primary agent</option>
+							</select>
+						</div>                    
+              <div class="form__row mt-40">
+                <input type="submit" name="submit" class="form__submit button button--main button--full" id="submit" value="SUBMIT" />
+              </div>
+            </form>
+          </div>
         </div>
       )}
       </div>

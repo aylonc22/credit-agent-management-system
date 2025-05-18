@@ -862,6 +862,9 @@ ul.custom-listing{
 	color:#fff;
 	border-bottom:1px rgba(255, 255, 255, .3) solid;
 		& select{
+			& option {
+				color: black;
+			  }
 		padding:18px 0 10px 5px; 
 		width:calc(100% - 5px); 
 		margin:0 0 5px 0;

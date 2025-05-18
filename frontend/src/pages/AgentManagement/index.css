@@ -118,6 +118,14 @@ button:hover {
   .add-agent-form button {
     width: 100%; /* Full width for the button */
   }
+  .input-field-d{
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+  }
 }
 
 .add-agent-form input,
