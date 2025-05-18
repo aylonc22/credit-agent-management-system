@@ -203,67 +203,13 @@ const AgentManagement = ({isPanelOpen, panelClickHandle}) => {
                       <a  onClick={() => goToReports(agent._id)} class="button button--main button--ex-small">Reports</a>
                       <a  onClick={() => goToClients(agent._id)} class="button button--main button--ex-small">Clients</a>
                     </div>                    
-                  </div>
-                    
-                    {/* <td className='mobile-hide'>{index + 1}</td>
-                    <td>{agent.name}</td>
-                    <td className='mobile-hide'>{agent.userId?.email || '-'}</td>
-                    <td className='mobile-hide'>{agent.status === 'active' ? 'פעיל' : 'לא פעיל'}</td>
-                    <td>{agent.userId?.role === 'master-agent' ? 'סוכן ראשי' : 'סוכן'}</td>
-                    <td>
-                      <div className="actions-container">
-                        {agent.userId?.role !== 'master-agent' ? (
-                          <button className="promote" onClick={() => handlePromoteToMaster(agent.userId._id)}>
-                            <span>🔼</span> קדם
-                          </button>
-                        ) : (
-                          <button className="demote" onClick={() => handleDemoteToAgent(agent.userId._id)}>
-                            <span>🔽</span> החזר
-                          </button>
-                        )}
-
-                        {agent.status === 'inactive' ? (
-                          <button className="unblock" onClick={() => handleUnblockAgent(agent._id)}>
-                            <span>✔️</span> שחרר
-                          </button>
-                        ) : (
-                          <button className="block" onClick={() => handleBlockAgent(agent._id)}>
-                            <span>🚫</span> חסום
-                          </button>
-                        )}
-
-                        <button className="reports" onClick={() => goToReports(agent._id)}>
-                          <span>🔍</span> דוחות
-                        </button>
-
-                        <button className="clients" onClick={() => goToClients(agent._id)}>
-                          <span>🔍</span> לקוחות
-                        </button>
-                      </div>
-                    </td> */}
+                  </div>              
                   </>
                 ))}              
             </>
           )}
         </div>
       </div>
-{/**
- * 
- * <div class="fieldset">
-			<div class="form">
-				<form id="Form" method="post" action="checkout.html">
-					<div class="form__row">
-						<input type="text" name="Text" value="" class="form__input required" placeholder="Text" />
-					</div>
-					<div class="form__row d-flex align-items-center justify-space">
-						<input type="text" name="Text" value="" class="form__input form__input--12" placeholder="Text 1/2" />
-						<input type="text" name="Text" value="" class="form__input form__input--12" placeholder="Text 1/2" />
-					</div>
-					<div class="form__row d-flex align-items-center justify-space">
-						<input type="text" name="Text" value="" class="form__input form__input--23" placeholder="Text 2/3" />
-						<input type="text" name="Text" value="" class="form__input form__input--13" placeholder="Text 1/3" />
-					</div>
- */}
       {/* ➕ Add Agent Form */}
       {userData.role === 'admin' && (
         <div className="fieldset">
