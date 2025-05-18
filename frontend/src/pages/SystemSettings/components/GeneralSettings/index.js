@@ -4,21 +4,15 @@ import api from '../../../../api/axios';
 import './index.css';
 
 const GeneralSettings = () => {
-  const [logo, setLogo] = useState(null);
-  const [backgroundImage, setBackgroundImage] = useState(null);
   const [welcomeMessage, setWelcomeMessage] = useState('');
   const [termsOfUse, setTermsOfUse] = useState('');
-  const [existingLogo, setExistingLogo] = useState(null);  // State to hold the current logo
-  const [existingBackgroundImage, setExistingBackgroundImage] = useState(null);  // State to hold the current background image
 
   // Fetch existing settings on page load
   useEffect(() => {
     const fetchSettings = async () => {
       try {
         const response = await api.get('/settings/general'); // Adjust API endpoint as needed
-        const { logo, backgroundImage, welcomeMessage, termsOfUse } = response.data;       
-        setExistingLogo(logo);  // Set existing logo URL
-        setExistingBackgroundImage(backgroundImage);  // Set existing background image URL
+        const { welcomeMessage, termsOfUse } = response.data;            
         setWelcomeMessage(welcomeMessage || '');  // Set welcome message
         setTermsOfUse(termsOfUse || '');  // Set terms of use
       } catch (error) {
@@ -32,9 +26,7 @@ const GeneralSettings = () => {
   const handleSaveSettings = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    if (logo) formData.append('logo', logo);
-    if (backgroundImage) formData.append('backgroundImage', backgroundImage);
+    const formData = new FormData();   
     formData.append('welcomeMessage', welcomeMessage);
     formData.append('termsOfUse', termsOfUse);
 
@@ -50,72 +42,37 @@ const GeneralSettings = () => {
     }
   };
 
-  return (
-    <div className="settings-container">
-      {/* Logo and Background Image Section */}
-      <div className="settings-section">
-        <h3 className="settings-section__header">לוגו ותמונת רקע</h3>
-        <div className="file-input-container">
-          <label className="file-input-label">בחר לוגו (לוגו JPG או PNG):</label>
-          <input
-            type="file"
-            onChange={(e) => setLogo(e.target.files[0])}
-            className="file-input"
-            accept="image/*"
-            placeholder="בחר לוגו"
-          />
-          {existingLogo && (
-            <div className="existing-image">
-              <p>לוגו נוכחי:</p>
-              <img src={existingLogo} alt="Current Logo" style={{ width: '100px', height: 'auto' }} />
-            </div>
-          )}
-        </div>
-        <div className="file-input-container">
-          <label className="file-input-label">בחר תמונת רקע (תמונה JPG או PNG):</label>
-          <input
-            type="file"
-            onChange={(e) => setBackgroundImage(e.target.files[0])}
-            className="file-input"
-            accept="image/*"
-            placeholder="בחר תמונת רקע"
-          />
-          {existingBackgroundImage && (
-            <div className="existing-image">
-              <p>תמונת רקע נוכחית:</p>
-              <img src={existingBackgroundImage} alt="Current Background" style={{ width: '100px', height: 'auto' }} />
-            </div>
-          )}
-        </div>
-      </div>
-
+  return(
+    <div className="fieldset">
       {/* Welcome Message Section */}
-      <div className="settings-section">
-        <h3 className="settings-section__header">הודעות ברוכים הבאים לשחקנים</h3>
+      <div className="settings-section">                
+        <h3 className="pb-20 pt-20">Welcome Message for Players</h3>
         <textarea
           value={welcomeMessage}
           onChange={(e) => setWelcomeMessage(e.target.value)}
           className="textarea-input"
-          placeholder="הזן הודעת ברוך הבא"
+          placeholder="Enter a welcome message"
         />
       </div>
 
       {/* Terms of Use Section */}
       <div className="settings-section">
-        <h3 className="settings-section__header">מדיניות שימוש</h3>
+        <h3 className="pb-20 pt-20">Terms of Use</h3>
         <textarea
           value={termsOfUse}
           onChange={(e) => setTermsOfUse(e.target.value)}
           className="textarea-input"
-          placeholder="הזן את מדיניות השימוש"
+          placeholder="Enter the terms of use"
         />
       </div>
 
-      <button onClick={handleSaveSettings} className="settings-section__btn">
-        שמור הגדרות
-      </button>
+      <div className="form__row mt-40">
+						<button onClick={handleSaveSettings} type="submit" name="submit" className="form__submit button button--main button--full" id="submit" value="Save" >
+              Save
+            </button>
+				</div>     
     </div>
-  );
+  )
 };
 
 export default GeneralSettings;

@@ -22,9 +22,7 @@ const SystemSettings = ({isPanelOpen, panelClickHandle}) => {
         <h2 class="page__title">Settings</h2>
 
         {(role === 'admin' || role === 'master-agent') && <div>
-          <p className="welcome">
-          Permissions & Link Management
-          </p>
+          <p className="welcome"> Permissions & Link Management </p>
           <PermissionsSettings role={role}/>
         </div>}
 
@@ -32,6 +30,12 @@ const SystemSettings = ({isPanelOpen, panelClickHandle}) => {
           <p className="welcome"> Security Settings </p>                            
           <SecuritySettings />
         </div>
+
+        {role === 'admin' && <div>
+          <p className="welcome"> General Settings </p>
+          <GeneralSettings/>
+        </div>}
+ 
       </div>
     </div>
   )
