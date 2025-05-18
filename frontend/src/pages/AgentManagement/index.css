@@ -20,89 +20,6 @@
   }
 }
 
-/* Agent Table */
-.agent-table-container {
-  width: 100%;
-  overflow-x: auto;
-  margin-top: 20px;
- 
-}
-
-.agent-table-head th,
-.agent-table-body td {
-  padding: 12px;
-  text-align: right;
-  font-size: 15px;
-  border-bottom: 1px solid #ddd;
-}
-
-.agent-table-head th {
-  background-color: #1e2a35;
-  color: #ecf0f1;
-}
-
-.agent-table-body-wrapper {
-  overflow-x: auto;
-  min-width: 250px;
-}
-
-.agent-table-body-wrapper::-webkit-scrollbar {
-  height: 8px;
-}
-
-.agent-table-body-wrapper::-webkit-scrollbar-thumb {
-  background-color: #888;
-  border-radius: 4px;
-}
-
-.agent-table-body-wrapper::-webkit-scrollbar-thumb:hover {
-  background-color: #555;
-}
-
-.empty-table-message {
-  text-align: center;
-  color: #777;
-  padding: 20px;
-  font-size: 16px;
-}
-
-/* Actions in Table */
-.actions-container {
-  display: flex;
-  gap: 10px;
-}
-
-button {
-  padding: 5px 10px;
-  font-size: 13px;
-  border-radius: 4px;
-  cursor: pointer;
-  background-color: transparent;
-  color: #333;
-  transition: all 0.3s ease;
-}
-
-button:hover {
-  background-color: #f1f1f1;
-  color: #000;
-  border-color: #ccc;
-}
-
-/* Add Agent Form */
-.add-agent-form {
-  background: #f7f7f7;
-  padding: 20px;
-  border-radius: 8px;
-  margin-top: 20px;
-}
-
-.add-agent-form form {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(200px, 1fr)); /* Grid layout for PC */
-  gap: 10px;
-  align-items: center;
-}
-
 @media (max-width: 768px) {
   .add-agent-form form {
     display: flex; /* Flex on mobile */
@@ -126,26 +43,4 @@ button:hover {
     border-radius: 8px;
     box-sizing: border-box;
   }
-}
-
-.add-agent-form input,
-.add-agent-form select {
-  padding: 8px 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
-.add-agent-form button {
-  grid-column: span 2; /* Button spans across columns on larger screens */
-  padding: 10px;
-  background-color: #1e2a35;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.add-agent-form button:hover {
-  background-color: #34495e;
 }
