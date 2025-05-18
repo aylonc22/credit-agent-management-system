@@ -15,6 +15,7 @@ import avatar from '../../assets/images/splash.png';
 import dashboard from '../../assets/images/icons/blocks.svg';
 import management from '../../assets/images/icons/tables.svg';
 import report from '../../assets/images/icons/popup.svg';
+import swap from '../../assets/images/icons/swap.svg';
 
 const Navbar = ({isPanelOpen,panelClickHandle}) => {
   const navigate = useNavigate();
@@ -131,7 +132,7 @@ const Navbar = ({isPanelOpen,panelClickHandle}) => {
 
             {role !== 'client' && <li onClick={toggleSidebar}>
               <Link to="/transactions">
-                <img src={management} alt="" />
+                <img src={swap} alt="" />
                 <span>Transactions</span> 
               </Link>
             </li>}
