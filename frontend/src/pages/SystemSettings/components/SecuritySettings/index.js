@@ -97,6 +97,89 @@ const SecuritySettings = ({isPanelOpen, panelClickHandle}) => {
   };
 
   return (
+    <div className="fieldset">
+       <h3 className="pb-20 pt-20">Change Password</h3>      
+        <form onSubmit={handleChangePassword}>
+          <div className="input-group">
+            <input
+              className="settings-password"
+              type="password"
+              placeholder="Current Password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              required
+            />
+          </div>
+          <div className="input-group">
+            <input
+              className="settings-password"
+              type="password"
+              placeholder="New Password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required
+            />
+          </div>
+          <div className="input-group">
+            <input
+              className="settings-password"
+              type="password"
+              placeholder="Verify New Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form__row mt-40">
+          <button type="submit" className="form__submit button button--main button--full">
+           Save
+          </button>
+				  </div>
+        </form>
+
+      {/* Enable/Disable 2FA Section */}
+      {role === 'client' && (
+        <div className="section">
+          <h3 className="pb-20 pt-20">Two-Factor Authentication (2FA)</h3>            
+          {is2faSent && !is2faVerified ? (
+            <form onSubmit={handleVerify2fa}>
+              <div className="input-group">
+                <input
+                  type="text"
+                  className="input-field"
+                  placeholder="Enter 2FA Verification Code"
+                  value={twofaCode}
+                  onChange={(e) => setTwofaCode(e.target.value)}
+                  required
+                />
+              </div>
+              <button type="submit" className="button button--main">
+                Verify Code
+              </button>
+            </form>
+          ) : !is2faEnabled && (
+            <>
+              <h3 className="pb-20 pt-20">Enable two-factor authentication (2FA) via email to secure your account.</h3>
+              <button className="button button--main" onClick={handleEnable2fa}>
+                Enable 2fa
+              </button>
+            </>
+          )}
+          {is2faEnabled && (
+            <>
+              <h3 className="pb-20 pt-20">Two-factor authentication has been successfully enabled!</h3>             
+              <button className="button button--main" onClick={handleDisable2fa}>
+                Disable 2fa
+              </button>
+            </>
+          )}
+          {is2faVerified && <h3 className="pb-20 pt-20">Two-factor authentication completed successfully!</h3>}
+        </div>
+      )}
+    </div>
+  )
+
+  return (
     <div className="settings-container">
       {/* Change Password Section */}
       <div className="section">

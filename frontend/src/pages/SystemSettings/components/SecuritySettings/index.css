@@ -21,10 +21,10 @@
   .settings-password {
     width: 100%;
     padding: 10px;
-    font-size: 1rem;
-    margin: 5px 0;
-    border-radius: 5px;
+    font-size: 14px;
     border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
   }
   
   button.btn {
