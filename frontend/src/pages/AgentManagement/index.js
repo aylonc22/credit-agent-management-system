@@ -168,7 +168,7 @@ const AgentManagement = ({isPanelOpen, panelClickHandle}) => {
       <div className="table table--6cols mb-20">                 
         <div className="table__inner">
           <div class="table__row">
-            <div class="table__section table__section--header">Agent Number</div>
+            <div class="table__section table__section--header">Number</div>
             <div class="table__section table__section--header">Agent Name</div>
             <div class="table__section table__section--header">Agent Email</div>
             <div class="table__section table__section--header">Status</div>	
