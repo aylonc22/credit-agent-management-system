@@ -12,7 +12,9 @@ import settings from '../../assets/images/icons/settings.svg';
 import listing from '../../assets/images/icons/listing.svg';
 import contact from '../../assets/images/icons/contact.svg';
 import avatar from '../../assets/images/splash.png';
-
+import dashboard from '../../assets/images/icons/blocks.svg';
+import management from '../../assets/images/icons/tables.svg';
+import report from '../../assets/images/icons/popup.svg';
 
 const Navbar = ({isPanelOpen,panelClickHandle}) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -76,9 +78,10 @@ const Navbar = ({isPanelOpen,panelClickHandle}) => {
     }
   };
 
-  const linkLabel = `הוסף ${role === 'admin' ? 'סוכן' : 'לקוח'} חדש ➕`;
-  return (<div class="panel panel--left">
-   <div class="panel__navigation">
+  const linkLabel = `Add new ${role === 'admin' ? 'agent' : 'client'}`;
+
+  return (<div className="panel panel--left">
+   <div className="panel__navigation">
    <Swiper
           slidesPerView={1}
           effect="slide"
@@ -105,16 +108,16 @@ const Navbar = ({isPanelOpen,panelClickHandle}) => {
                   </a>
                 </li>
                 <li>
-                  <Link to="/settings">
+                  <Link onClick={toggleSidebar} to="/settings">
                     <img src={settings} alt="" />
                     <span>Settings</span>
                   </Link>
                 </li>
                 <li className="subnav opensubnav" onClick={() => swiperRef.current.slideNext()}>
-                  <a href="#">
+                  <div style={{display:'flex', cursor:'pointer'}}>
                     <img src={listing} alt="" />
                     <span>More Sections</span>
-                  </a>
+                  </div>
                 </li>
                 <li>
                   <a href="/contact">
@@ -137,55 +140,68 @@ const Navbar = ({isPanelOpen,panelClickHandle}) => {
             </div>
             <nav className="main-nav">
               <ul>
-                <li><a href="/cards"><span>Cards</span></a></li>
-                <li><a href="/sliders"><span>Sliders</span></a></li>
-                <li><a href="/forms"><span>Forms</span></a></li>
-                <li><a href="/tables"><span>Tables</span></a></li>
-                <li><a href="/tabs-toggles"><span>Tabs</span></a></li>
-                <li><a href="#" data-popup="social"><span>Social</span></a></li>
-                <li><a href="#" data-popup="notifications"><span>Popups</span></a></li>
-                <li><a href="#" data-popup="alert"><span>Notifications</span></a></li>
-              </ul>
+
+                <li onClick={toggleSidebar}>
+                  <Link to="/"> 
+                    <img src={dashboard} alt="" />
+                    <span>Dashboard</span>
+                  </Link>
+                </li>
+
+            {(role === 'admin' || role === 'master-agent') && (
+              <li onClick={toggleSidebar}><Link to="/agents">
+                 <img src={management} alt="" />
+                 <span>Agents</span>
+                </Link></li>
+            )}  
+
+            {role !== 'client' && <li onClick={toggleSidebar}>
+              <Link to="/clients">
+                <img src={management} alt="" />
+                <span>Clients</span>  
+              </Link>
+            </li>}
+
+            {role !== 'client' && <li onClick={toggleSidebar}>
+              <Link to="/transactions">
+                <img src={management} alt="" />
+                <span>Transactions</span> 
+              </Link>
+            </li>}
+
+            {role !== 'client' && (
+              <li onClick={toggleSidebar}>
+                <Link onClick={handleGenerateLink}>
+                 <img src={management} alt="" />
+                 <span>{linkLabel}</span>   
+                </Link>
+              </li>
+            )}
+
+            <li onClick={toggleSidebar}>
+              <Link to="/generate-payment-links">
+                <img src={management} alt="" />
+                <span>{role !== 'client' ? 'Generate Payment Links' : 'Buy Credits'}</span> 
+              </Link></li>
+
+            {role !== 'client' && <li onClick={toggleSidebar}>
+              <Link to="/reports">
+                <img src={report} alt="" />
+                <span>Reports</span> 
+              </Link></li>}
+
+            <li onClick={toggleSidebar}>
+              <Link to="/terms">
+              <img src={report} alt="" />
+              <span>TermsOfUse</span>
+              </Link>
+            </li>                
+                </ul>
             </nav>
           </SwiperSlide>
         </Swiper>
 </div>
 </div>)
-  return (
-    <>
-      <button className="sidebar-toggle" onClick={toggleSidebar}>☰</button>
-
-      <div className={`sidenav ${isOpen ? 'active' : ''}`}>
-        <div className="sidebar-logo-container">
-          <img src={logoUrl} alt="Logo" className="sidebar-logo" />
-        </div>
-        <ul>
-          <li onClick={()=>setIsOpen(false)}><Link to="/">לוח בקרה 📊</Link></li>
-          {(role === 'admin' || role === 'master-agent') && (
-            <li onClick={()=>setIsOpen(false)}><Link to="/agents">ניהול סוכנים 🧑‍💼</Link></li>
-          )}
-          {role !== 'client' && (
-            <li onClick={()=>setIsOpen(false)}>
-              <Link onClick={handleGenerateLink} className="quick-link-button">
-                {linkLabel}
-              </Link>
-            </li>
-          )}
-          {role !== 'client' && <li onClick={()=>setIsOpen(false)}><Link to="/clients">ניהול לקוחות 👥</Link></li>}
-          {role !== 'client' && <li onClick={()=>setIsOpen(false)}><Link to="/transactions">ניהול עסקאות 💸</Link></li>}
-          <li onClick={()=>setIsOpen(false)}><Link to="/generate-payment-links">{role !== 'client' ? 'יצירת קישורי תשלום 🔗' : 'קניית קרדיטים 🪙'}</Link></li>
-          {role !== 'client' && <li onClick={()=>setIsOpen(false)}><Link to="/reports">דוחות 📈</Link></li>}
-          <li onClick={()=>setIsOpen(false)}><Link to="/settings">הגדרות מערכת ⚙️</Link></li>
-          <li className="logout">
-            <button onClick={handleLogout}>התנתק 🔌</button>
-          </li>
-          <li onClick={()=>setIsOpen(false)} className="terms-link">
-            <Link to="/terms">תנאי שימוש</Link>
-          </li>
-        </ul>
-      </div>
-    </>
-  );
 };
 
 export default Navbar;
