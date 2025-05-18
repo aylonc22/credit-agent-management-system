@@ -17,42 +17,9 @@ import management from '../../assets/images/icons/tables.svg';
 import report from '../../assets/images/icons/popup.svg';
 
 const Navbar = ({isPanelOpen,panelClickHandle}) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [logoUrl, setLogoUrl] = useState('/logo.png'); // Default fallback
   const navigate = useNavigate();
   const userData = useAuth(isPanelOpen, panelClickHandle);
   const swiperRef = useRef(null);
-
-  useEffect(() => {
-    const fetchSettings = async () => {
-      try {
-        const response = await api.get('/settings/general');
-        if (response.data?.logo) {
-          setLogoUrl(response.data.logo);
-        }
-      } catch (error) {
-        console.error('Failed to fetch settings:', error);
-      }
-    };
-
-    fetchSettings();
-  }, []);
-
-  // Handle sidebar open/close based on screen size
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 769) {
-        setIsOpen(true); // Desktop = open
-      } else {
-        setIsOpen(false); // Mobile = closed
-      }
-    };
-
-    handleResize(); // run on mount
-    window.addEventListener('resize', handleResize); // run on resize
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   if (!userData) {
     return <div>טוען...</div>;
