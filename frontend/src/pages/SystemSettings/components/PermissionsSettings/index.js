@@ -47,14 +47,13 @@ const PermissionsSettings = ({role}) => {
     }
   };
   
-
   return (
-    <div className="settings-section">     
-      { role === 'admin' && (
+    <div className="fieldset">
+       { role === 'admin' && (
         <div>
           {/* Password Expiry Setting */}
         <div className="form-group">
-          <label>תוקף סיסמא (בימים)</label>
+          <h3 className="pb-20 pt-20">Password Expiration (in days)</h3>
           <input
             type="number"
             className="input-field"
@@ -66,47 +65,47 @@ const PermissionsSettings = ({role}) => {
                 setPasswordExpiryDays(e.target.value);
               }
             }}
-            placeholder="הכנס מספר ימים"
+            placeholder="Enter number of days"
           />
         </div>
 
-        <button className="settings-section__btn" onClick={handleSave}>
-          שמור תוקף סיסמא
-        </button>
+        <div className="form__row mt-40">
+						<input onClick={handleSave} type="submit" name="submit" className="form__submit button button--main button--full" id="submit" value="Save" />
+				</div>
         </div>
       )}
 
-      {/* Generate Admin Link */}
-      <div className="admin-link-section">
+        {/* Generate Admin Link */}
+        <div className="admin-link-section">
         <div className='links'>
           { role === 'admin' && (<div>
-            <h4>יצירת משתמש מנהל חדש</h4>
-            <button className="settings-section__btn" onClick={()=>handleGenerateLink('admin')}>
-              צור קישור למנהל חדש
+            <h3 className="pb-20 pt-20">Create New Admin User</h3>            
+            <button className="button button--main" onClick={()=>handleGenerateLink('admin')}>
+              Generate
             </button>
           </div>)}
 
           { role === 'admin' && (
             <div>
-            <h4>יצירת משתמש סוכן ראשי חדש</h4>
-            <button className="settings-section__btn" onClick={()=>handleGenerateLink('master')}>
-              צור קישור לסוכן ראשי חדש
-            </button>
+               <h3 className="pb-20 pt-20">Create New Primary Agent User</h3>   
+               <button className="button button--main" onClick={()=>handleGenerateLink('master')}>
+                Generate
+               </button>
           </div>
           )}
 
           <div>
-            <h4>יצירת משתמש סוכן חדש</h4>
-              <button className="settings-section__btn" onClick={()=>handleGenerateLink('agent')}>
-                צור קישור לסוכן חדש
-              </button>
+           <h3 className="pb-20 pt-20">Create New Agent User</h3>
+           <button className="button button--main" onClick={()=>handleGenerateLink('agent')}>
+             Generate
+           </button>
           </div>
           
           { role === 'master-agent' && (
             <div>
-            <h4>יצירת משתמש לקוח חדש</h4>
-              <button className="settings-section__btn" onClick={()=>handleGenerateLink('client')}>
-                צור קישור ללקוח חדש
+              <h3 className="pb-20 pt-20">Create New Client User</h3>
+              <button className="button button--main" onClick={()=>handleGenerateLink('client')}>
+                Generate
               </button>
           </div>
           )}
@@ -114,13 +113,14 @@ const PermissionsSettings = ({role}) => {
 
         {generatedLink && (
           <div className="generated-link">
-            <label>קישור הרשמה:</label>
+            <label>Registration Link:</label>
             <input type="text" readOnly value={generatedLink} onClick={(e) => e.target.select()} />
           </div>
         )}
       </div>
+
     </div>
-  );
+  )
 };
 
 export default PermissionsSettings;

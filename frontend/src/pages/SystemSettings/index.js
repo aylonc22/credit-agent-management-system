@@ -1,9 +1,10 @@
 import React from 'react';
-import './index.css'; // Ensure styles are defined in this file
+import './index.scss'; // Ensure styles are defined in this file
 import useAuth from '../../hooks/useAuth';
 import SecuritySettings from './components/SecuritySettings/'; // Import the SecuritySettings component
 import GeneralSettings from './components/GeneralSettings';
 import PermissionsSettings from './components/PermissionsSettings';
+import Header from '../../components/Header';
 
 const SystemSettings = ({isPanelOpen, panelClickHandle}) => {
   const userData = useAuth(isPanelOpen, panelClickHandle); 
@@ -14,7 +15,21 @@ const SystemSettings = ({isPanelOpen, panelClickHandle}) => {
   }
 
   const { role } = userData;
+  return (
+    <div className="page page--main" data-page="form">
+      <Header flag={false} panelClickHandle={panelClickHandle}/>
+      <div className="page__content page__content--with-header">
+      <h2 class="page__title">Settings</h2>
+      {(role === 'admin' || role === 'master-agent') && <div>
+        <p class="welcome">
+        Permissions & Link Management
+        </p>
+        <PermissionsSettings role={role}/>
+      </div>}
 
+      </div>
+    </div>
+  )
   return (
     <div className="system-settings-container">
       <h1>הגדרות מערכת</h1>      
