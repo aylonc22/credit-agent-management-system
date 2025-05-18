@@ -4,6 +4,7 @@ import useAuth from '../../hooks/useAuth';
 import api from '../../api/axios';
 import { toast } from 'react-toastify';
 import './index.css';
+import Header from '../../components/Header';
 
 const ClientManagement = ({ isPanelOpen, panelClickHandle }) => {
   const userData = useAuth(isPanelOpen, panelClickHandle, 'agent');
@@ -157,27 +158,22 @@ const ClientManagement = ({ isPanelOpen, panelClickHandle }) => {
   });
 
   return (
-    <div className="dashboard">
-      <h1>ניהול לקוחות</h1>
+    <div className="page page--main">
+      <Header flag={false} panelClickHandle={panelClickHandle}/>
+    <div className="page__content page__content--with-header">
+    <h2 class="page__title">Clients Management</h2>      
 
       {/* Filters */}
       <div className="agent-search">
-        <input
-          type="text"
-          placeholder="חיפוש לפי שם או סוכן..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-
         <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-          <option value="">כל הסטטוסים</option>
-          <option value="active">פעיל</option>
-          <option value="inactive">לא פעיל</option>
+        <option value="">All Status</option>
+          <option value="active">Active</option>
+          <option value="inactive">InActive</option>
         </select>
 
         { (userData.role === 'admin'  || userData.role === 'master-agent')&& (
           <select value={agentFilter} onChange={(e) => setAgentFilter(e.target.value)}>
-            <option value="">כל הסוכנים</option>
+            <option value="">All Agents</option>
             {agents.map((agent) => (
               <option key={agent._id} value={agent._id}>
                 {agent.name}
@@ -185,45 +181,50 @@ const ClientManagement = ({ isPanelOpen, panelClickHandle }) => {
             ))}
           </select>
         )}
+        <input
+          type="text"
+          placeholder="Search by name or id"
+          className='input-field-d'
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </div>
 
       {/* Client Table */}
-      <div className="agent-table-container">
-        <table className="agent-table-head">
-          <thead>
-            <tr>
-              <th className='mobile-hide'>מספר</th>
-              <th>שם לקוח</th>
-              <th className='mobile-hide'>מייל</th>
-              {userData.role !== 'agent' && <th>סוכן</th>}
-              <th>קרדיטים</th>
-              <th className='mobile-hide'>נוצר בתאריך</th>
-              <th className='mobile-hide'>סטטוס</th>
-              <th>פעולות</th>
-            </tr>
-          </thead>
-        </table>
-
-        <div className="agent-table-body-wrapper">
-          <table className="agent-table-body">
-          <tbody>
+      <div className="table table--5cols mb-20">
+      <div className="table__inner">
+      <div class="table__row">
+            <div class="table__section table__section--header">Number</div>
+            <div class="table__section table__section--header">Client Name</div>
+            <div class="table__section table__section--header">Client Email</div>
+            <div class="table__section table__section--header">Credits</div>
+            <div class="table__section table__section--header">Status</div>	
+            <div class="table__section table__section--header">Actions</div>            						
+          </div>
+                        
+          <>          
               {filteredClients.length === 0 ? (
-                <tr>
-                  <td colSpan={8} style={{
-                    textAlign: 'center',
-                    color: '#777',
-                    padding: '20px',
-                    fontSize: '16px',
-                  }}>
-                    לא נמצאו לקוחות
-                  </td>
-                </tr>
+                <div className="empty-table-message">No agents to display</div> // Display this if no agents match the filters
               ) : (
                 filteredClients.map((client, index) => {
                   const agent = agents.find((a) => a._id === client.agentId);
                   return (
-                    <tr key={client._id}>
-                      <td className='mobile-hide' >{index + 1}</td>
+                    <div class="table__row">
+                      <div class="table__section">{index + 1}</div>
+                      <div class="table__section">{client.name}</div>
+                      <div class="table__section">{client.userId?.email || '-'}</div>
+                      <div class="table__section">{client.credit ?? 0}</div>
+                      <div class="table__section">{new Date(client.createdAt).toLocaleDateString('he-IL')}</div>
+                      <div class="table__section">{client.status === 'active' ? 'active' : 'inactive'}</div>
+                      <div class="table__section">
+                      {client.status === 'inactive' ? (
+                          <a class="button button--main button--ex-small" onClick={() => handleUnblockClient(client._id)}>Unblock</a>
+                        ) : (
+                          <a class="button button--main button--ex-small" onClick={() => handleBlockClient(client._id)}>Block</a>
+                        )}
+                      <a  onClick={() => goToReports(client._id)} class="button button--main button--ex-small">Reports</a>
+                      </div>
+                      {/* <td className='mobile-hide' >{index + 1}</td>
                       <td>{client.name}</td>
                       <td className='mobile-hide'>{client.userId?.email || '-'}</td>
                       {userData.role !== 'agent' && <td>{agent?.name || '-'}</td>}
@@ -239,14 +240,13 @@ const ClientManagement = ({ isPanelOpen, panelClickHandle }) => {
                          <button className="reports" onClick={() => goToReports(client._id)}>
                           🔍 דוחות
                         </button>
-                      </td>
-                    </tr>
+                      </td> */}
+                    </div>
                   );
                 })
-              )}
-            </tbody>
-          </table>
-        </div>
+              )}            
+          </>        
+      </div>
       </div>
 
       {/* ➕ Add Client Form */}
@@ -273,6 +273,7 @@ const ClientManagement = ({ isPanelOpen, panelClickHandle }) => {
           </form>
         </div>
       )}
+    </div>
     </div>
   );
 };

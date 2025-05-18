@@ -176,7 +176,7 @@ const AgentManagement = ({isPanelOpen, panelClickHandle}) => {
             <div class="table__section table__section--header">Actions</div>            						
           </div>
           {filteredAgents.length === 0 ? (
-            <div className="empty-table-message">אין סוכנים לתצוגה</div> // Display this if no agents match the filters
+            <div className="empty-table-message">No agents to display</div> // Display this if no agents match the filters
           ) : (
               <>
                 {filteredAgents.map((agent, index) => (
