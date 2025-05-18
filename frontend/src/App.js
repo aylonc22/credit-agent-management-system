@@ -46,7 +46,7 @@ function App() {
 
       {/* Routes */}
       <div className={`panel-closing ${isPanelOpen?"with-panel-left-reveal":""}`}>
-      {(!isAuthPage && isPanelOpen )&& <Navbar panelClickHandle={panelClickHandle}/>}
+      {(!isAuthPage && isPanelOpen )&& <Navbar isPanelOpen={isPanelOpen} panelClickHandle={panelClickHandle}/>}
         <Routes>
           <Route path="/" element={<Dashboard isPanelOpen={isPanelOpen} panelClickHandle={panelClickHandle}/>} />
           <Route path="/landing" element={<LandingPage />} />

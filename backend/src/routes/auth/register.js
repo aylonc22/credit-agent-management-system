@@ -97,7 +97,7 @@ router.post('/:agentId', async (req, res) => {
     // 6 Get Welcome Message
     const settings = await Settings.findOne();
     // 7. Return JWT
-    const token = await generateToken({ id: newUser._id, role: newUser.role, twofaEnabled: newUser.twoFA.enabled });
+    const token = await generateToken({ id: newUser._id, username: newUser.username, role: newUser.role, twofaEnabled: newUser.twoFA.enabled });
     return res.status(201).json({ message: settings.welcomeMessage ? settings.welcomeMessage : 'המשתמש נרשם בהצלחה', token });
 
   } catch (error) {
@@ -181,7 +181,7 @@ router.post('/', async (req, res) => {
     // 6 Get Welcome Message
     const settings = await Settings.findOne();
     // 7. Return JWT
-    const token = await generateToken({ id: newUser._id, role: newUser.role, twofaEnabled: newUser.twoFA.enabled });
+    const token = await generateToken({ id: newUser._id, username: newUser.username, role: newUser.role, twofaEnabled: newUser.twoFA.enabled });
    return res.status(201).json({ message: settings.welcomeMessage ? settings.welcomeMessage : 'המשתמש נרשם בהצלחה', token });
 
   } catch (error) {

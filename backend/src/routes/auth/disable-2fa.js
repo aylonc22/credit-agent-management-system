@@ -26,7 +26,7 @@ router.post('/', authMiddleware, async (req, res) => {
 
         // Save the user document
         await user.save();
-        const newToken = await generateToken({  id: user._id, role: user.role , twofaEnabled: user.twoFA.enabled });
+        const newToken = await generateToken({  id: user._id, username: user.username, role: user.role , twofaEnabled: user.twoFA.enabled });
         res.setHeader('x-access-token', newToken);  
              
         return res.status(200).json({ message: "2fa בוטל בהצלחה!"  });  // 2FA disabled successful

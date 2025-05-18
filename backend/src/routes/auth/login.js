@@ -88,7 +88,7 @@ router.post('/', async (req, res) => {
           
       }
       console.log(`Trying to generate jwt token for user ${user._id}`);
-      const token = await generateToken({ id: user._id, role: user.role , twofaEnabled: user.twoFA.enabled});
+      const token = await generateToken({ id: user._id, username: user.username, role: user.role , twofaEnabled: user.twoFA.enabled});
       console.log("Jwt token generated successfully");
   
       return res.status(200).json({ message: settings.welcomeMessage, token }); 

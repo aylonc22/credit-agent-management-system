@@ -53,7 +53,7 @@ const Navbar = ({isPanelOpen,panelClickHandle}) => {
     return <div>טוען...</div>;
   }
 
-  const { role } = userData;
+  const { role, username } = userData;
 
   const toggleSidebar = () => panelClickHandle();
 
@@ -81,7 +81,7 @@ const Navbar = ({isPanelOpen,panelClickHandle}) => {
 <div class="subnav-header"><img className='closepanel' onClick={toggleSidebar} src={backArrow} alt="" title="" /></div>
 <div class="user-details">
 <div class="user-details__thumb"><img src={avatar} alt="" title=""/></div>
-<div class="user-details__title"><span>Hello</span> Test User</div>
+<div class="user-details__title"><span>Hello</span> {username}</div>
 </div>
 <nav class="main-nav">
 <ul>

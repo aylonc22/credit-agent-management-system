@@ -36,6 +36,7 @@ async function handle2FAVerification(user, twofaCode, res) {
 
   const newToken = await generateToken({
     id: user._id,
+    username: user.username,
     role: user.role,
     twofaEnabled: user.twoFA.enabled,
   });
