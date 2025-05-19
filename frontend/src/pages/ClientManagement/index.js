@@ -158,6 +158,9 @@ const ClientManagement = ({ isPanelOpen, panelClickHandle }) => {
   });
 
   return (
+    <>
+    <div className={`body-overlay ${isPanelOpen?'active':""}`} style={isPanelOpen? { display: 'block' } : {}}></div>
+    <div id="panel-left"></div>
     <div className="page page--main">
       <Header flag={false} panelClickHandle={panelClickHandle}/>
     <div className="page__content page__content--with-header">
@@ -183,7 +186,7 @@ const ClientManagement = ({ isPanelOpen, panelClickHandle }) => {
         )}
         <input
           type="text"
-          placeholder="Search by name or id"
+          placeholder="Search by name or id..."
           className='input-field-d'
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -276,6 +279,7 @@ const ClientManagement = ({ isPanelOpen, panelClickHandle }) => {
       )}
     </div>
     </div>
+    </>
   );
 };
 

@@ -3,6 +3,7 @@ import useAuth from '../../hooks/useAuth';
 import api from '../../api/axios';
 import { toast } from 'react-toastify';
 import './index.css';
+import Header from '../../components/Header';
 
 const TransactionManagement = ({isPanelOpen, panelClickHandle}) => {
   const userData = useAuth(isPanelOpen, panelClickHandle, 'agent');  // Use the hook to get user data for 'admin' role
@@ -91,27 +92,27 @@ const TransactionManagement = ({isPanelOpen, panelClickHandle}) => {
   };
 
   return (
-    <div className="dashboard">
-      <h1>ניהול עסקאות</h1>
+    <>
+    <div className={`body-overlay ${isPanelOpen?'active':""}`} style={isPanelOpen? { display: 'block' } : {}}></div>
+    <div id="panel-left"></div>
+    <div className="page page--main">
+      <Header flag={false} panelClickHandle={panelClickHandle}/>
+    <div className="page__content page__content--with-header">
+    <h2 class="page__title">Transaction Management</h2>     
 
       {/* Filters */}
       <div className="agent-search">
-        <input
-          type="text"
-          placeholder="חיפוש לפי שם סוכן או לקוח..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        
 
         <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-          <option value="">כל הסטטוסים</option>
-          <option value="completed">הושלמה</option>
-          <option value="pending">ממתינה</option>
-          <option value="failed">נכשלה</option>
+          <option value="">All Status</option>
+          <option value="completed">completed</option>
+          <option value="pending">pending</option>
+          <option value="failed">failed</option>
         </select>
 
         <select value={clientFilter} onChange={(e) => setClientFilter(e.target.value)}>
-          <option value="">כל הלקוחות</option>
+          <option value="">All Clients</option>
           {clients.map((client) => (
             <option key={client._id} value={client._id}>
               {client.name}
@@ -121,7 +122,7 @@ const TransactionManagement = ({isPanelOpen, panelClickHandle}) => {
 
         {(userData.role !== 'client' && userData.role !== "agent") && (
           <select value={agentFilter} onChange={(e) => setAgentFilter(e.target.value)}>
-          <option value="">כל הסוכנים</option>
+          <option value="">All Agents</option>
           {agents.map((agent) => (
             <option key={agent._id} value={agent._id}>
               {agent.name}
@@ -129,26 +130,27 @@ const TransactionManagement = ({isPanelOpen, panelClickHandle}) => {
           ))}
         </select>
         )}
+
+        <input
+          type="text"
+          placeholder="Search by name or id..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </div>
 
       {/* Transaction Table */}
-      <div className="agent-table-container">
-        <table className="agent-table-head">
-          <thead>
-            <tr>
-              <th className='mobile-hide' >מספר</th>
-              <th>סוכן</th>
-              <th>לקוח</th>
-              <th>סכום</th>              
-              <th className='mobile-hide'>תאריך יצירה</th>
-              <th>סטטוס</th>
-            </tr>
-          </thead>
-        </table>
-
-        <div className="agent-table-body-wrapper">
-          <table className="agent-table-body">
-                      <tbody>
+      <div  className="table table--6cols mb-20">
+        <div  className="table__inner">          
+          <div class="table__row">
+            <div class="table__section table__section--header">Number</div>
+            <div class="table__section table__section--header">Agent Name</div>
+            <div class="table__section table__section--header">Client Name</div>
+            <div class="table__section table__section--header">Amount</div>	
+            <div class="table__section table__section--header">Created At</div>
+            <div class="table__section table__section--header">Status</div>            						
+          </div>
+                            
               {filteredTransactions.length === 0 ? (
                 <tr>
                   <td colSpan={7} style={{
@@ -157,19 +159,19 @@ const TransactionManagement = ({isPanelOpen, panelClickHandle}) => {
                     padding: '20px',
                     fontSize: '16px',
                   }}>
-                    לא נמצאו עסקאות
+                    No transactions to display
                   </td>
                 </tr>
               ) : (
                 filteredTransactions.map((transaction, index) => (
-                  <tr key={transaction._id}>
-                    <td className='mobile-hide'>{index + 1}</td>
-                    <td>{transaction.agent?.name || '-'}</td>
-                    <td>{transaction.client?.name || '-'}</td>
-                    <td>{transaction.amount}$</td>
-                    <td className='mobile-hide'>{new Date(transaction.createdAt).toLocaleDateString('he-IL')}</td>
-                    <td>
-                      {transaction.status === 'completed'
+                  <div class="table__row">
+                  <div class="table__section">{index + 1}</div>
+                  <div class="table__section">{transaction.agent?.name || '-'}</div>
+                  <div class="table__section">{transaction.client?.name || '-'}</div> 
+                  <div class="table__section">{transaction.amount}</div>
+                  <div class="table__section">{new Date(transaction.createdAt).toLocaleDateString('he-IL')}</div>     
+                  <div class="table__section">
+                  {transaction.status === 'completed'
                         ? 'הושלמה'
                         : transaction.status === 'pending'
                         ? (
@@ -188,16 +190,15 @@ const TransactionManagement = ({isPanelOpen, panelClickHandle}) => {
                           </button>
                         )
                         : 'נכשלה'}
-                    </td>
-                  </tr>
+                  </div>     
+                  </div>                 
                 ))
-              )}
-            </tbody>
-
-          </table>
-        </div>
+              )}                      
+      </div>
       </div>
     </div>
+    </div>
+    </>
   );
 };
 
