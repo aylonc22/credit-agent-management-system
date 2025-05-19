@@ -23,7 +23,7 @@ const Navbar = ({isPanelOpen,panelClickHandle}) => {
   const swiperRef = useRef(null);
 
   if (!userData) {
-    return <div>טוען...</div>;
+    return <div></div>;
   }
 
   const { role, username } = userData;

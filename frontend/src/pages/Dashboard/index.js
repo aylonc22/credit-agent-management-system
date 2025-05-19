@@ -32,7 +32,7 @@ const Dashboard = ({panelClickHandle, isPanelOpen}) => {
   }, []);
 
   if (!userData) {
-    return <div>Loading...</div>;
+    return <div className="loader"></div>;
   }
 
   const { role } = userData;
@@ -71,7 +71,7 @@ const Dashboard = ({panelClickHandle, isPanelOpen}) => {
 <>
     <div className={`body-overlay ${isPanelOpen?'active':""}`} style={isPanelOpen? { display: 'block' } : {}}></div>
     <div id="panel-left"></div>
-    <div className="page page--main" data-page="cards">
+    <div className="page page--main" data-page="cards">    
     <Header panelClickHandle={panelClickHandle} flag={false}/>
      
 	

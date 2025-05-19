@@ -34,7 +34,7 @@ const PaymentRedirectHandler = () => {
     sendToken();
   }, [searchParams, navigate]);
 
-  return <p>Redirecting...</p>;
+  return <div className="loader"></div>;
 };
 
 export default PaymentRedirectHandler;
