@@ -21,6 +21,7 @@ import TermsOfUse from './pages/TermsOfUse/index.js';
 import PaymentRedirectHandler from './pages/Payment/index.js';
 import LandingPage from './pages/LandingPage/index.js';
 import { useState } from 'react';
+import Contact from './pages/Contact/index.js';
 
 function App() {
   const [isPanelOpen , setIsPanelOpen ] = useState(false);
@@ -44,6 +45,7 @@ function App() {
           <Route path="/change-password/:userId" element={<ChangePassword />} />
           <Route path="/agents" element={<AgentManagement  isPanelOpen={isPanelOpen} panelClickHandle={panelClickHandle} />} />
           <Route path="/clients" element={<ClientManagement  isPanelOpen={isPanelOpen} panelClickHandle={panelClickHandle} />} />
+          <Route path="/contact" element={<Contact  isPanelOpen={isPanelOpen} panelClickHandle={panelClickHandle} />} />
           <Route path="/transactions" element={<TransactionManagement isPanelOpen={isPanelOpen} panelClickHandle={panelClickHandle} />} />
           <Route path="/generate-payment-links" element={<PaymentLinkGenerator  isPanelOpen={isPanelOpen} panelClickHandle={panelClickHandle} />} />
           <Route path="/reports" element={<Reports  isPanelOpen={isPanelOpen} panelClickHandle={panelClickHandle} />} />
