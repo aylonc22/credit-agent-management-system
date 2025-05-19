@@ -4,6 +4,8 @@ import api from '../../api/axios';
 import { toast } from 'react-toastify';
 import * as XLSX from 'xlsx';
 import './index.css'; // reuse your CSS
+import Header from '../../components/Header';
+import coin from '../../assets/images/logos/bitcoin.png';
 
 const Reports = ({isPanelOpen, panelClickHandle}) => {
   const userData = useAuth(isPanelOpen, panelClickHandle);
@@ -91,9 +93,13 @@ const Reports = ({isPanelOpen, panelClickHandle}) => {
   };
 
   return (
-    <div className="Reports">
-      <h1>דוחות עסקאות</h1>
-
+    <>
+    <div className={`body-overlay ${isPanelOpen?'active':""}`} style={isPanelOpen? { display: 'block' } : {}}></div>
+    <div id="panel-left"/>
+    <div className="page page--main">
+      <Header flag={false} panelClickHandle={panelClickHandle}/>
+      <div className="page__content page__content--with-header">
+      <h2 className="page__title"> Transactions Report </h2>     
       {/* Agent Filter */}
       <div className="agent-search">
         <select value={selectedAgent} onChange={(e) => setSelectedAgent(e.target.value)}>
@@ -104,26 +110,47 @@ const Reports = ({isPanelOpen, panelClickHandle}) => {
             </option>
           ))}
         </select>
+      </div>     
+
+      {/* Transaction Statistics */}
+      <div class="page__title-bar">
+			<p className='welcome'>Transaction Statistics</p>
+		</div>		
+	       <div className='form'> 
+        <div class="cards cards--11 mb-20">
+			  <div class="card card--style-inline card--style-inline-bg card--style-round-corners">
+				  <div class="card__icon"><img src="images/icons/mobile.svg" alt="" title=""/></div>
+				  <div class="card__details">
+				  <h4 class="card__title">Successful Transactions</h4>
+				  <p class="card__text">{successfulTransactions.length}</p>
+				  </div>				  
+			  </div>
+			  <div class="card card--style-inline card--style-inline-bg card--style-round-corners">
+				  <div class="card__icon"><img src="images/icons/code.svg" alt="" title=""/></div>
+				  <div class="card__details">
+				  <h4 class="card__title">Failed Transactions</h4>
+				  <p class="card__text">{failedTransactions.length}</p>
+				  </div>				  
+			  </div>
+			  <div class="card card--style-inline card--style-inline-bg card--style-round-corners">
+				  <div class="card__icon"><img src={coin} alt="" title=""/></div>
+				  <div class="card__details">
+				  <h4 class="card__title">Total Credits Generated</h4>
+				  <p class="card__text">{totalCreditsGenerated}$</p>
+				  </div>				 
+			  </div>			  
+     </div>      
       </div>
 
       {/* Export Button */}
-      <div style={{ marginTop: '20px' }}>
-        <button onClick={exportAllToExcel}>
-          📥 ייצוא כל העסקאות לאקסל
-        </button>
-      </div>
+      <div className="form__row mt-40">
+                <input onClick={exportAllToExcel} type="submit" name="submit" className="form__submit button button--main button--full" id="submit"
+                value= "Export All Transactions to Excel"/>
+      </div> 
+      </div> 
 
-      {/* Transaction Statistics */}
-      <div className="agent-table-container" style={{ marginTop: '40px' }}>
-        <h2>סטטיסטיקת עסקאות</h2>
-
-        <div style={{ marginTop: '20px' }}>
-          <h3>✅ עסקאות מוצלחות: {successfulTransactions.length}</h3>
-          <h3>❌ עסקאות כושלות: {failedTransactions.length}</h3>
-          <h3>💳 סך הקרדיטים שנוצרו: {totalCreditsGenerated}$</h3>
-        </div>
-      </div>
     </div>
+    </>
   );
 };
 

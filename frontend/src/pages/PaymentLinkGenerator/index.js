@@ -90,7 +90,7 @@ const PaymentLinkGenerator = ({isPanelOpen, panelClickHandle}) => {
 
   return (
     <>
-     <div className={`body-overlay ${isPanelOpen?'active':""}`} style={isPanelOpen? { display: 'block' } : {}}></div>
+    <div className={`body-overlay ${isPanelOpen?'active':""}`} style={isPanelOpen? { display: 'block' } : {}}></div>
     <div id="panel-left"/>
     <div className="page page--main" data-page="cards">
     <Header flag={false} panelClickHandle={panelClickHandle}/>
