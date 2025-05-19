@@ -3,6 +3,7 @@ import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import './index.css';
 import api from "../../api/axios";
 import { toast } from 'react-toastify';
+import Header from "../../components/Header";
 
 const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -60,52 +61,61 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="login-container" dir="rtl">
-      <div className="login-box">
-        <h2>שנה סיסמה</h2>
+    <div className="page page--login">
+      <Header flag={true}/>
+      <div className="login">
+        <div className="login__content">
+          <div className="splash__logo__left">Pay<strong>glow</strong></div>
+          <h2 className="login__title">Update Password</h2>        
 
         <form onSubmit={handleSubmit}>
           {!token && (
-            <div className="input-group">
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="סיסמה נוכחית"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                required
-              />
-            </div>
+            <div className="login-form__row">
+                    <label className="login-form__label">Current</label>
+                    <input                     
+                      className="login-form__input"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Current Password"
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                      required
+                    />                  
+            </div>           
           )}
 
-          <div className="input-group">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="סיסמה חדשה"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="input-group">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="אשר סיסמה חדשה"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-            <span
-              className="password-toggle"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? "הסתר" : "הצג"}
-            </span>
-          </div>
-
-          <button type="submit" className="btn">עדכן סיסמה</button>
+            <div className="login-form__row">
+                    <label className="login-form__label">New</label>
+                    <input                     
+                      className="login-form__input"                     
+                      type={showPassword ? "text" : "password"}
+                      placeholder="New Password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      required
+                    />                  
+            </div>    
+         
+            <div className="login-form__row">
+                    <label className="login-form__label">Verify</label>
+                    <input                     
+                      className="login-form__input"                     
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Verify Password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                    />                  
+            </div>            
+          <div className="login-form__row">
+                    <input
+                      type="submit"
+                      className="login-form__submit button button--main button--full"
+                      value="Update password"
+                    />
+                  </div>
         </form>
       </div>
+    </div>
     </div>
   );
 };
