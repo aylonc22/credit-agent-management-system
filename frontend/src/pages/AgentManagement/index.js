@@ -214,32 +214,33 @@ const AgentManagement = ({isPanelOpen, panelClickHandle}) => {
       {userData.role === 'admin' && (
         <div className="fieldset">
           <div className="form">
-            <p class="welcome">
+            <p className="welcome">
                 Add new agent
             </p>	
           
             <form onSubmit={handleFormSubmit}>
-              <div class="form__row">
-                <input class="form__input required" name="name" type="text" placeholder="full name" value={newAgent.name} onChange={handleInputChange} />
+              <div className="form__row">
+                <input className="form__input required" name="name" type="text" placeholder="full name" value={newAgent.name} onChange={handleInputChange} />
               </div>
-              <div class="form__row">
-                <input class="form__input required"  name="email" type="email" placeholder="email" value={newAgent.email} onChange={handleInputChange} />
+              <div className="form__row">
+                <input className="form__input required"  name="email" type="email" placeholder="email" value={newAgent.email} onChange={handleInputChange} />
               </div>
-              <div class="form__row">
-                <input class="form__input required" name="username" type="text" placeholder="username" value={newAgent.username} onChange={handleInputChange}/>
+              <div className="form__row">
+                <input className="form__input required" name="username" type="text" placeholder="username" value={newAgent.username} onChange={handleInputChange}/>
               </div>
-              <div class="form__row">
-                <input class="form__input required" name="password" type="password" placeholder="password" value={newAgent.password} onChange={handleInputChange} />
+              <div className="form__row">
+                <input className="form__input required" name="password" type="password" placeholder="password" value={newAgent.password} onChange={handleInputChange} />
               </div>                    
               {/* Role selection */}
-              <div class="form__select">
-							<select name="role" value={newAgent.role} onChange={handleInputChange}>								
+              <div className="form__select">
+							<select name="role" value={newAgent.role} onChange={handleInputChange}>	
+                <option disabled value="">Choose agent</option>							
                 <option value="agent">agent</option>
                 <option value="master-agent">primary agent</option>
 							</select>
 						</div>                    
-              <div class="form__row mt-40">
-                <input type="submit" name="submit" class="form__submit button button--main button--full" id="submit" value="SUBMIT" />
+              <div className="form__row mt-40">
+                <input type="submit" name="submit" className="form__submit button button--main button--full" id="submit" value="SUBMIT" />
               </div>
             </form>
           </div>

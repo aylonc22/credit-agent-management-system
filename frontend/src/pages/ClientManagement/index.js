@@ -191,18 +191,20 @@ const ClientManagement = ({ isPanelOpen, panelClickHandle }) => {
       </div>
 
       {/* Client Table */}
-      <div className="table table--5cols mb-20">
+      <div className="table table--6cols mb-20">
       <div className="table__inner">
       <div class="table__row">
             <div class="table__section table__section--header">Number</div>
             <div class="table__section table__section--header">Client Name</div>
             <div class="table__section table__section--header">Client Email</div>
+            {userData.role !== 'agent' && <div class="table__section table__section--header">Agent</div>}
             <div class="table__section table__section--header">Credits</div>
+            <div class="table__section table__section--header">Created At</div>
             <div class="table__section table__section--header">Status</div>	
             <div class="table__section table__section--header">Actions</div>            						
           </div>
                         
-          <>          
+                   
               {filteredClients.length === 0 ? (
                 <div className="empty-table-message">No agents to display</div> // Display this if no agents match the filters
               ) : (
@@ -213,6 +215,7 @@ const ClientManagement = ({ isPanelOpen, panelClickHandle }) => {
                       <div class="table__section">{index + 1}</div>
                       <div class="table__section">{client.name}</div>
                       <div class="table__section">{client.userId?.email || '-'}</div>
+                      {userData.role !== 'agent' && <div class="table__section">{agent?.name || '-'}</div>}                     
                       <div class="table__section">{client.credit ?? 0}</div>
                       <div class="table__section">{new Date(client.createdAt).toLocaleDateString('he-IL')}</div>
                       <div class="table__section">{client.status === 'active' ? 'active' : 'inactive'}</div>
@@ -223,54 +226,52 @@ const ClientManagement = ({ isPanelOpen, panelClickHandle }) => {
                           <a class="button button--main button--ex-small" onClick={() => handleBlockClient(client._id)}>Block</a>
                         )}
                       <a  onClick={() => goToReports(client._id)} class="button button--main button--ex-small">Reports</a>
-                      </div>
-                      {/* <td className='mobile-hide' >{index + 1}</td>
-                      <td>{client.name}</td>
-                      <td className='mobile-hide'>{client.userId?.email || '-'}</td>
-                      {userData.role !== 'agent' && <td>{agent?.name || '-'}</td>}
-                      <td>{client.credit ?? 0}</td>
-                      <td className='mobile-hide'>{new Date(client.createdAt).toLocaleDateString('he-IL')}</td>
-                      <td>{client.status === 'active' ? 'פעיל' : 'לא פעיל'}</td>
-                      <td>
-                        {client.status === 'inactive' ? (
-                          <button onClick={() => handleUnblockClient(client._id)}>✔️ שחרר</button>
-                        ) : (
-                          <button onClick={() => handleBlockClient(client._id)}>🚫 חסום</button>
-                        )}
-                         <button className="reports" onClick={() => goToReports(client._id)}>
-                          🔍 דוחות
-                        </button>
-                      </td> */}
+                      </div>                     
                     </div>
                   );
                 })
-              )}            
-          </>        
+              )}                    
       </div>
       </div>
 
       {/* ➕ Add Client Form */}
       {userData.role !== 'agent' && (
-        <div className="add-agent-form">
-          <h2>הוסף לקוח חדש</h2>
+        <div className="fieldset">
+          <div className="form">
+            <p className="welcome">
+                Add new client
+            </p>	          
           <form onSubmit={handleFormSubmit}>
-            <input name="name" type="text" placeholder="שם הלקוח" value={newClient.name} onChange={handleInputChange} />
-            <input name="email" type="email" placeholder="כתובת אימייל" value={newClient.email} onChange={handleInputChange} />
-            <input name="username" type="text" placeholder="שם משתמש" value={newClient.username} onChange={handleInputChange} />
-            <input name="password" type="password" placeholder="סיסמה" value={newClient.password} onChange={handleInputChange} />           
+              <div className="form__row">
+                <input className="form__input required" name="name" type="text" placeholder="full name" value={newClient.name} onChange={handleInputChange} />
+              </div>
+              <div className="form__row">
+                <input className="form__input required" name="email" type="email" placeholder="Email" value={newClient.email} onChange={handleInputChange} />
+              </div>
+              <div className="form__row">
+                <input className="form__input required" name="username" type="text" placeholder="username" value={newClient.username} onChange={handleInputChange} />
+              </div>
+              <div className="form__row">
+                <input className="form__input required"name="password" type="password" placeholder="password" value={newClient.password} onChange={handleInputChange} />
+              </div>                                  
             {userData.role === 'admin' && (
-              <select name="agentId" value={newClient.agentId} onChange={handleInputChange}>
-                <option value="">בחר סוכן</option>
-                {agents.map((agent) => (
-                  <option key={agent._id} value={agent._id}>
-                    {agent.name}
-                  </option>
-                ))}
-              </select>
+               <div className="form__select">
+                <select name="agentId" value={newClient.agentId} onChange={handleInputChange}>
+                  <option disabled value="">Choose agent</option>
+                  {agents.map((agent) => (
+                    <option key={agent._id} value={agent._id}>
+                      {agent.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
             )}
 
-            <button type="submit">שמור</button>
+              <div class="form__row mt-40">
+                <input type="submit" name="submit" className="form__submit button button--main button--full" id="submit" value="SUBMIT" />
+              </div>
           </form>
+        </div>
         </div>
       )}
     </div>
