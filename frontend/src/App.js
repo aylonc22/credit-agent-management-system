@@ -51,7 +51,7 @@ function App() {
           <Route path="/reports" element={<Reports  isPanelOpen={isPanelOpen} panelClickHandle={panelClickHandle} />} />
           <Route path="/settings" element={<SystemSettings isPanelOpen={isPanelOpen} panelClickHandle={panelClickHandle}  />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
-          <Route path="/terms" element={<TermsOfUse/>} />
+          <Route path="/terms" element={<TermsOfUse  isPanelOpen={isPanelOpen} panelClickHandle={panelClickHandle}/>} />
           <Route path='/payment' element={<PaymentRedirectHandler/>}/>
         </Routes>
          

@@ -134,6 +134,7 @@ const TransactionManagement = ({isPanelOpen, panelClickHandle}) => {
         <input
           type="text"
           placeholder="Search by name or id..."
+          className='input-field-d'
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
