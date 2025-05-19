@@ -103,7 +103,7 @@ const Reports = ({isPanelOpen, panelClickHandle}) => {
       {/* Agent Filter */}
       <div className="agent-search">
         <select value={selectedAgent} onChange={(e) => setSelectedAgent(e.target.value)}>
-          <option value="">כל הסוכנים</option>
+          <option value="">All Agents</option>
           {agents.map((agent) => (
             <option key={agent._id} value={agent._id}>
               {agent.name}
