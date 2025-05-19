@@ -114,7 +114,7 @@ const Navbar = ({isPanelOpen,panelClickHandle}) => {
 
           <SwiperSlide>
             <div className="subnav-header backtonav" onClick={() => swiperRef.current.slidePrev()}>
-              <img src={backArrow} alt="" />
+              <img style={{cursor:"pointer"}} src={backArrow} alt="" />
             </div>
             <nav className="main-nav">
               <ul>

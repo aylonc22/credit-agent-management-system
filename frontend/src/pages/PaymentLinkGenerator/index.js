@@ -4,6 +4,7 @@ import useAuth from '../../hooks/useAuth';
 import api from '../../api/axios';
 import { toast } from 'react-toastify';
 import { useLocation } from 'react-router-dom';
+import Header from '../../components/Header';
 
 const PaymentLinkGenerator = ({isPanelOpen, panelClickHandle}) => {
   const [amount, setAmount] = useState(15);
@@ -88,10 +89,20 @@ const PaymentLinkGenerator = ({isPanelOpen, panelClickHandle}) => {
   };
 
   return (
-    <div className="dashboard">
+    <>
+     <div className={`body-overlay ${isPanelOpen?'active':""}`} style={isPanelOpen? { display: 'block' } : {}}></div>
+    <div id="panel-left"/>
+    <div className="page page--main" data-page="cards">
+    <Header flag={false} panelClickHandle={panelClickHandle}/>
+    <div className="page__content page__content--with-header">
     {(!paymentLink || userData.role !=='client') ? (
       <>
-        <h1>יצירת {userData.role !== 'client' && 'קישור'} תשלום</h1>
+       <p className="welcome">
+        {userData.role !== 'client' ? 'Create Payment Link' : 'Create Payment'}
+       </p>
+
+      <div className="fieldset">
+      <div className="form">
       <form className="payment-form" onSubmit={(e) => e.preventDefault()}>
         <label>סכום לתשלום:</label>
         <input
@@ -101,7 +112,7 @@ const PaymentLinkGenerator = ({isPanelOpen, panelClickHandle}) => {
           min={15}
           placeholder="הכנס סכום"
           required
-        />
+          />
 
         <label>הערות:</label>
         <textarea
@@ -109,7 +120,7 @@ const PaymentLinkGenerator = ({isPanelOpen, panelClickHandle}) => {
           onChange={(e) => setNotes(e.target.value)}
           placeholder="הכנס הערות (אופציונלי)"
           style={{ resize: 'vertical', maxHeight: '100px' }} // limit dragability
-        ></textarea>
+          ></textarea>
 
         {userData.role !== 'client' && (
           <>
@@ -118,7 +129,7 @@ const PaymentLinkGenerator = ({isPanelOpen, panelClickHandle}) => {
           value={client}
           onChange={(e) => setClient(e.target.value)}
           required
-        >
+          >
           <option value="">בחר לקוח</option>
           {clients.map((c,index) => (
             <option key={c._id} value={index}>
@@ -132,9 +143,10 @@ const PaymentLinkGenerator = ({isPanelOpen, panelClickHandle}) => {
           {userData.role!=='client'?"יצירת קישור":"מעבר לתשלום"}
         </button>
       </form>
-
+      </div>
+      </div>
       {paymentLink && userData.role !== 'cleint' && (
-  <div className="generated-link">
+        <div className="generated-link">
     <p>🔗 קישור תשלום:</p>
     <div className="link-container">
       <input
@@ -142,7 +154,7 @@ const PaymentLinkGenerator = ({isPanelOpen, panelClickHandle}) => {
         value={paymentLink}
         readOnly
         onClick={(e) => e.target.select()}
-      />
+        />
       <button
         type="button"
         className="copy-btn"
@@ -150,7 +162,7 @@ const PaymentLinkGenerator = ({isPanelOpen, panelClickHandle}) => {
           navigator.clipboard.writeText(paymentLink);
           toast.success('הקישור הועתק!');
         }}
-      >
+        >
         העתק קישור
       </button>
     </div>
@@ -165,8 +177,9 @@ const PaymentLinkGenerator = ({isPanelOpen, panelClickHandle}) => {
           />        
       </div>
     )}
-
     </div>
+    </div>
+    </>
   );
 };
 
