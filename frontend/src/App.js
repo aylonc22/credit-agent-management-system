@@ -20,22 +20,33 @@ import ChangePassword from './pages/ChangePassword/index.js';
 import TermsOfUse from './pages/TermsOfUse/index.js';
 import PaymentRedirectHandler from './pages/Payment/index.js';
 import LandingPage from './pages/LandingPage/index.js';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Contact from './pages/Contact/index.js';
 
 function App() {
   const [isPanelOpen , setIsPanelOpen ] = useState(false);
-
+  const [showNavbar, setShowNavbar] = useState(false);
   const panelClickHandle = ()=>{   
     setIsPanelOpen(state=>!state);
   }  
- 
+  useEffect(() => {
+    if (isPanelOpen) {
+      setShowNavbar(true); // Show immediately when opening
+    } else {
+      // Delay unmount by 2 seconds
+      const timeout = setTimeout(() => {
+        setShowNavbar(false);
+      }, 2000);
+
+      return () => clearTimeout(timeout); // Cleanup on re-open
+    }
+  }, [isPanelOpen]);
   return (
     <div>
       {/* Routes */}
       <div className={`panel-closing ${isPanelOpen?"with-panel-left-reveal":""}`}>
         {/* Navigation */}
-        { isPanelOpen && <Navbar isPanelOpen={isPanelOpen} panelClickHandle={panelClickHandle}/>}
+        { showNavbar && <Navbar isPanelOpen={isPanelOpen} panelClickHandle={panelClickHandle}/>}
         <Routes>
           <Route path="/" element={<Dashboard isPanelOpen={isPanelOpen} panelClickHandle={panelClickHandle}/>} />
           <Route path="/landing" element={<LandingPage />} />
