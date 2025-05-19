@@ -97,57 +97,63 @@ const PaymentLinkGenerator = ({isPanelOpen, panelClickHandle}) => {
     <div className="page__content page__content--with-header">
     {(!paymentLink || userData.role !=='client') ? (
       <>
-       <p className="welcome">
+       <h2 className="page__title">
         {userData.role !== 'client' ? 'Create Payment Link' : 'Create Payment'}
-       </p>
+       </h2>
 
       <div className="fieldset">
       <div className="form">
-      <form className="payment-form" onSubmit={(e) => e.preventDefault()}>
-        <label>סכום לתשלום:</label>
-        <input
-          type="number"
-          value={amount }
-          onChange={(e) => setAmount(e.target.value)}
-          min={15}
-          placeholder="הכנס סכום"
-          required
-          />
-
-        <label>הערות:</label>
-        <textarea
+      <form onSubmit={(e) => e.preventDefault()}>
+        <div className="form__row">
+          <h3 className="pb-20 pt-20">Amount ($)</h3>
+          <input
+              type="number"
+              className="input-field"
+              value={amount }
+              onChange={(e) => setAmount(e.target.value)}
+              min={15}
+              placeholder="Enter Amount"
+              required
+              />
+        </div>
+      
+        <div className="form__row">
+          <h3 className="pb-20 pt-20">Notes</h3>
+          <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          placeholder="הכנס הערות (אופציונלי)"
+          className="textarea-input"
+          placeholder="Enter notes (optional)"
           style={{ resize: 'vertical', maxHeight: '100px' }} // limit dragability
           ></textarea>
+        </div>        
 
-        {userData.role !== 'client' && (
-          <>
-          <label>לקוח:</label>
-        <select
-          value={client}
-          onChange={(e) => setClient(e.target.value)}
-          required
-          >
-          <option value="">בחר לקוח</option>
-          {clients.map((c,index) => (
-            <option key={c._id} value={index}>
-              {c.name}
-            </option>
-          ))}
-        </select>
-        </>)}
-
-        <button type="button" onClick={handleGenerateLink}>
-          {userData.role!=='client'?"יצירת קישור":"מעבר לתשלום"}
-        </button>
+        {userData.role !== 'client' && (                  
+          <div className="form__select">
+            <select
+            value={client}
+            onChange={(e) => setClient(e.target.value)}
+            required
+            >
+            <option disabled value="">Choose Client</option>
+            {clients.map((c,index) => (
+              <option key={c._id} value={index}>
+                {c.name}
+              </option>
+            ))}
+            </select>
+					</div>          
+       )}
+          <div className="form__row mt-40">
+                <input onClick={handleGenerateLink} type="submit" name="submit" className="form__submit button button--main button--full" id="submit"
+                value= {userData.role !== 'client' ? "Create Link" : "Proceed to Payment"}/>
+          </div>        
       </form>
       </div>
       </div>
       {paymentLink && userData.role !== 'cleint' && (
         <div className="generated-link">
-    <p>🔗 קישור תשלום:</p>
+    <p>🔗 Payment Link:</p>
     <div className="link-container">
       <input
         type="text"
@@ -157,13 +163,13 @@ const PaymentLinkGenerator = ({isPanelOpen, panelClickHandle}) => {
         />
       <button
         type="button"
-        className="copy-btn"
+        className="button button--main button--ex-small"
         onClick={() => {
           navigator.clipboard.writeText(paymentLink);
           toast.success('הקישור הועתק!');
         }}
         >
-        העתק קישור
+        Copy Link
       </button>
     </div>
   </div>

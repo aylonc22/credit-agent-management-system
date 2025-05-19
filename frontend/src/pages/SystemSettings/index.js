@@ -19,7 +19,7 @@ const SystemSettings = ({isPanelOpen, panelClickHandle}) => {
     <div className="page page--main" data-page="form">
       <Header flag={false} panelClickHandle={panelClickHandle}/>
       <div className="page__content page__content--with-header">
-        <h2 class="page__title">Settings</h2>
+        <h2 className="page__title">Settings</h2>
 
         {(role === 'admin' || role === 'master-agent') && <div>
           <p className="welcome"> Permissions & Link Management </p>

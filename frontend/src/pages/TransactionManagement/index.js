@@ -98,7 +98,7 @@ const TransactionManagement = ({isPanelOpen, panelClickHandle}) => {
     <div className="page page--main">
       <Header flag={false} panelClickHandle={panelClickHandle}/>
     <div className="page__content page__content--with-header">
-    <h2 class="page__title">Transaction Management</h2>     
+    <h2 className="page__title">Transaction Management</h2>     
 
       {/* Filters */}
       <div className="agent-search">
@@ -142,13 +142,13 @@ const TransactionManagement = ({isPanelOpen, panelClickHandle}) => {
       {/* Transaction Table */}
       <div  className="table table--6cols mb-20">
         <div  className="table__inner">          
-          <div class="table__row">
-            <div class="table__section table__section--header">Number</div>
-            <div class="table__section table__section--header">Agent Name</div>
-            <div class="table__section table__section--header">Client Name</div>
-            <div class="table__section table__section--header">Amount</div>	
-            <div class="table__section table__section--header">Created At</div>
-            <div class="table__section table__section--header">Status</div>            						
+          <div className="table__row">
+            <div className="table__section table__section--header">Number</div>
+            <div className="table__section table__section--header">Agent Name</div>
+            <div className="table__section table__section--header">Client Name</div>
+            <div className="table__section table__section--header">Amount</div>	
+            <div className="table__section table__section--header">Created At</div>
+            <div className="table__section table__section--header">Status</div>            						
           </div>
                             
               {filteredTransactions.length === 0 ? (
@@ -164,13 +164,13 @@ const TransactionManagement = ({isPanelOpen, panelClickHandle}) => {
                 </tr>
               ) : (
                 filteredTransactions.map((transaction, index) => (
-                  <div class="table__row">
-                  <div class="table__section">{index + 1}</div>
-                  <div class="table__section">{transaction.agent?.name || '-'}</div>
-                  <div class="table__section">{transaction.client?.name || '-'}</div> 
-                  <div class="table__section">{transaction.amount}</div>
-                  <div class="table__section">{new Date(transaction.createdAt).toLocaleDateString('he-IL')}</div>     
-                  <div class="table__section">
+                  <div className="table__row">
+                  <div className="table__section">{index + 1}</div>
+                  <div className="table__section">{transaction.agent?.name || '-'}</div>
+                  <div className="table__section">{transaction.client?.name || '-'}</div> 
+                  <div className="table__section">{transaction.amount}</div>
+                  <div className="table__section">{new Date(transaction.createdAt).toLocaleDateString('he-IL')}</div>     
+                  <div className="table__section">
                   {transaction.status === 'completed'
                         ? 'הושלמה'
                         : transaction.status === 'pending'

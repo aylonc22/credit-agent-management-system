@@ -142,7 +142,7 @@ const AgentManagement = ({isPanelOpen, panelClickHandle}) => {
     <div className="page page--main">
       <Header flag={false} panelClickHandle={panelClickHandle}/>
       <div className="page__content page__content--with-header">     
-      <h2 class="page__title">Agent Management</h2>
+      <h2 className="page__title">Agent Management</h2>
       {/* 🔍 Advanced Search */}
       <div className="agent-search">
         <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
@@ -170,13 +170,13 @@ const AgentManagement = ({isPanelOpen, panelClickHandle}) => {
       {/* 📋 Agent Table */}
       <div className="table table--6cols mb-20">                 
         <div className="table__inner">
-          <div class="table__row">
-            <div class="table__section table__section--header">Number</div>
-            <div class="table__section table__section--header">Agent Name</div>
-            <div class="table__section table__section--header">Agent Email</div>
-            <div class="table__section table__section--header">Status</div>	
-            <div class="table__section table__section--header">Role</div>
-            <div class="table__section table__section--header">Actions</div>            						
+          <div className="table__row">
+            <div className="table__section table__section--header">Number</div>
+            <div className="table__section table__section--header">Agent Name</div>
+            <div className="table__section table__section--header">Agent Email</div>
+            <div className="table__section table__section--header">Status</div>	
+            <div className="table__section table__section--header">Role</div>
+            <div className="table__section table__section--header">Actions</div>            						
           </div>
           {filteredAgents.length === 0 ? (
             <div className="empty-table-message">No agents to display</div> // Display this if no agents match the filters
@@ -186,25 +186,25 @@ const AgentManagement = ({isPanelOpen, panelClickHandle}) => {
                   
                   <>
 
-                  <div class="table__row">
-                    <div class="table__section">{index + 1}</div>
-                    <div class="table__section">{agent.name}</div>
-                    <div class="table__section">{agent.userId?.email || '-'}</div> 
-                    <div class="table__section">{agent.status === 'active' ? 'active' : 'inactive'}</div>
-                    <div class="table__section">{agent.userId?.role === 'master-agent' ? 'primary agent' : 'agent'}</div>                    
-                    <div class="table__section">
+                  <div className="table__row">
+                    <div className="table__section">{index + 1}</div>
+                    <div className="table__section">{agent.name}</div>
+                    <div className="table__section">{agent.userId?.email || '-'}</div> 
+                    <div className="table__section">{agent.status === 'active' ? 'active' : 'inactive'}</div>
+                    <div className="table__section">{agent.userId?.role === 'master-agent' ? 'primary agent' : 'agent'}</div>                    
+                    <div className="table__section">
                     {agent.userId?.role !== 'master-agent' ? (
-                      <a  onClick={() => handlePromoteToMaster(agent.userId._id)} class="button button--main button--ex-small">Promote</a>                               
+                      <a  onClick={() => handlePromoteToMaster(agent.userId._id)} className="button button--main button--ex-small">Promote</a>                               
                         ) : (
-                          <a  onClick={() => handleDemoteToAgent(agent.userId._id)} class="button button--main button--ex-small">Demote</a>                           
+                          <a  onClick={() => handleDemoteToAgent(agent.userId._id)} className="button button--main button--ex-small">Demote</a>                           
                         )}
                     {agent.status === 'inactive' ? (
-                       <a  onClick={() => handleUnblockAgent(agent._id)} class="button button--main button--ex-small">Unblock</a>                         
+                       <a  onClick={() => handleUnblockAgent(agent._id)} className="button button--main button--ex-small">Unblock</a>                         
                         ) : (
-                          <a  onClick={() => handleBlockAgent(agent._id)} class="button button--main button--ex-small">Block</a>                         
+                          <a  onClick={() => handleBlockAgent(agent._id)} className="button button--main button--ex-small">Block</a>                         
                         )}
-                      <a  onClick={() => goToReports(agent._id)} class="button button--main button--ex-small">Reports</a>
-                      <a  onClick={() => goToClients(agent._id)} class="button button--main button--ex-small">Clients</a>
+                      <a  onClick={() => goToReports(agent._id)} className="button button--main button--ex-small">Reports</a>
+                      <a  onClick={() => goToClients(agent._id)} className="button button--main button--ex-small">Clients</a>
                     </div>                    
                   </div>              
                   </>

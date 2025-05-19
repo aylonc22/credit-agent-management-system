@@ -164,7 +164,7 @@ const ClientManagement = ({ isPanelOpen, panelClickHandle }) => {
     <div className="page page--main">
       <Header flag={false} panelClickHandle={panelClickHandle}/>
     <div className="page__content page__content--with-header">
-    <h2 class="page__title">Clients Management</h2>      
+    <h2 className="page__title">Clients Management</h2>      
 
       {/* Filters */}
       <div className="agent-search">
@@ -196,15 +196,15 @@ const ClientManagement = ({ isPanelOpen, panelClickHandle }) => {
       {/* Client Table */}
       <div className="table table--6cols mb-20">
       <div className="table__inner">
-      <div class="table__row">
-            <div class="table__section table__section--header">Number</div>
-            <div class="table__section table__section--header">Client Name</div>
-            <div class="table__section table__section--header">Client Email</div>
-            {userData.role !== 'agent' && <div class="table__section table__section--header">Agent</div>}
-            <div class="table__section table__section--header">Credits</div>
-            <div class="table__section table__section--header">Created At</div>
-            <div class="table__section table__section--header">Status</div>	
-            <div class="table__section table__section--header">Actions</div>            						
+      <div className="table__row">
+            <div className="table__section table__section--header">Number</div>
+            <div className="table__section table__section--header">Client Name</div>
+            <div className="table__section table__section--header">Client Email</div>
+            {userData.role !== 'agent' && <div className="table__section table__section--header">Agent</div>}
+            <div className="table__section table__section--header">Credits</div>
+            <div className="table__section table__section--header">Created At</div>
+            <div className="table__section table__section--header">Status</div>	
+            <div className="table__section table__section--header">Actions</div>            						
           </div>
                         
                    
@@ -214,21 +214,21 @@ const ClientManagement = ({ isPanelOpen, panelClickHandle }) => {
                 filteredClients.map((client, index) => {
                   const agent = agents.find((a) => a._id === client.agentId);
                   return (
-                    <div class="table__row">
-                      <div class="table__section">{index + 1}</div>
-                      <div class="table__section">{client.name}</div>
-                      <div class="table__section">{client.userId?.email || '-'}</div>
-                      {userData.role !== 'agent' && <div class="table__section">{agent?.name || '-'}</div>}                     
-                      <div class="table__section">{client.credit ?? 0}</div>
-                      <div class="table__section">{new Date(client.createdAt).toLocaleDateString('he-IL')}</div>
-                      <div class="table__section">{client.status === 'active' ? 'active' : 'inactive'}</div>
-                      <div class="table__section">
+                    <div className="table__row">
+                      <div className="table__section">{index + 1}</div>
+                      <div className="table__section">{client.name}</div>
+                      <div className="table__section">{client.userId?.email || '-'}</div>
+                      {userData.role !== 'agent' && <div className="table__section">{agent?.name || '-'}</div>}                     
+                      <div className="table__section">{client.credit ?? 0}</div>
+                      <div className="table__section">{new Date(client.createdAt).toLocaleDateString('he-IL')}</div>
+                      <div className="table__section">{client.status === 'active' ? 'active' : 'inactive'}</div>
+                      <div className="table__section">
                       {client.status === 'inactive' ? (
-                          <a class="button button--main button--ex-small" onClick={() => handleUnblockClient(client._id)}>Unblock</a>
+                          <a className="button button--main button--ex-small" onClick={() => handleUnblockClient(client._id)}>Unblock</a>
                         ) : (
-                          <a class="button button--main button--ex-small" onClick={() => handleBlockClient(client._id)}>Block</a>
+                          <a className="button button--main button--ex-small" onClick={() => handleBlockClient(client._id)}>Block</a>
                         )}
-                      <a  onClick={() => goToReports(client._id)} class="button button--main button--ex-small">Reports</a>
+                      <a  onClick={() => goToReports(client._id)} className="button button--main button--ex-small">Reports</a>
                       </div>                     
                     </div>
                   );
@@ -270,7 +270,7 @@ const ClientManagement = ({ isPanelOpen, panelClickHandle }) => {
               </div>
             )}
 
-              <div class="form__row mt-40">
+              <div className="form__row mt-40">
                 <input type="submit" name="submit" className="form__submit button button--main button--full" id="submit" value="SUBMIT" />
               </div>
           </form>
