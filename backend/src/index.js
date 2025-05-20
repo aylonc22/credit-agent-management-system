@@ -8,6 +8,8 @@ const Settings = require("./models/Settings");
 const Transaction = require("./models/Transaction");
 const {validateTransaction} = require('./utils/alchemyPay');
 const Client = require("./models/Client");
+const loginLimiter = require("./routes/middleware/limiter/loginLimit");
+const defaultLimiter = require("./routes/middleware/limiter/defaultLimit");
 require('dotenv').config();
 
 const app = express();
@@ -20,11 +22,11 @@ app.use(cors({
 app.use(express.json());
 
 // Routes
-app.use('/auth', require('./routes/auth'));
-app.use('/api', require('./routes/api'));
-app.use('/settings', require('./routes/settings'));
+app.use('/auth',loginLimiter, require('./routes/auth'));
+app.use('/api',defaultLimiter, require('./routes/api'));
+app.use('/settings',defaultLimiter, require('./routes/settings'));
 // Serve static files from the 'uploads' folder
-app.use('/uploads', express.static(path.join(__dirname,'/routes/settings/uploads')));
+app.use('/uploads',defaultLimiter, express.static(path.join(__dirname,'/routes/settings/uploads')));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
